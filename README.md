@@ -9,3 +9,8 @@ El programa ELIZA original fue creado por Joseph Weizenbaum.<br>
 La idea del formato de las reglas y simplificación de entradas, están basadas en 'ELIZA in Prolog' de Viren Patel.
 
 Agradecimiento especial a Svetlana por toda la información aportada, además de ampliar la base de conocimientos de Eliza y darle un toque más femenino del que yo jamás le hubiese podido dar... y, sobre todo, por motivarme a hacer este programa, sin su ayuda no hubiera sido posible...
+
+<br>
+
+> **Nota:** <br>
+> Incluyo el código original para Visual Basic 6.0. <br>
