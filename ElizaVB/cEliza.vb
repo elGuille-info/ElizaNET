@@ -2397,7 +2397,7 @@ Public Class cEliza
                         If String.IsNullOrEmpty(sTmp) = False AndAlso sTmp.StartsWith(";") = False Then
                             i = sTmp.IndexOf("=")
                             If i > -1 Then
-                                sClave = sTmp.Substring(0, i - 1).Trim()
+                                sClave = sTmp.Substring(0, i).Trim()
                                 sTmp = sTmp.Substring(i + 1).Trim()
                                 BaseUser.Item(sClave).Contenido = sTmp
                             End If
@@ -2452,6 +2452,7 @@ Public Class cEliza
                     End If
                 End If
             Case Else
+                ' Comprobar si hay que quitar texto de
                 BaseUser.Item(sUsarBaseDatos).Contenido = sEntrada
         End Select
         ' Guardar los datos
