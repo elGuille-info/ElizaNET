@@ -987,6 +987,7 @@ Public Class cEliza
         Dim posContenidoRegla As Integer
         Dim nContenidoRegla As Integer
         Dim rContenidoRegla As cRegla = Nothing
+        Dim totalContenidoRegla As Integer = 0
 
         sSubKey = ""
 
@@ -1025,6 +1026,7 @@ Public Class cEliza
             ' Comprobar si tiene {* ...}
             i = tRegla.Contenido.IndexOf("{*")
             If i > -1 Then
+                '<Forma nueva 25/ago/23>
                 rContenidoRegla = New cRegla()
                 sContenidoRegla = tRegla.Contenido
                 posContenidoRegla = i
@@ -1046,6 +1048,7 @@ Public Class cEliza
                     ' un punto y coma, de esta forma se permiten palabras
                     ' de más de "una palabra"
                     sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
+
                     ' Esto es necesario, ya que en la colección la clave
                     ' es el contenido anterior, es decir lo que hay en sKey
 
@@ -1063,6 +1066,7 @@ Public Class cEliza
                         .Respuestas.Add("*equal:=" & tRegla.Contenido)
                     End With
                     nContenidoRegla += 1
+                    totalContenidoRegla += 1
 
                     Do While sTmp.Length > 0
                         ' Si no tiene este separador se devuelve lo mismo
@@ -1086,12 +1090,16 @@ Public Class cEliza
                                 .Respuestas.Add("*equal:=" & tRegla.Contenido)
                             End With
                             nContenidoRegla += 1
+                            totalContenidoRegla += 1
                         End If
                     Loop
 
                     i = sContenidoRegla.IndexOf("{*", posContenidoRegla + 2)
                     posContenidoRegla = i
                 Loop
+                '</Forma nueva 25/ago/23>
+
+                '<Forma anterior>
                 '' En el caso que se ponga alguna palabra después
                 '' de la llave de cierre, se usará también
                 'j = tRegla.Contenido.IndexOf("}")
@@ -1121,6 +1129,7 @@ Public Class cEliza
                 '    .Aleatorio = tRegla.Aleatorio
                 '    .Respuestas.Add("*equal:=" & tRegla.Contenido)
                 'End With
+                'totalContenidoRegla += 1
 
                 'Do While sTmp.Length > 0
                 '    ' Si no tiene este separador se devuelve lo mismo
@@ -1137,15 +1146,16 @@ Public Class cEliza
                 '            .Aleatorio = tRegla.Aleatorio
                 '            .Respuestas.Add("*equal:=" & tRegla.Contenido)
                 '        End With
+                '        totalContenidoRegla += 1
                 '    End If
                 'Loop
+                '</Forma anterior>
             End If
 
-            If nContenidoRegla > 0 Then
-                'Debug.WriteLine("{0}, {1}", tRegla.Contenido, nContenidoRegla)
-                Debug.WriteLine("{0}, {1}", tRegla.Contenido, rContenidoRegla.LasReglas.Count)
-
-            End If
+            'If nContenidoRegla > 0 Then
+            '    'Debug.WriteLine("{0}, {1}", tRegla.Contenido, nContenidoRegla)
+            '    Debug.WriteLine("{0}, {1}, {2}", tRegla.Contenido, rContenidoRegla.LasReglas.Count, totalContenidoRegla)
+            'End If
 
             ' Buscar en las sub-claves *extras*
 
@@ -1196,6 +1206,7 @@ Public Class cEliza
                 End If
             Next
         Loop 'Next
+        'Debug.WriteLine("{0}", totalContenidoRegla)
         '
         '--------------------------------------------------------------------------
         '   Formato del fichero de palabras y respuestas (Reglas)
