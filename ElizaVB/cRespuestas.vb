@@ -44,7 +44,7 @@ Public Class cRespuestas
     'Default Public ReadOnly Property Item(newContenido As String) As cContenido
     Public ReadOnly Property Item(newContenido As String) As cContenido
         Get
-            Dim tContenido As cContenido = Nothing
+            Dim tContenido As cContenido '= Nothing
 
             'If m_col.TryGetValue(newContenido, tContenido) = False Then
             '    'Si no existe añadirlo

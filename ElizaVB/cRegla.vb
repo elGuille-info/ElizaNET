@@ -16,6 +16,43 @@ Option Infer On
 Option Explicit On
 
 Public Class cRegla
+
+    Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
+    'Public Function Reglas(newRegla As String) As cRegla
+    '    Dim tRegla As cRegla
+
+    '    If m_colReglas.ContainsKey(newRegla) Then
+    '        tRegla = m_colReglas.Item(newRegla)
+    '    Else
+    '        ' Si no existe añadirlo
+    '        tRegla = New cRegla(newRegla)
+    '        m_colReglas.Add(newRegla, tRegla)
+    '    End If
+    '    Return tRegla
+    'End Function
+    Public ReadOnly Property Item(newContenido As String) As cRegla
+        Get
+            Dim tRegla As cRegla
+
+            If m_colReglas.ContainsKey(newContenido) Then
+                tRegla = m_colReglas.Item(newContenido)
+            Else
+                'Si no existe añadirlo
+                tRegla = New cRegla(newContenido)
+                m_colReglas.Add(newContenido, tRegla)
+            End If
+
+            Return tRegla
+        End Get
+    End Property
+
+    Public ReadOnly Property LasReglas As Dictionary(Of String, cRegla)
+        Get
+            Return m_colReglas
+        End Get
+    End Property
+
+
     ''' <summary>
     ''' Si se deben tomar las respuestas de forma aleatoria.
     ''' </summary>

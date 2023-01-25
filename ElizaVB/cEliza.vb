@@ -184,9 +184,6 @@ Public Class cEliza
     ' Estas serán las que se usarán en SimplificarEntrada
     Private ReadOnly m_colSimp As New cRespuestas
 
-    ' Colección de Reglas
-    Private ReadOnly m_col As New Dictionary(Of String, cRegla)
-
     Private ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
 
     ''' <summary>
@@ -194,7 +191,7 @@ Public Class cEliza
     ''' </summary>
     Public ReadOnly Property ColReglas As Dictionary(Of String, cRegla)
         Get
-            Return m_col
+            Return m_colReglas
         End Get
     End Property
     Public ReadOnly Property ColVerbos As cRespuestas
@@ -223,6 +220,9 @@ Public Class cEliza
         End Get
     End Property
 
+    ' Colección de Reglas
+    Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
+
     ''' <summary>
     ''' Acceder a una regla en concreto. Si no existe, se añade.
     ''' </summary>
@@ -230,12 +230,12 @@ Public Class cEliza
     Public Function Reglas(newRegla As String) As cRegla
         Dim tRegla As cRegla
 
-        If m_col.ContainsKey(newRegla) Then
-            tRegla = m_col.Item(newRegla)
+        If m_colReglas.ContainsKey(newRegla) Then
+            tRegla = m_colReglas.Item(newRegla)
         Else
             ' Si no existe añadirlo
             tRegla = New cRegla(newRegla)
-            m_col.Add(newRegla, tRegla)
+            m_colReglas.Add(newRegla, tRegla)
         End If
         Return tRegla
     End Function
@@ -397,8 +397,8 @@ Public Class cEliza
                 sPalabra = sUsarPregunta.Substring(i + 8).TrimStart()
                 Dim tRegla As cRegla
 
-                If m_col.ContainsKey(sPalabra) Then
-                    tRegla = m_col(sPalabra)
+                If m_colReglas.ContainsKey(sPalabra) Then
+                    tRegla = m_colReglas(sPalabra)
                 Else
                     tRegla = Nothing
                 End If
@@ -407,7 +407,7 @@ Public Class cEliza
                 Else
                     ' No existe como clave principal,
                     ' hay que buscarlo en las sub-claves
-                    For Each tRegla In m_col.Values
+                    For Each tRegla In m_colReglas.Values
                         sUsarPregunta = BuscarReglas(sPalabra, tRegla)
                         If String.IsNullOrEmpty(sUsarPregunta) = False Then
                             Exit For
@@ -503,7 +503,7 @@ Public Class cEliza
             LeerReglasEliza()
         Else
             ' Inicializar el valor del último item usado
-            For Each tRegla In m_col.Values
+            For Each tRegla In m_colReglas.Values
                 ' poner a cero las respuestas normales
                 tRegla.Respuestas.UltimoItem = 0
                 ' poner a cero las respuestas de la sección Extras
@@ -669,7 +669,7 @@ Public Class cEliza
         Dim i As Integer
 
         sClaves = ""
-        For Each tRegla In m_col.Values
+        For Each tRegla In m_colReglas.Values
             i = sEntrada.IndexOf(tRegla.Contenido, StringComparison.OrdinalIgnoreCase)
             If i > -1 Then
                 ' comprobar si es una palabra completa
@@ -983,6 +983,11 @@ Public Class cEliza
         Dim i As Integer
         Dim sTmp As String
 
+        Dim sContenidoRegla As String
+        Dim posContenidoRegla As Integer
+        Dim nContenidoRegla As Integer
+        Dim rContenidoRegla As cRegla = Nothing
+
         sSubKey = ""
 
         '
@@ -996,12 +1001,12 @@ Public Class cEliza
         ' De esta forma se continúa aunque se añadan más reglas
         Dim n As Integer = -1
         'Dim cuantasReglasInicial = m_col.Values.Count - 1
-        Dim cuantasReglas = m_col.Values.Count - 1 'cuantasReglasInicial
+        Dim cuantasReglas = m_colReglas.Values.Count - 1 'cuantasReglasInicial
         Do
             n += 1
             ' ajustar el límite por si se añaden nuevas reglas
-            If m_col.Values.Count - 1 > cuantasReglas Then
-                cuantasReglas = m_col.Values.Count - 1
+            If m_colReglas.Values.Count - 1 > cuantasReglas Then
+                cuantasReglas = m_colReglas.Values.Count - 1
             End If
             If n > cuantasReglas Then Exit Do
 
@@ -1009,63 +1014,139 @@ Public Class cEliza
             '    Debug.WriteLine("{0}, {1}, {2}", n, cuantasReglasInicial, cuantasReglas)
             'End If
 
-            tRegla = m_col.Values.ElementAt(n)
+            tRegla = m_colReglas.Values.ElementAt(n)
 
             ' Para probar si encontraba esto
             'If tRegla.Contenido.Contains("color {* son tus") Then
             '    i = 0
             'End If
+            nContenidoRegla = 0
+
             ' Comprobar si tiene {* ...}
             i = tRegla.Contenido.IndexOf("{*")
             If i > -1 Then
-                ' En el caso que se ponga alguna palabra después
-                ' de la llave de cierre, se usará también
-                j = tRegla.Contenido.IndexOf("}")
-                sPalabra1 = ""
-                If j > -1 Then
-                    sPalabra1 = MidN(tRegla.Contenido, j + 1).Trim()
-                    If sPalabra1.Length > 0 Then
-                        sPalabra1 = " " & sPalabra1
-                    End If
-                End If
-                sSubKey = LeftN(tRegla.Contenido, i)
-                sTmp = MidN(tRegla.Contenido, i + 2)
-                'Dim sSubKey0 = LeftN(tRegla.Contenido, i - 1)
-                'Dim sTmp0 = MidN(tRegla.Contenido, i + 2)
-
-                ' La siguiente palabra será la que esté separada por
-                ' un punto y coma, de esta forma se permiten palabras
-                ' de más de "una palabra"
-                sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
-                ' Esto es necesario, ya que en la colección la clave
-                ' es el contenido anterior, es decir lo que hay en sKey
-
-                ' Para que no hayan dos espacios seguidos en la clave
-                sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                With Reglas(sPalabra)
-                    .Nivel = tRegla.Nivel
-                    .Aleatorio = tRegla.Aleatorio
-                    .Respuestas.Add("*equal:=" & tRegla.Contenido)
-                End With
-
-                Do While sTmp.Length > 0
-                    ' Si no tiene este separador se devuelve lo mismo
-                    sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
-                    If sPalabra.Length > 0 Then
-                        i = sPalabra.IndexOf("}")
-                        If i > -1 Then
-                            sPalabra = LeftN(sPalabra.Trim(), i)
-                            sTmp = ""
+                rContenidoRegla = New cRegla()
+                sContenidoRegla = tRegla.Contenido
+                posContenidoRegla = i
+                Do While i > -1
+                    ' En el caso que se ponga alguna palabra después
+                    ' de la llave de cierre, se usará también
+                    j = sContenidoRegla.IndexOf("}", i)
+                    sPalabra1 = ""
+                    If j > -1 Then
+                        sPalabra1 = MidN(sContenidoRegla, j + 1).Trim()
+                        If sPalabra1.Length > 0 Then
+                            sPalabra1 = " " & sPalabra1
                         End If
-                        sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                        With Reglas(sPalabra)
-                            .Nivel = tRegla.Nivel
-                            .Aleatorio = tRegla.Aleatorio
-                            .Respuestas.Add("*equal:=" & tRegla.Contenido)
-                        End With
                     End If
+                    sSubKey = LeftN(sContenidoRegla, i)
+                    sTmp = MidN(sContenidoRegla, i + 2)
+
+                    ' La siguiente palabra será la que esté separada por
+                    ' un punto y coma, de esta forma se permiten palabras
+                    ' de más de "una palabra"
+                    sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
+                    ' Esto es necesario, ya que en la colección la clave
+                    ' es el contenido anterior, es decir lo que hay en sKey
+
+                    ' Para que no hayan dos espacios seguidos en la clave
+                    sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
+                    With Reglas(sPalabra)
+                        .Nivel = tRegla.Nivel
+                        .Aleatorio = tRegla.Aleatorio
+                        .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                    End With
+                    ' Para probar
+                    With rContenidoRegla.Item(sPalabra)
+                        .Nivel = tRegla.Nivel
+                        .Aleatorio = tRegla.Aleatorio
+                        .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                    End With
+                    nContenidoRegla += 1
+
+                    Do While sTmp.Length > 0
+                        ' Si no tiene este separador se devuelve lo mismo
+                        sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
+                        If sPalabra.Length > 0 Then
+                            i = sPalabra.IndexOf("}")
+                            If i > -1 Then
+                                sPalabra = LeftN(sPalabra.Trim(), i)
+                                sTmp = ""
+                            End If
+                            sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
+                            With Reglas(sPalabra)
+                                .Nivel = tRegla.Nivel
+                                .Aleatorio = tRegla.Aleatorio
+                                .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                            End With
+                            ' Para probar
+                            With rContenidoRegla.Item(sPalabra)
+                                .Nivel = tRegla.Nivel
+                                .Aleatorio = tRegla.Aleatorio
+                                .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                            End With
+                            nContenidoRegla += 1
+                        End If
+                    Loop
+
+                    i = sContenidoRegla.IndexOf("{*", posContenidoRegla + 2)
+                    posContenidoRegla = i
                 Loop
+                '' En el caso que se ponga alguna palabra después
+                '' de la llave de cierre, se usará también
+                'j = tRegla.Contenido.IndexOf("}")
+                'sPalabra1 = ""
+                'If j > -1 Then
+                '    sPalabra1 = MidN(tRegla.Contenido, j + 1).Trim()
+                '    If sPalabra1.Length > 0 Then
+                '        sPalabra1 = " " & sPalabra1
+                '    End If
+                'End If
+                'sSubKey = LeftN(tRegla.Contenido, i)
+                'sTmp = MidN(tRegla.Contenido, i + 2)
+                ''Dim sSubKey0 = LeftN(tRegla.Contenido, i - 1)
+                ''Dim sTmp0 = MidN(tRegla.Contenido, i + 2)
+
+                '' La siguiente palabra será la que esté separada por
+                '' un punto y coma, de esta forma se permiten palabras
+                '' de más de "una palabra"
+                'sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
+                '' Esto es necesario, ya que en la colección la clave
+                '' es el contenido anterior, es decir lo que hay en sKey
+
+                '' Para que no hayan dos espacios seguidos en la clave
+                'sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
+                'With Reglas(sPalabra)
+                '    .Nivel = tRegla.Nivel
+                '    .Aleatorio = tRegla.Aleatorio
+                '    .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                'End With
+
+                'Do While sTmp.Length > 0
+                '    ' Si no tiene este separador se devuelve lo mismo
+                '    sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
+                '    If sPalabra.Length > 0 Then
+                '        i = sPalabra.IndexOf("}")
+                '        If i > -1 Then
+                '            sPalabra = LeftN(sPalabra.Trim(), i)
+                '            sTmp = ""
+                '        End If
+                '        sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
+                '        With Reglas(sPalabra)
+                '            .Nivel = tRegla.Nivel
+                '            .Aleatorio = tRegla.Aleatorio
+                '            .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                '        End With
+                '    End If
+                'Loop
             End If
+
+            If nContenidoRegla > 0 Then
+                'Debug.WriteLine("{0}, {1}", tRegla.Contenido, nContenidoRegla)
+                Debug.WriteLine("{0}, {1}", tRegla.Contenido, rContenidoRegla.LasReglas.Count)
+
+            End If
+
             ' Buscar en las sub-claves *extras*
 
             ' Si aquí se encuentra {* se deberá crear una clave
@@ -1776,20 +1857,22 @@ Public Class cEliza
         Return sRespuesta
     End Function
 
-    Private Function QuitarEspaciosExtras(sCadena As String) As String
+    Private Shared Function QuitarEspaciosExtras(sCadena As String) As String
         ' Quita los espacios extras dentro de la cadena                 ( 5/Jun/98)
-        Dim i As Integer
+        'Dim i As Integer
 
-        sCadena = sCadena.Trim()
-        Do
-            i = sCadena.IndexOf("  ")
-            If i > -1 Then
-                'sCadena = Left$(sCadena, i - 1) & " " & LTrim$(Mid$(sCadena, i + 2))
-                'sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).Trimstart()
-                sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).TrimStart()
-            End If
-        Loop While i > -1
-        Return sCadena
+        'sCadena = sCadena.Trim()
+        'Do
+        '    i = sCadena.IndexOf("  ")
+        '    If i > -1 Then
+        '        'sCadena = Left$(sCadena, i - 1) & " " & LTrim$(Mid$(sCadena, i + 2))
+        '        'sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).Trimstart()
+        '        sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).TrimStart()
+        '    End If
+        'Loop While i > -1
+        'Return sCadena
+
+        Return sCadena.Replace("  ", " ")
     End Function
 
     Private Sub Entrada2Array(sEntrada As String)
@@ -1862,16 +1945,12 @@ Public Class cEliza
         '   Respuestas en palabras claves
         '   Respuestas en Sub-Claves
 
-        Dim colRespuestas As cRespuestas
-        Dim tRespuestas As cRespuestas
-        Dim tRegla As cRegla
-        Dim i As Integer, j As Integer, k As Integer
-        Dim nMayor As Integer
+        Dim colRespuestas As New cRespuestas()
+        Dim i As Integer = 0, j As Integer = 0, k As Integer = 0
+        Dim nMayor As Integer = 0
         Dim sMayor As String = ""
 
-        colRespuestas = New cRespuestas
-
-        For Each tRegla In m_col.Values
+        For Each tRegla In m_colReglas.Values
             'sub-claves (extras)
             i += tRegla.Extras.Count
             'respuestas
@@ -1890,10 +1969,10 @@ Public Class cEliza
             .Item("Palabras usadas para simplificar").Contenido = m_colRS.Count.ToString()
             .Item("Palabras usadas para sustitución").Contenido = m_colSimp.Count.ToString()
             .Item("Verbos").Contenido = m_Verbos.Count.ToString()
-            .Item("Palabras claves").Contenido = m_col.Count.ToString()
+            .Item("Palabras claves").Contenido = m_colReglas.Count.ToString()
             .Item("Sub-Claves (variantes de las claves)").Contenido = i.ToString()
             .Item("-----").Contenido = "-----"
-            .Item("Número total de palabras reconocidas").Contenido = (m_colSimp.Count + m_colRS.Count + m_Verbos.Count + m_col.Count + i).ToString()
+            .Item("Número total de palabras reconocidas").Contenido = (m_colSimp.Count + m_colRS.Count + m_Verbos.Count + m_colReglas.Count + i).ToString()
             .Item("------").Contenido = "-----"
             .Item("Respuestas en palabras claves").Contenido = j.ToString()
             .Item("Respuestas en Sub-Claves").Contenido = k.ToString()
@@ -1924,7 +2003,7 @@ Public Class cEliza
             End If
         End If
         ' Buscar esta palabra clave en la lista
-        For Each tRegla In m_col.Values
+        For Each tRegla In m_colReglas.Values
             ' buscar la palabra en cada una de las "claves" y subclaves
             sRespuesta = BuscarReglas(sPalabra, tRegla)
             If sRespuesta.Length > 0 Then
@@ -1953,13 +2032,13 @@ Public Class cEliza
             'sPalabra = MidN(sRespuesta, i + 8).TrimStart()
             sPalabra = MidN(sRespuesta, 8).TrimStart()
             'tRegla = m_col(sPalabra)
-            If m_col.ContainsKey(sPalabra) Then
-                tRegla = m_col(sPalabra)
+            If m_colReglas.ContainsKey(sPalabra) Then
+                tRegla = m_colReglas(sPalabra)
                 sRespuesta = BuscarReglas(sPalabra, tRegla)
             Else
                 ' No existe como clave principal,
                 ' hay que buscarlo en las sub-claves
-                For Each tRegla In m_col.Values
+                For Each tRegla In m_colReglas.Values
                     sRespuesta = BuscarReglas(sPalabra, tRegla)
                     If sRespuesta.Length > 0 Then
                         Exit For
@@ -1983,8 +2062,8 @@ Public Class cEliza
         Const NUM_RESPUESTAS As Integer = 10
 
         sRespuesta = ""
-        If m_col.ContainsKey(sPalabra) Then
-            tRegla = m_col(sPalabra)
+        If m_colReglas.ContainsKey(sPalabra) Then
+            tRegla = m_colReglas(sPalabra)
         Else
             Return sRespuesta
         End If
@@ -2109,6 +2188,12 @@ Public Class cEliza
         'comprueba si la respuesta contiene caracteres especiales
         If String.IsNullOrEmpty(sRespuesta) = False Then
             'Comprobar si hay que poner la hora
+            ' si se indica *LA_HORA* solo poner la hora         (25/ene/23 14.40)
+            If sRespuesta.Contains("*LA_HORA*", StringComparison.OrdinalIgnoreCase) Then
+                'sRespuesta = Left$(sRespuesta, i - 1) & Format$(Now, "hh:mm") & Mid$(sRespuesta, i + Len("*HORA*"))
+                sRespuesta = sRespuesta.Replace("*LA_HORA*", Date.Now.ToString("H"), StringComparison.OrdinalIgnoreCase)
+            End If
+
             'i = sRespuesta.IndexOf("*HORA*", StringComparison.OrdinalIgnoreCase)
             'If i > -1 Then
             If sRespuesta.Contains("*HORA*", StringComparison.OrdinalIgnoreCase) Then

@@ -1011,7 +1011,7 @@ vivir
 Hoy me encuentro bien, gracias.
 Aquí vamos tirando...
 Yo estoy bien, ¿cómo estás tú? {*iif(*afirmativo*;*equal:=Eliza se alegra que estes bien)(*equal:=Eliza no se alegra que estes mal)}
-A estas horas del día (son las *HORA*) no me puedo quejar.
+A estas horas del día (son las *LA_HORA*) no me puedo quejar.
 
 [{* hoy;} {* estoy; me encuento} bien]
 4
