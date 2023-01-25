@@ -105,7 +105,7 @@ Parte de mi funcionamiento se debe a una idea que el guille tomó de un lenguaje
 ;salvo las nuevas sustituciones incluídas en este fichero
 [{* sabe; sabes} programar {* en;} {* Lisp; Prolog; lenguaje programación}]
 4
-No, no se programar en ningún lenguaje, pero me guataría.
+No, no se programar en ningún lenguaje, pero me gustaría.
 Como te he comentado antes, no se programar.
 Ya que insistes, te diré que conozco algo de Visual Basic, pero no mucho...
 *equal:=lenguaje programación

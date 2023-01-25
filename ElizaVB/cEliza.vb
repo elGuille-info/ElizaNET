@@ -240,63 +240,6 @@ Public Class cEliza
         Return tRegla
     End Function
 
-    ''' <summary>
-    ''' Devuelve los n últimos caracteres de la cadena indicada.
-    ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="n"></param>
-    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    Public Shared Function RightN(texto As String, n As Integer) As String
-        If String.IsNullOrEmpty(texto) Then Return texto
-        Dim len = texto.Length
-        If n > len OrElse n < 1 Then Return "" 'texto
-
-        Return texto.Substring(len - n, n)
-    End Function
-    ''' <summary>
-    ''' Devuelve los n primeros caracteres de la cadena indicada.
-    ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="n"></param>
-    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    Public Shared Function LeftN(texto As String, n As Integer) As String
-        If String.IsNullOrEmpty(texto) Then Return texto
-        Dim len = texto.Length
-        If n > len OrElse n < 1 Then Return "" 'texto
-
-        Return texto.Substring(0, n)
-    End Function
-
-    ''' <summary>
-    ''' Devuelve a partir del carácter n de la cadena indicada.
-    ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="n"></param>
-    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    Public Shared Function MidN(texto As String, n As Integer) As String
-        If String.IsNullOrEmpty(texto) Then Return texto
-        Dim len = texto.Length
-        If n > len OrElse n < 1 Then Return "" 'texto
-
-        Return texto.Substring(n)
-    End Function
-
-    ''' <summary>
-    ''' Devuelve t caracteres a partir del carácter n de la cadena indicada.
-    ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="n"></param>
-    ''' <param name="t"></param>
-    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    Public Shared Function MidN(texto As String, n As Integer, t As Integer) As String
-        If String.IsNullOrEmpty(texto) Then Return texto
-        Dim len = texto.Length
-        If n > len OrElse n < 1 OrElse t > len OrElse t < 1 Then Return "" 'texto
-        If n + t > len Then Return ""
-
-        Return texto.Substring(n, t)
-    End Function
-
     ' Esto es lo que en realidad hay que revisar porque no lo analiza... (24/ene/23 13.37)
     Public Function ProcesarEntrada(sEntrada As String) As String
         ' Se procesará la entrada del usuario y devolverá la cadena con la respuesta
@@ -678,7 +621,7 @@ Public Class cEliza
                     If i > 0 Then
                         Dim i1 = i
                         'i = sSeparadores.IndexOf(MidN(sEntrada, i1 - 1, 1))
-                        i = sSeparadores.IndexOf(MidN(sEntrada, i1, 1))
+                        i = sSeparadores.IndexOf(MidN(sEntrada, i1 - 1, 1))
                     End If
                     If i > -1 Then
                         For Each tRespuestas In tRegla.Extras.Valores '.Values
@@ -731,7 +674,7 @@ Public Class cEliza
                 sClaves = MidN(sClaves, i + 1)
                 i = sClaves.IndexOf(",")
                 If i > -1 Then
-                    sPalabra = LeftN(sClaves, i - 1)
+                    sPalabra = LeftN(sClaves, i)
                     sClaves = MidN(sClaves, i + 1)
                     tContenidos.Item(sPalabra).Contenido = sNivel
                 End If
@@ -774,7 +717,7 @@ Public Class cEliza
         ' tomar la primera palabra y buscar la respuesta adecuada
         i = sClaves.IndexOf(",")
         If i > -1 Then
-            sPalabra = LeftN(sClaves, i - 1).Trim()
+            sPalabra = LeftN(sClaves, i).Trim()
         End If
         ' Si no hay una palabra clave
         If String.IsNullOrEmpty(sPalabra) Then
@@ -1026,7 +969,9 @@ Public Class cEliza
             ' Comprobar si tiene {* ...}
             i = tRegla.Contenido.IndexOf("{*")
             If i > -1 Then
+                '
                 '<Forma nueva 25/ago/23>
+                '
                 rContenidoRegla = New cRegla()
                 sContenidoRegla = tRegla.Contenido
                 posContenidoRegla = i
@@ -1097,9 +1042,13 @@ Public Class cEliza
                     i = sContenidoRegla.IndexOf("{*", posContenidoRegla + 2)
                     posContenidoRegla = i
                 Loop
+                '
                 '</Forma nueva 25/ago/23>
+                '
 
+                '
                 '<Forma anterior>
+                '
                 '' En el caso que se ponga alguna palabra después
                 '' de la llave de cierre, se usará también
                 'j = tRegla.Contenido.IndexOf("}")
@@ -1149,7 +1098,9 @@ Public Class cEliza
                 '        totalContenidoRegla += 1
                 '    End If
                 'Loop
+                '
                 '</Forma anterior>
+                '
             End If
 
             'If nContenidoRegla > 0 Then
@@ -2232,7 +2183,7 @@ Public Class cEliza
                     ' Guardar la respuesta anterior,                    (17/Sep/02)
                     ' por si se usa pra asignar a la base de datos del usuario.
                     restoAnt = sEntrada.Trim()
-                    sRespuesta = sRespuesta.Substring(0, i - 1) & sEntrada & sRespuesta.Substring(i + "*RESTO*".Length)
+                    sRespuesta = sRespuesta.Substring(0, i) & sEntrada & sRespuesta.Substring(i + "*RESTO*".Length)
                 End If
             End If
         Else
@@ -2333,17 +2284,17 @@ Public Class cEliza
             'El formato será: {*base:=clave_base}
             'sUsarBaseDatos contendrá la clave de la base de datos
             sUsarBaseDatos = MidN(sRespuesta, i + 8)
-            sRespuesta = LeftN(sRespuesta, i - 1)
+            sRespuesta = LeftN(sRespuesta, i)
             'Quitarle el } del final
             i = sUsarBaseDatos.IndexOf("}")
             If i > -1 Then
                 ' si a continuación sigue un := asignar el valor indicado
                 j = sUsarBaseDatos.IndexOf(":=*restoant*", StringComparison.OrdinalIgnoreCase)
                 If j > -1 Then
-                    sUsarBaseDatos = LeftN(sUsarBaseDatos, j - 1)
+                    sUsarBaseDatos = LeftN(sUsarBaseDatos, j)
                     ValidarDatosParaBase(restoAnt)
                 Else
-                    sUsarBaseDatos = LeftN(sUsarBaseDatos, i - 1)
+                    sUsarBaseDatos = LeftN(sUsarBaseDatos, i)
                 End If
             End If
         End If
@@ -2363,7 +2314,7 @@ Public Class cEliza
             sClave = MidN(sRespuesta, i + 11)
             j = sClave.IndexOf(";")
             If j > -1 Then
-                sClave = LeftN(sClave, j - 1)
+                sClave = LeftN(sClave, j)
                 j = InStr(sRespuesta, ";")
                 sRespuesta = MidN(sRespuesta, j + 1)
                 j = sRespuesta.IndexOf(")(")
@@ -2522,4 +2473,63 @@ Public Class cEliza
 
         Return s
     End Function
+
+    ''' <summary>
+    ''' Devuelve los n últimos caracteres de la cadena indicada.
+    ''' </summary>
+    ''' <param name="texto"></param>
+    ''' <param name="n"></param>
+    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
+    Public Shared Function RightN(texto As String, n As Integer) As String
+        If String.IsNullOrEmpty(texto) Then Return texto
+        Dim len = texto.Length
+        If n > len OrElse n < 1 Then Return "" 'texto
+
+        Return texto.Substring(len - n, n)
+    End Function
+
+    ''' <summary>
+    ''' Devuelve los n primeros caracteres de la cadena indicada.
+    ''' </summary>
+    ''' <param name="texto"></param>
+    ''' <param name="n"></param>
+    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
+    Public Shared Function LeftN(texto As String, n As Integer) As String
+        If String.IsNullOrEmpty(texto) Then Return texto
+        Dim len = texto.Length
+        If n > len OrElse n < 1 Then Return "" 'texto
+
+        Return texto.Substring(0, n)
+    End Function
+
+    ''' <summary>
+    ''' Devuelve a partir del carácter n de la cadena indicada.
+    ''' </summary>
+    ''' <param name="texto"></param>
+    ''' <param name="n"></param>
+    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
+    Public Shared Function MidN(texto As String, n As Integer) As String
+        If String.IsNullOrEmpty(texto) Then Return texto
+        Dim len = texto.Length
+        If n > len OrElse n < 1 Then Return "" 'texto
+
+        Return texto.Substring(n)
+    End Function
+
+    ''' <summary>
+    ''' Devuelve t caracteres a partir del carácter n de la cadena indicada.
+    ''' </summary>
+    ''' <param name="texto"></param>
+    ''' <param name="n"></param>
+    ''' <param name="t"></param>
+    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
+    Public Shared Function MidN(texto As String, n As Integer, t As Integer) As String
+        If String.IsNullOrEmpty(texto) Then Return texto
+        Dim len = texto.Length
+        If n > len OrElse n < 1 OrElse t > len OrElse t < 1 Then Return "" 'texto
+        If n + t > len Then Return ""
+
+        Return texto.Substring(n, t)
+    End Function
+
 End Class
