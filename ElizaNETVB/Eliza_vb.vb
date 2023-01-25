@@ -267,11 +267,9 @@ Friend Class fEliza
 
         Show()
 
-        Eliza = New cEliza(AppPath())
-        Eliza.Sexo = cEliza.eSexo.Ninguno
-        ' Centrar manualmente, ya que si tarda un poco al Inicializar
-        ' se nota que se "posiciona"
-        'SetBounds(VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(Width)) \ 2), VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(Height)) \ 2), 0, 0, Windows.Forms.BoundsSpecified.X Or Windows.Forms.BoundsSpecified.Y)
+        Eliza = New cEliza(AppPath()) With {
+            .Sexo = cEliza.eSexo.Ninguno
+        }
 
         ' leer la lista de nombres que han usado el programa
         LeerNombres()
@@ -281,10 +279,12 @@ Friend Class fEliza
 
     Public Sub mnuEliza_claves_Click(sender As Object, e As EventArgs) Handles mnuEliza_claves.Click
         Hide()
-        With Eliza_claves
-            .Eliza = Eliza
-            .ShowDialog()
-        End With
+        Dim fClaves As New Eliza_claves With {.Eliza = Eliza}
+        fClaves.ShowDialog()
+        'With Eliza_claves
+        '    .Eliza = Eliza
+        '    .ShowDialog()
+        'End With
         Show()
     End Sub
 
