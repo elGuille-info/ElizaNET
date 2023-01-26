@@ -3,7 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <StartupObject>ElizaNETVB.fEliza</StartupObject>
+    <!--<StartupObject>ElizaNETVB.fEliza</StartupObject>-->
+      <StartupObject>Sub Main</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
       <Title>ELIZA para Visual Basic</Title>
