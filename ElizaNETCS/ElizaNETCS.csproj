@@ -19,4 +19,22 @@
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="palabras\ElizaVB_prog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\ElizaVB_sueños.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\ElizaVB_zodiaco.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\Eliza_SPA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\Reglas para el programa Eliza en VB.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
