@@ -646,7 +646,7 @@ Public Class cEliza
         Return OrdenarClaves(sClaves)
     End Function
 
-    Private Function OrdenarClaves(ByRef sClaves As String) As Integer
+    Private Shared Function OrdenarClaves(ByRef sClaves As String) As Integer
         ' Ordena las claves según el Nivel
         ' El nivel estará indicado entre llaves y cada palabra separada por una coma.
         '
@@ -676,7 +676,9 @@ Public Class cEliza
                 If i > -1 Then
                     sPalabra = LeftN(sClaves, i)
                     sClaves = MidN(sClaves, i + 1)
-                    tContenidos.Item(sPalabra).Contenido = sNivel
+                    ' asignar como ID el nivel y como contenido la palabra, 26/ene/23 13.54
+                    'tContenidos.Item(sPalabra).Contenido = sNivel
+                    tContenidos.Item(sNivel).Contenido = sPalabra
                 End If
             End If
         Loop While String.IsNullOrEmpty(sClaves) = False
@@ -685,19 +687,26 @@ Public Class cEliza
             ReDim aPalabras(0 To numPalabras)
             For i = 0 To numPalabras - 1
                 ' se asignará el nivel, (antes se añadía la palabra)
-                aPalabras(i) = tContenidos.Item(i).Contenido
+                'aPalabras(i) = tContenidos.Item(i).Contenido
+                aPalabras(i) = tContenidos.Item(i).ID
             Next
             ' Clasificar de mayor a menor                               (01/Jun/98)
             Dim tClasificar As New Clasificar(deMayorAMenor:=True)
             Array.Sort(aPalabras, tClasificar)
 
             'LaMayor = Val(Mid$(tContenidos(aOrden(1)).Contenido, 2))
-            LaMayor = CInt(tContenidos.Item(0).Contenido.Substring(1))
+            'LaMayor = CInt(tContenidos.Item(0).Contenido.Substring(1))
+            LaMayor = CInt(aPalabras(0).Substring(1))
             'sTmp = ""
             sTmp.Clear()
             For i = 0 To numPalabras - 1
                 'sTmp = sTmp & tContenidos.Item(i).ID & ","
-                sTmp.Append(tContenidos.Item(i).ID)
+                ' aquí hay que tener en cuenta el orden de aPalabras
+                ' ahora tContenido.ID es el nivel y tContenido.Contenido es la palabra
+                ' antes era: tContenido.ID la palabra, tContenido.Contenido el nivel
+                Dim s1 = tContenidos.Item(aPalabras(i))
+                'sTmp.Append(tContenidos.Item(i).ID)
+                sTmp.Append(s1.Contenido)
                 sTmp.Append(","c)
             Next
         End If
@@ -711,14 +720,39 @@ Public Class cEliza
         ' las claves estarán separadas por comas
 
         Dim sRespuesta As String = ""
-        Dim sPalabra As String = ""
-        Dim i As Integer
+        Dim sPalabra As String '= ""
 
+        ' Habría que analizar todas las palabras                (26/ene/23 13.28)
+        ' y usar la que tenga mayor nivel.
+        ' de esa forma si se indica hola, 'algo más', puede que 'algo más' tenga mayor peso.
+
+        ' Ahora las palabras de más peso están al principio de las que hay. (26/ene/23 14.01)
+
+        'Dim lasClaves As String()
         ' tomar la primera palabra y buscar la respuesta adecuada
-        i = sClaves.IndexOf(",")
+        'If String.IsNullOrEmpty(sClaves) Then
+        '    sPalabra = ""
+        'Else
+        '    If sClaves.Contains(","c) Then
+        '        lasClaves = sClaves.Split(",", StringSplitOptions.RemoveEmptyEntries)
+        '        For n = 0 To lasClaves.Length - 1
+        '            sPalabra = lasClaves(n)
+
+        '        Next
+        '    Else
+        '        ' si no tiene coma, usar sClaves como la palabra    (26/ene/23 13.30)
+        '        sPalabra = sClaves
+        '    End If
+        'End If
+
+        Dim i = sClaves.IndexOf(",")
         If i > -1 Then
             sPalabra = LeftN(sClaves, i).Trim()
+        Else
+            ' si no tiene coma, usar sClaves como la palabra    (26/ene/23 13.30)
+            sPalabra = sClaves
         End If
+
         ' Si no hay una palabra clave
         If String.IsNullOrEmpty(sPalabra) Then
             sPalabra = "respuestas-aleatorias"
