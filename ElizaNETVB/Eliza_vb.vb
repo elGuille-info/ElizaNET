@@ -15,7 +15,7 @@
 ' serie "Microinformática", el título del libro es:
 ' Inteligencia artificial: conceptos y programas.
 '
-' ©Guillermo 'guille' Som, 1998-2002
+' ©Guillermo 'guille' Som, 1998-2002, 2023
 '------------------------------------------------------------------------------
 ' Modificaciones y cambios:
 '
@@ -51,7 +51,6 @@ Option Compare Text
 
 Imports ElizaVB
 
-'Imports VB = Microsoft.VisualBasic
 Friend Class fEliza
     Inherits System.Windows.Forms.Form
 
@@ -75,11 +74,6 @@ Friend Class fEliza
 
         ' Si no se ha guardado la sesión anterior, preguntar si se quiere guardar.
         If Not SesionGuardada Then
-            'If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
-            '          MsgBoxStyle.YesNo,
-            '          "Guardar la sesión actual") = MsgBoxResult.Yes Then
-            '    GuardarSesion()
-            'End If
             If Dialogos.MessageBoxShow(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
                       "Guardar la sesión actual", MessageBoxButtons.YesNo) = DialogResult.Yes Then
                 GuardarSesion()
@@ -94,7 +88,6 @@ Friend Class fEliza
         sMsgTmp = ""
         ' Preguntar el nombre y el sexo
         Do
-            'sNombre = InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", sNombre)
             If UtilidadesDialog.UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)",
                                                     "Saber quién eres", sNombre) <> DialogResult.OK Then
                 sNombre = ""
@@ -109,17 +102,13 @@ Friend Class fEliza
             tmpSexo = -1
             With List2
                 For i = 0 To .Items.Count - 1
-                    'If VB6.GetItemString(List2, i) = sNombre Then
                     If List2.Items(i).ToString() = sNombre Then
-                        'tmpSexo = VB6.GetItemData(List2, i)
                         tmpSexo = i
                         Exit For
                     End If
                 Next
             End With
             If tmpSexo > -1 Then
-                'MsgBox "Hola de nuevo " & sNombre & ", empezamos cuando quieras."
-                'ImprimirDOS "Hola de nuevo " & sNombre & ", empezamos cuando quieras."
                 tSexo = CType(tmpSexo, cEliza.eSexo)
                 Exit Do
             End If
@@ -147,26 +136,12 @@ Friend Class fEliza
                             sSexo = "femenino"
                         End If
                     End If
-                    'If MsgBox(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
-                    '          MsgBoxStyle.YesNo) = MsgBoxResult.No Then
-                    '    If tSexo = cEliza.eSexo.Femenino Then
-                    '        tSexo = cEliza.eSexo.Masculino
-                    '        sSexo = "masculino"
-                    '    Else
-                    '        tSexo = cEliza.eSexo.Femenino
-                    '        sSexo = "femenino"
-                    '    End If
-                    'End If
                 End If
             End If
             If Dialogos.MessageBoxShow("Por favor confirma que estos datos son correctos:" & vbCrLf & "Nombre: " & sNombre & vbCrLf & "Sexo: " & sSexo,
                                        "", MessageBoxButtons.YesNoCancel) <> DialogResult.No Then
                 Exit Do
             End If
-            'If MsgBox("Por favor confirma que estos datos son correctos:" & vbCrLf & "Nombre: " & sNombre & vbCrLf & "Sexo: " & sSexo,
-            '          MsgBoxStyle.YesNoCancel) <> MsgBoxResult.No Then
-            '    Exit Do
-            'End If
         Loop
         ' Si no se escribe el nombre, terminar el programa
         If sNombre.Length = 0 Then
@@ -174,7 +149,6 @@ Friend Class fEliza
                 sMsgTmp = "Me parece que no confías lo suficiente en mí, así que no hay sesión que valga, ¡ea!"
             End If
             Dialogos.MessageBoxShow(sMsgTmp, "", MessageBoxButtons.OK)
-            'MsgBox(sMsgTmp)
             Close()
             Return
             'End
@@ -184,7 +158,6 @@ Friend Class fEliza
         tmpSexo = -1
         With List2
             For i = 0 To .Items.Count - 1
-                'If VB6.GetItemString(List2, i) = sNombre Then
                 If List2.Items(i).ToString() = sNombre Then
                     tmpSexo = i
                     Exit For
@@ -194,7 +167,6 @@ Friend Class fEliza
         If tmpSexo = -1 Then
             'añadirlo
             With List2
-                '.Items.Add(New VB6.ListBoxItem(sNombre, tSexo))
                 .Items.Add(sNombre)
             End With
             'guardar los nombres
@@ -216,7 +188,6 @@ Friend Class fEliza
         With Eliza
             If .Iniciado Then
                 ' Si es la primera vez... dar un poco de tiempo.
-                'i = CShort(Rnd() * 9 + 1)
                 Select Case m_rnd.Next(10)
                     Case Is > 6
                         sMsgTmp = "Espera un momento, mientras ordeno mi base de datos..."
@@ -233,11 +204,9 @@ Friend Class fEliza
             .Inicializar()
             sw.Stop()
             If Not .Iniciado Then
-                'sMsgTmp = "Tiempo en inicializar (y asignar las palabras): " & sw.Elapsed.Seconds & " segundos."
                 sMsgTmp = "Tiempo en inicializar (y asignar las palabras): " & sw.Elapsed.ToString("mm\:ss\.fff")
                 ImprimirDOS(sMsgTmp)
             Else
-                'sMsgTmp = "Tiempo en re-inicializar las palabras: " & sw.Elapsed.Seconds & " segundos."
                 sMsgTmp = "Tiempo en re-inicializar las palabras: " & sw.Elapsed.ToString("mm\:ss\.fff")
                 ImprimirDOS(sMsgTmp)
             End If
@@ -282,11 +251,9 @@ Friend Class fEliza
 
         List2.Items.Clear()
 
-        'If Year(Now) > 2002 Then
         If Date.Now.Year > 2023 Then
             LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023-" & Date.Now.Year.ToString()
         Else
-            'LabelInfo.Text = "Eliza para Visual Basic © Guillermo 'guille' Som, 1998-2002, 2023"
             LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023"
         End If
 
@@ -304,12 +271,8 @@ Friend Class fEliza
 
     Public Sub mnuEliza_claves_Click(sender As Object, e As EventArgs) Handles mnuEliza_claves.Click
         Hide()
-        Dim fClaves As New Eliza_claves(Eliza) ' With {.Eliza = Eliza}
+        Dim fClaves As New Eliza_claves(Eliza)
         fClaves.ShowDialog()
-        'With Eliza_claves
-        '    .Eliza = Eliza
-        '    .ShowDialog()
-        'End With
         Show()
     End Sub
 
@@ -325,7 +288,6 @@ Friend Class fEliza
         Next tContenido
 
         Dialogos.MessageBoxShow(sMsg, "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        'MsgBox(sMsg, MsgBoxStyle.Information, "Estadísticas de Eliza")
     End Sub
 
     Public Sub mnuAcercaDe_Click(sender As Object, e As EventArgs) Handles mnuAcercaDe.Click
@@ -353,7 +315,6 @@ Friend Class fEliza
         msg.AppendLine("y, sobre todo, por motivarme a hacer este programa, sin su ayuda no hubiera sido posible...")
 
         Dialogos.MessageBoxShow(msg.ToString(), "Acerca de Eliza para VB", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        'MsgBox(msg.ToString(), MsgBoxStyle.Information, "Acerca de Eliza para VB")
     End Sub
 
     Public Sub mnuFileReleer_Click(sender As Object, e As EventArgs) Handles mnuFileReleer.Click
@@ -372,22 +333,15 @@ Friend Class fEliza
                                        "Guardar la sesión actual", MessageBoxButtons.YesNo) = DialogResult.Yes Then
                 GuardarSesion()
             End If
-            'If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
-            '          MsgBoxStyle.YesNo,
-            '          "Guardar la sesión actual") = MsgBoxResult.Yes Then
-            '    GuardarSesion()
-            'End If
         End If
         SesionGuardada = True
 
         Me.Close()
     End Sub
 
-    ' Revisar esto, que no lo analiza...						(24/ene/23 13.35)
     Private Sub ProcesarEntrada()
         ' Toma lo que ha escrito el usuario y lo envía a la clase
         ' para procesar lo escrito y obtener la respuesta
-        'Static sEntradaAnterior As String
         Dim sTmp As String
 
         If String.IsNullOrEmpty(txtEntrada.Text) Then
@@ -407,9 +361,6 @@ Friend Class fEliza
             ' Mostrar el aviso que no te repitas si no es no, sí, etc.
 
             ' Las palabras que se pueden repetir están en Eliza.SiNo
-            'If Eliza.SiNo.Contains(sTmp.ToLower()) Then
-            '	noRepitas = False
-            'End If
             ' Simplificando:
             '	si la respuesta tiene menos de 5 caracteres no considerarlo repetición
             If sTmp.Length < 5 Then
@@ -472,11 +423,8 @@ Friend Class fEliza
         ' preguntar el nombre del fichero
         ' o crearlo automáticamente
 
-        'sFic = AppPath() & "sesiones\" & sNombre & "_" & VB6.Format(Now, "ddmmmyyyy_hhmm") & ".txt"
         Dim sDir = System.IO.Path.Combine(AppPath(), "sesiones")
-        'sFic = AppPath() & "sesiones\" & sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt"
         Dim sFic = System.IO.Path.Combine(sDir, sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt")
-        'sFic = InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic)
         If UtilidadesDialog.UtilDialog.InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic) <> DialogResult.OK Then
             sFic = ""
         Else
@@ -487,7 +435,6 @@ Friend Class fEliza
             List1.Items.Add($"Sesión guardada el: {Date.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}")
 
             ' Crear los directorios indicados en el nombre del archivo  (18/Sep/02)
-            'crearDirectorios(sFic)
             If System.IO.Directory.Exists(sDir) = False Then
                 System.IO.Directory.CreateDirectory(sDir)
             End If
@@ -549,7 +496,6 @@ Friend Class fEliza
         Dim tmpNombre As String
 
         sFic = AppPath() & "ListaDeNombres.txt"
-        'If Len(Dir(sFic)) > 0 Then
         If System.IO.File.Exists(sFic) Then
             With List2
                 .Items.Clear()
@@ -574,7 +520,6 @@ Friend Class fEliza
         sFic = AppPath() & "ListaDeNombres.txt"
         Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
             For i = 0 To List2.Items.Count - 1
-                'sw.WriteLine($"{BaseUser(i).ID}={BaseUser(i).Contenido}")
                 sw.WriteLine(List2.Items(i).ToString)
                 sw.WriteLine("0") ' el sexo
             Next
@@ -601,13 +546,8 @@ Friend Class fEliza
 
     End Sub
 
-    'Private Function AppPath() As String
-    '	' Devuelve el path del ejecutable con la barra final            (15/Sep/02)
-    '	AppPath = My.Application.Info.DirectoryPath & IIf(VB.Right(My.Application.Info.DirectoryPath, 1) = "\", "", "\")
-    'End Function
     Public Shared Function AppPath() As String
         ' Devuelve el path del ejecutable con la barra final            (15/Sep/02)
-        ' Return App.Path & IIf(Right$(App.Path, 1) = "\", "", "\")
         Dim ensamblado = GetType(fEliza).Assembly
         Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
         Return elPath & If(elPath.EndsWith("\"), "", "\")
@@ -615,16 +555,6 @@ Friend Class fEliza
 
     ' Comprobar si se ha pulsado la tecla "arriba",				(24/ene/23 13.16)
     ' si es así poner el texto anterior.
-    'Private Sub txtEntrada_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtEntrada.KeyPress
-    '	Dim KeyAscii = e.KeyChar
-    '	' Cuando se pulse INTRO se procesará la entrada
-    '	' Se llamará a un procedimiento separado
-    '	If KeyAscii = ChrW(13) Then
-    '		' Evitar el pitido
-    '		e.Handled = True
-    '		ProcesarEntrada()
-    '	End If
-    'End Sub
 
     Private Sub txtEntrada_KeyUp(sender As Object, e As KeyEventArgs) Handles txtEntrada.KeyUp
         If e.KeyData = Keys.Return Then
