@@ -27,8 +27,11 @@ Actual en .NET: revisión del 25/ene/2023
 
   <ItemGroup>
     <Compile Remove="My Project\**" />
+    <Compile Remove="palabras\**" />
     <EmbeddedResource Remove="My Project\**" />
+    <EmbeddedResource Remove="palabras\**" />
     <None Remove="My Project\**" />
+    <None Remove="palabras\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,21 +50,6 @@ Actual en .NET: revisión del 25/ene/2023
   <ItemGroup>
     <ProjectReference Include="..\ElizaVB\ElizaVB.vbproj" />
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="palabras\ElizaVB_prog.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="palabras\ElizaVB_sueños.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="palabras\ElizaVB_zodiaco.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="palabras\Eliza_SPA.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <!--<ItemGroup>
