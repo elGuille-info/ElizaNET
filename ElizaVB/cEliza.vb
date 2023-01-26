@@ -2452,7 +2452,8 @@ Public Class cEliza
                     End If
                 End If
             Case Else
-                ' Comprobar si hay que quitar texto de
+                ' Comprobar si hay que quitar texto de la respuesta,
+                ' por ejemplo, el color del pelo o los ojos: también castaños, etc.
                 BaseUser.Item(sUsarBaseDatos).Contenido = sEntrada
         End Select
         ' Guardar los datos

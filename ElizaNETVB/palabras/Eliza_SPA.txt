@@ -1006,6 +1006,10 @@ vivir
 ;Si queremos guardar el valor que nos dé al hacerle una pregunta, usar esta forma:
 ;Ya sabes mi edad, ¿cual es la tuya?{*base:=edad}
 ;
+; Las claves actuales para usar con {*base:=...} son:
+;nombre, sexo, estos se asignan al indicar el nombre.
+;edad, color pelo, color ojos y mascota, estos se asignan con respuestas del usuario.
+;
 [{* cómo; como} {* estás; estas}]
 4@
 Hoy me encuentro bien, gracias.
