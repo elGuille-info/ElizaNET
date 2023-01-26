@@ -74,11 +74,16 @@ Friend Class fEliza
 
         ' Si no se ha guardado la sesión anterior, preguntar si se quiere guardar.
         If Not SesionGuardada Then
-            If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
-                      MsgBoxStyle.YesNo,
-                      "Guardar la sesión actual") = MsgBoxResult.Yes Then
+            'If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
+            '          MsgBoxStyle.YesNo,
+            '          "Guardar la sesión actual") = MsgBoxResult.Yes Then
+            '    GuardarSesion()
+            'End If
+            If Dialogos.MessageBoxShow(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
+                      "Guardar la sesión actual", MessageBoxButtons.YesNo) = DialogResult.Yes Then
                 GuardarSesion()
             End If
+
         End If
         SesionGuardada = True
 
@@ -127,8 +132,8 @@ Friend Class fEliza
                         sSexo = "masculino"
                         tSexo = cEliza.eSexo.Masculino
                     End If
-                    If MsgBox(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
-                              MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                    If Dialogos.MessageBoxShow(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
+                                               "", MessageBoxButtons.YesNo) = DialogResult.No Then
                         If tSexo = cEliza.eSexo.Femenino Then
                             tSexo = cEliza.eSexo.Masculino
                             sSexo = "masculino"
@@ -137,19 +142,34 @@ Friend Class fEliza
                             sSexo = "femenino"
                         End If
                     End If
+                    'If MsgBox(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
+                    '          MsgBoxStyle.YesNo) = MsgBoxResult.No Then
+                    '    If tSexo = cEliza.eSexo.Femenino Then
+                    '        tSexo = cEliza.eSexo.Masculino
+                    '        sSexo = "masculino"
+                    '    Else
+                    '        tSexo = cEliza.eSexo.Femenino
+                    '        sSexo = "femenino"
+                    '    End If
+                    'End If
                 End If
             End If
-            If MsgBox("Por favor confirma que estos datos son correctos:" & vbCrLf & "Nombre: " & sNombre & vbCrLf & "Sexo: " & sSexo,
-                      MsgBoxStyle.YesNoCancel) <> MsgBoxResult.No Then
+            If Dialogos.MessageBoxShow("Por favor confirma que estos datos son correctos:" & vbCrLf & "Nombre: " & sNombre & vbCrLf & "Sexo: " & sSexo,
+                                       "", MessageBoxButtons.YesNoCancel) <> DialogResult.No Then
                 Exit Do
             End If
+            'If MsgBox("Por favor confirma que estos datos son correctos:" & vbCrLf & "Nombre: " & sNombre & vbCrLf & "Sexo: " & sSexo,
+            '          MsgBoxStyle.YesNoCancel) <> MsgBoxResult.No Then
+            '    Exit Do
+            'End If
         Loop
         ' Si no se escribe el nombre, terminar el programa
         If sNombre.Length = 0 Then
             If sMsgTmp.Length = 0 Then
                 sMsgTmp = "Me parece que no confías lo suficiente en mí, así que no hay sesión que valga, ¡ea!"
             End If
-            MsgBox(sMsgTmp)
+            Dialogos.MessageBoxShow(sMsgTmp, "", MessageBoxButtons.OK)
+            'MsgBox(sMsgTmp)
             Close()
             Return
             'End
@@ -299,7 +319,8 @@ Friend Class fEliza
             sMsg = sMsg & tContenido.ID & " = " & tContenido.Contenido & vbCrLf
         Next tContenido
 
-        MsgBox(sMsg, MsgBoxStyle.Information, "Estadísticas de Eliza")
+        Dialogos.MessageBoxShow(sMsg, "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        'MsgBox(sMsg, MsgBoxStyle.Information, "Estadísticas de Eliza")
     End Sub
 
     Public Sub mnuAcercaDe_Click(sender As Object, e As EventArgs) Handles mnuAcercaDe.Click
@@ -325,7 +346,8 @@ Friend Class fEliza
         msg.Append("un toque más femenino del que yo jamás le hubiese podido dar... ")
         msg.AppendLine("y, sobre todo, por motivarme a hacer este programa, sin su ayuda no hubiera sido posible...")
 
-        MsgBox(msg.ToString(), MsgBoxStyle.Information, "Acerca de Eliza para VB")
+        Dialogos.MessageBoxShow(msg.ToString(), "Acerca de Eliza para VB", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        'MsgBox(msg.ToString(), MsgBoxStyle.Information, "Acerca de Eliza para VB")
     End Sub
 
     Public Sub mnuFileReleer_Click(sender As Object, e As EventArgs) Handles mnuFileReleer.Click
@@ -340,11 +362,15 @@ Friend Class fEliza
         ' Si no se ha guardado la sesión anterior, preguntar            (16/Sep/02)
         ' si se quiere guardar.
         If Not SesionGuardada Then
-            If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
-                      MsgBoxStyle.YesNo,
-                      "Guardar la sesión actual") = MsgBoxResult.Yes Then
+            If Dialogos.MessageBoxShow(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
+                                       "Guardar la sesión actual", MessageBoxButtons.YesNo) = DialogResult.Yes Then
                 GuardarSesion()
             End If
+            'If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
+            '          MsgBoxStyle.YesNo,
+            '          "Guardar la sesión actual") = MsgBoxResult.Yes Then
+            '    GuardarSesion()
+            'End If
         End If
         SesionGuardada = True
 

@@ -39,6 +39,7 @@ Actual en .NET: revisión del 25/ene/2023
 
   <ItemGroup>
     <ProjectReference Include="..\ElizaVB\ElizaVB.vbproj" />
+    <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 
   <ItemGroup>
