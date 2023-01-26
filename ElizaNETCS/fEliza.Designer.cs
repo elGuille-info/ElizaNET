@@ -52,19 +52,11 @@ namespace ElizaNETCS
             // MainMenu1
             // 
             this.MainMenu1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.MainMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuFile});
+            this.MainMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.mnuFile});
             this.MainMenu1.Location = new System.Drawing.Point(0, 0);
             this.MainMenu1.Name = "MainMenu1";
             this.MainMenu1.Size = new System.Drawing.Size(1002, 33);
             this.MainMenu1.TabIndex = 0;
-            this.MainMenu1.Text = "menuStrip1";
-            //// 
-            //// mnuFile
-            //// 
-            //this.mnuFile.Name = "mnuFile";
-            //this.mnuFile.Size = new System.Drawing.Size(139, 29);
-            //this.mnuFile.Text = "Configuración";
             // 
             // mnuFile
             // 
@@ -79,6 +71,7 @@ namespace ElizaNETCS
             this.mnuFileReleer.ShortcutKeys = (System.Windows.Forms.Keys)(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R);
             this.mnuFileReleer.Size = new System.Drawing.Size(368, 34);
             this.mnuFileReleer.Text = "&Releer el fichero actual";
+            this.mnuFileReleer.Click += mnuFileReleer_Click;
             // 
             // mnuFileSep1
             // 
@@ -91,6 +84,7 @@ namespace ElizaNETCS
             this.mnuEstadísticas.ShortcutKeys = (System.Windows.Forms.Keys)(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E);
             this.mnuEstadísticas.Size = new System.Drawing.Size(368, 34);
             this.mnuEstadísticas.Text = "&Estadísticas";
+            this.mnuEstadísticas.Click += mnuEstadísticas_Click;
             // 
             // mnuFileSep2
             // 
@@ -103,6 +97,7 @@ namespace ElizaNETCS
             this.mnuEliza_claves.ShortcutKeys = (System.Windows.Forms.Keys)(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F);
             this.mnuEliza_claves.Size = new System.Drawing.Size(368, 34);
             this.mnuEliza_claves.Text = "&Formulario de consulta...";
+            this.mnuEliza_claves.Click += mnuEliza_claves_Click;
             // 
             // mnuFileSep3
             // 
@@ -115,6 +110,7 @@ namespace ElizaNETCS
             this.mnuAcercaDe.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.mnuAcercaDe.Size = new System.Drawing.Size(368, 34);
             this.mnuAcercaDe.Text = "&Acerca de...";
+            this.mnuAcercaDe.Click += mnuAcercaDe_Click;
             // 
             // mnuFileSep5
             // 
@@ -126,6 +122,7 @@ namespace ElizaNETCS
             this.mnuSalir.Name = "mnuSalir";
             this.mnuSalir.Size = new System.Drawing.Size(368, 34);
             this.mnuSalir.Text = "&Salir";
+            this.mnuSalir.Click += mnuSalir_Click;
             // 
             // LabelInfo
             // 
