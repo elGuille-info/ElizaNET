@@ -1939,17 +1939,21 @@ Cuéntame más sobre lo que te sugieren los nombres.
 
 [cómo {* estás; estamos; lo llevas}]
 3@
-*equal:=hola
+*equal:=hola Eliza
+;*equal:=hola
 
 [que {* tal; pasa}]
 1@
-*equal:=hola
+*equal:=hola Eliza
+;*equal:=hola
 
 ;darle prioridad 0, a ver si comprueba lo que se diga después de hola, 26/ene/23 12.29
 ;1@
-
+;ni usando extras, si escribe hola y hace una pregunta, le responde al saludo.
 [hola]
-0@
+0
+[*extras*]
+[hola Eliza]
 Hola, *NOMBRE*, aquí estamos, soy toda oídos...
 Hola, aquí estoy para echar un ratillo, ¿qué te cuentas?
 Hola, *NOMBRE*, ¿cómo estás? Por favor exponme tu problema.
@@ -1958,6 +1962,8 @@ Hola, *NOMBRE*, soy toda oídos...
 Hola, ¿alguna novedad?
 Hola, aún sigo por aquí, continúa por favor.
 Encantada de volver a verte, ¿qué fue de tu vida?
+[/extras]
+*equal:=hola Eliza
 
 ;
 ; Tema: programas informáticos, estos están algo obsoletos...
