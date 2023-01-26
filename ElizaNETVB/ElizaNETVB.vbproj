@@ -26,6 +26,12 @@ Actual en .NET: revisión del 25/ene/2023
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="My Project\**" />
+    <EmbeddedResource Remove="My Project\**" />
+    <None Remove="My Project\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ApplicationEvents.vb" />
   </ItemGroup>
 

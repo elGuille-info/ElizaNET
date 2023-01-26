@@ -93,7 +93,11 @@ Friend Class fEliza
         sMsgTmp = ""
         ' Preguntar el nombre y el sexo
         Do
-            sNombre = InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "", sNombre)
+            'sNombre = InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", sNombre)
+            If UtilidadesDialog.UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)",
+                                                    "Saber quién eres", sNombre) <> DialogResult.OK Then
+                sNombre = ""
+            End If
             sNombre = sNombre.Trim()
             If sNombre.Length = 0 Then
                 m_Terminado = False
