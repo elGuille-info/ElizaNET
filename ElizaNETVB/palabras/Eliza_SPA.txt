@@ -1008,8 +1008,17 @@ vivir
 ;
 ; Las claves actuales para usar con {*base:=...} son:
 ;nombre, sexo, estos se asignan al indicar el nombre.
-;edad, color pelo, color ojos y mascota, estos se asignan con respuestas del usuario.
+;edad, color pelo, color ojos, mascota, coche, estos se asignan con respuestas del usuario.
 ;
+; para probar con coche en la base de datos, 26/ene/23 12:15
+[tienes {*un;} coche]
+4
+No, aún no me han implementado para conducir un coche, y tú ¿tienes alguno?{*iif(*true*;¿Qué marca es tu coche?{*base:=coche})(Vaya, tampoco tienes coche, mejor, menos polucionas.)}
+No, como te dije antes no tngo coche.
+No insistas con saber si tengo coche, ya te dije que no.
+Creo que es mejor cambiar del tema de si tengo coche.{*iif(*true*;Gracias, cuéntame algo para ver si puedo ayudarte.)(Buenos, si quieres insistir...)}
+*equal:=Eliza cambia de tema
+
 [{* cómo; como} {* estás; estas}]
 4@
 Hoy me encuentro bien, gracias.
@@ -1711,11 +1720,11 @@ Bien, vale, tu eres quién necesita mi ayuda, así que propón el tema de conver
 
 [Eliza cambia de tema]
 3@
-Creo que va siendo hora de hablar de otras cosas... *nombre* ¿de que quieres hablar?
+Creo que va siendo hora de hablar de otras cosas... *nombre* ¿de qué quieres hablar?
 En vista del éxito obtenido, cambiemos el tema de conversación. Te toca.
 A ver, ¿de qué podríamos hablar ahora?{*iif(*false*;Venga, dime de qué quieres hablar...)(*equal:=respuestas-aleatorias)}
 Entonces, *NOMBRE* ¿sobre qué quieres hablar?
-¿Tienes algún problema que me quieras contar? {*iif(*true*;Muy bien, ¿de qué se trata?)(Entonces dime, sobre que podríamos charlar ahora.)}
+¿Tienes algún problema que me quieras contar?{*iif(*true*;Muy bien, ¿de qué se trata?)(Entonces dime, sobre que podríamos charlar ahora.)}
 ;$poner algunas cosillas más ***te puse algunas...
 
 ;***nueva clave: es si el usuario no quiere cambiar de tema cuando Eliza lo propone.
