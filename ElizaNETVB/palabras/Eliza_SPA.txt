@@ -2315,6 +2315,8 @@ Adios *nombre*, espero volver a verte de nuevo en mi consulta.
 Adios, que tengas un buen día.
 Adios, ha sido un placer conversar contigo.
 Adios, o como diría el guille: nos vemos.
+Adios, hasta otra ocasión.
+Adios *NOMBRE*. Mi secretaria te enviará la factura... ¡Es broma!
 
 ;Nota: usar 'idioma' ya que los idiomas que están en *rs* se cambiarán por la palabra 'idioma'
 [idioma]
