@@ -17,4 +17,19 @@ Actual en .NET: revisión del 25/ene/2023
       <Copyright>Guillermo Som (Guille), 1998-2002, 2023</Copyright>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="palabras\ElizaVB_prog.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\ElizaVB_sueños.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\ElizaVB_zodiaco.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="palabras\Eliza_SPA.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -34,12 +34,10 @@ namespace ElizaNETCS
         private const string CrLf = "\r\n";
 
         private string sNombre = ""; // asignarle una cadena vacía, 24-ene-2023 12.24
-        // private cEliza.eSexo m_Sexo;
 
         // Private WithEvents Eliza As cEliza
         private cEliza Eliza;
         private bool m_Terminado;
-        // Private m_Idioma As eIdioma
 
         private bool SesionGuardada;
         private string sEntradaAnterior = "";
@@ -55,11 +53,6 @@ namespace ElizaNETCS
             // Si no se ha guardado la sesión anterior, preguntar si se quiere guardar.
             if (!SesionGuardada)
             {
-                // If MsgBox(sNombre & " ¿Quieres guardar el contenido de la sesión actual?",
-                // MsgBoxStyle.YesNo,
-                // "Guardar la sesión actual") = MsgBoxResult.Yes Then
-                // GuardarSesion()
-                // End If
                 if (Dialogos.MessageBoxShow(sNombre + " ¿Quieres guardar el contenido de la sesión actual?", "Guardar la sesión actual", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     GuardarSesion();
             }
@@ -72,7 +65,6 @@ namespace ElizaNETCS
             // Preguntar el nombre y el sexo
             do
             {
-                // sNombre = InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", sNombre)
                 if (UtilidadesDialog.UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", ref sNombre) != DialogResult.OK)
                     sNombre = "";
                 sNombre = sNombre.Trim();
@@ -88,10 +80,8 @@ namespace ElizaNETCS
                     var withBlock = List2;
                     for (var i = 0; i <= withBlock.Items.Count - 1; i++)
                     {
-                        // If VB6.GetItemString(List2, i) = sNombre Then
                         if (List2.Items[i].ToString() == sNombre)
                         {
-                            // tmpSexo = VB6.GetItemData(List2, i)
                             tmpSexo = i;
                             break;
                         }
@@ -100,8 +90,6 @@ namespace ElizaNETCS
 
                 if (tmpSexo > -1)
                 {
-                    // MsgBox "Hola de nuevo " & sNombre & ", empezamos cuando quieras."
-                    // ImprimirDOS "Hola de nuevo " & sNombre & ", empezamos cuando quieras."
                     tSexo = (cEliza.eSexo)tmpSexo;
                     break;
                 }
@@ -140,7 +128,6 @@ namespace ElizaNETCS
                         }
                     }
                 }
-
                 if (Dialogos.MessageBoxShow("Por favor confirma que estos datos son correctos:" + CrLf + "Nombre: " + sNombre + CrLf + "Sexo: " + sSexo, "", MessageBoxButtons.YesNoCancel) != DialogResult.No)
                     break;
             }
@@ -151,7 +138,6 @@ namespace ElizaNETCS
                 if (sMsgTmp.Length == 0)
                     sMsgTmp = "Me parece que no confías lo suficiente en mí, así que no hay sesión que valga, ¡ea!";
                 Dialogos.MessageBoxShow(sMsgTmp, "", MessageBoxButtons.OK);
-                // MsgBox(sMsgTmp)
                 Close();
                 return;
             }
@@ -162,7 +148,6 @@ namespace ElizaNETCS
                 var withBlock = List2;
                 for (var i = 0; i <= withBlock.Items.Count - 1; i++)
                 {
-                    // If VB6.GetItemString(List2, i) = sNombre Then
                     if (List2.Items[i].ToString() == sNombre)
                     {
                         tmpSexo = i;
@@ -175,7 +160,6 @@ namespace ElizaNETCS
                 // añadirlo
                 {
                     var withBlock = List2;
-                    // .Items.Add(New VB6.ListBoxItem(sNombre, tSexo))
                     withBlock.Items.Add(sNombre);
                 }
                 // guardar los nombres
@@ -199,7 +183,6 @@ namespace ElizaNETCS
                 if (withBlock.Iniciado)
                 {
                     // Si es la primera vez... dar un poco de tiempo.
-                    // i = CShort(Rnd() * 9 + 1)
                     switch (m_rnd.Next(10))
                     {
                         case object _ when m_rnd.Next(10) > 6:
@@ -229,13 +212,11 @@ namespace ElizaNETCS
                 sw.Stop();
                 if (!withBlock.Iniciado)
                 {
-                    // sMsgTmp = "Tiempo en inicializar (y asignar las palabras): " & sw.Elapsed.Seconds & " segundos."
                     sMsgTmp = "Tiempo en inicializar (y asignar las palabras): " + sw.Elapsed.ToString(@"mm\:ss\.fff");
                     ImprimirDOS(sMsgTmp);
                 }
                 else
                 {
-                    // sMsgTmp = "Tiempo en re-inicializar las palabras: " & sw.Elapsed.Seconds & " segundos."
                     sMsgTmp = "Tiempo en re-inicializar las palabras: " + sw.Elapsed.ToString(@"mm\:ss\.fff");
                     ImprimirDOS(sMsgTmp);
                 }
@@ -286,7 +267,6 @@ namespace ElizaNETCS
             if (DateTime.Now.Year > 2023)
                 LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023-" + DateTime.Now.Year.ToString();
             else
-                // LabelInfo.Text = "Eliza para Visual Basic © Guillermo 'guille' Som, 1998-2002, 2023"
                 LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023";
 
             Show();
@@ -305,24 +285,19 @@ namespace ElizaNETCS
         public void mnuEliza_claves_Click(object sender, EventArgs e)
         {
             Hide();
-            Eliza_claves fClaves = new Eliza_claves(Eliza); // With {.Eliza = Eliza}
+            Eliza_claves fClaves = new Eliza_claves(Eliza);
             fClaves.ShowDialog();
-            // With Eliza_claves
-            // .Eliza = Eliza
-            // .ShowDialog()
-            // End With
             Show();
         }
 
         public void mnuEstadísticas_Click(object sender, EventArgs e)
         {
             cRespuestas tRespuestas;
-            //cContenido tContenido;
             string sMsg;
 
             tRespuestas = Eliza.Estadísticas();
             sMsg = "Datos estadísticos de Eliza para Visual Basic:" + CrLf + CrLf;
-            foreach (var tContenido in tRespuestas.Valores) // .Values
+            foreach (var tContenido in tRespuestas.Valores)
                 sMsg = sMsg + tContenido.ID + " = " + tContenido.Contenido + CrLf;
 
             Dialogos.MessageBoxShow(sMsg, "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -335,7 +310,6 @@ namespace ElizaNETCS
             var ensamblado = typeof(fEliza).Assembly;
             var fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location);
 
-            //msg.AppendLine("Eliza para Visual Basic,");
             msg.Append("Eliza para C#,");
             msg.AppendLine($"versión {fvi.ProductVersion} ({fvi.FileVersion})");
             msg.AppendLine(fvi.ProductName);
@@ -385,7 +359,6 @@ namespace ElizaNETCS
         {
             // Toma lo que ha escrito el usuario y lo envía a la clase
             // para procesar lo escrito y obtener la respuesta
-            // Static sEntradaAnterior As String
             string sTmp;
 
             if (string.IsNullOrEmpty(txtEntrada.Text))
@@ -406,14 +379,10 @@ namespace ElizaNETCS
                 // Mostrar el aviso que no te repitas si no es no, sí, etc.
 
                 // Las palabras que se pueden repetir están en Eliza.SiNo
-                // If Eliza.SiNo.Contains(sTmp.ToLower()) Then
-                // noRepitas = False
-                // End If
                 // Simplificando:
                 // si la respuesta tiene menos de 5 caracteres no considerarlo repetición
                 if (sTmp.Length < 5)
                     noRepitas = false;
-                // If sAnt = sTmp Then
                 if (noRepitas)
                     ImprimirDOS("Por favor, no te repitas.");
                 else
@@ -444,7 +413,6 @@ namespace ElizaNETCS
                     // mostrar la respuesta de Eliza
                     sTmp = Eliza.ProcesarEntrada(sTmp);
                     ImprimirDOS(sTmp);
-                    // ---Esto tampoco soluciona el GPF
                     Application.DoEvents();
 
                     if (sTmp.StartsWith("adios", StringComparison.OrdinalIgnoreCase))
@@ -475,11 +443,8 @@ namespace ElizaNETCS
             // preguntar el nombre del fichero
             // o crearlo automáticamente
 
-            // sFic = AppPath() & "sesiones\" & sNombre & "_" & VB6.Format(Now, "ddmmmyyyy_hhmm") & ".txt"
             var sDir = System.IO.Path.Combine(AppPath(), "sesiones");
-            // sFic = AppPath() & "sesiones\" & sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt"
             var sFic = System.IO.Path.Combine(sDir, sNombre + "_" + DateTime.Now.ToString("ddMMMyyyy_HHmm") + ".txt");
-            // sFic = InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic)
             if (UtilidadesDialog.UtilDialog.InputBox(sNombre + " escribe el nombre del fichero:", "Guardar sesión", ref sFic) != DialogResult.OK)
                 sFic = "";
             else
@@ -490,7 +455,6 @@ namespace ElizaNETCS
                 List1.Items.Add($"Sesión guardada el: {DateTime.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}");
 
                 // Crear los directorios indicados en el nombre del archivo  (18/Sep/02)
-                // crearDirectorios(sFic)
                 if (System.IO.Directory.Exists(sDir) == false)
                     System.IO.Directory.CreateDirectory(sDir);
 
@@ -560,7 +524,6 @@ namespace ElizaNETCS
             string tmpNombre;
 
             sFic = AppPath() + "ListaDeNombres.txt";
-            // If Len(Dir(sFic)) > 0 Then
             if (System.IO.File.Exists(sFic))
             {
                 {
@@ -591,7 +554,6 @@ namespace ElizaNETCS
             {
                 for (var i = 0; i <= List2.Items.Count - 1; i++)
                 {
-                    // sw.WriteLine($"{BaseUser(i).ID}={BaseUser(i).Contenido}")
                     sw.WriteLine(List2.Items[i].ToString());
                     sw.WriteLine("0"); // el sexo
                 }
@@ -617,7 +579,6 @@ namespace ElizaNETCS
             txtSalida.ScrollToCaret();
         }
 
-
         // Comprobar si se ha pulsado la tecla "arriba",				(24/ene/23 13.16)
         // si es así poner el texto anterior.
 
@@ -640,7 +601,6 @@ namespace ElizaNETCS
         public static string AppPath()
         {
             // Devuelve el path del ejecutable con la barra final            (15/Sep/02)
-            // Return App.Path & IIf(Right$(App.Path, 1) = "\", "", "\")
             var ensamblado = typeof(fEliza).Assembly;
             var elPath = System.IO.Path.GetDirectoryName(ensamblado.Location);
             return elPath + (elPath.EndsWith(@"\") ? "" : @"\");

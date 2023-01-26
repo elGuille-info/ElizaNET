@@ -31,7 +31,7 @@ namespace ElizaNETCS
         public Eliza_claves(cEliza eli)
         {
             InitializeComponent();
-            Eliza=eli;
+            Eliza = eli;
         }
 
         private cEliza Eliza;
@@ -52,8 +52,6 @@ namespace ElizaNETCS
             }
             var que = clavesTag[j];
             i = AsignarPalabras(_List1_0, _List1_1, que, ref sClaves);
-            // j = (i - Fix(i)) * 1000
-            // i = Fix(i)
             j = System.Convert.ToInt32((i - Math.Floor(i)) * 1000);
             i = Math.Floor(i);
             _Label1_0.Text = i + " claves principales";
@@ -72,33 +70,6 @@ namespace ElizaNETCS
             Timer1.Enabled = true;
         }
 
-        // Private Sub Eliza_claves_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        // ' Adaptar el tamaño y posición de los controles,		(25/ene/23 08.50)
-        // ' están con Anchor a los ancho
-        // If inicializando Then Return
-        // inicializando = True
-
-        // Dim l2l = List2.Left
-        // Dim l2w = List2.Width - 246
-        // 'Dim l3w = List2.Width - List2.Left
-        // Combo1.Width = l2w
-        // _List1_0.Width = l2w
-        // _List1_1.Width = l2w
-        // _Label1_0.Width = l2w
-        // _Label1_1.Width = l2w
-
-        // 'List2.Left = Combo1.Width + 12
-        // 'List2.Width -= (List2.Left - l2l)
-
-        // 'List2.Left = Combo1.Width + 12
-        // 'List2.Width -= (List2.Left - l2l)
-        // '_Label1_2.Left = List2.Left
-        // '_Label1_3.Left = List2.Left
-        // '_Label1_2.Width = List2.Width
-        // '_Label1_3.Width = List2.Width
-        // inicializando = False
-        // End Sub
-
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Timer1.Enabled = false;
@@ -110,7 +81,6 @@ namespace ElizaNETCS
         {
             // Comprobar si hay que inicializar la variable Eliza
             _Label1_2.Text = "";
-            // If Eliza IsNot Nothing Then
             if (Eliza == null)
             {
                 // _Label1_2.Text = "Palabras previamente asignadas"
@@ -122,7 +92,7 @@ namespace ElizaNETCS
                 var sw = Stopwatch.StartNew();
                 Eliza.Inicializar();
                 sw.Stop();
-                _Label1_2.Text = "Tiempo en inicializar (y asignar las palabras): " + sw.Elapsed.ToString(@"mm\:ss\.fff"); // .Seconds & " segundos."
+                _Label1_2.Text = "Tiempo en inicializar (y asignar las palabras): " + sw.Elapsed.ToString(@"mm\:ss\.fff"); 
             }
             {
                 Combo1.Items.Add("Claves");
@@ -178,8 +148,6 @@ namespace ElizaNETCS
             // Asigna las palabras a los listbox del form
             // Devolverá el número de palabras asignadas al ListBox
             cRegla tRegla;
-            //cRespuestas tRespuestas;
-            //cContenido tContenido;
             int i=0, j=0;
             var m_col = Eliza.ColReglas;
 
@@ -202,7 +170,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eExtras:
                     {
                         tRegla = m_col[sClave];
@@ -227,7 +194,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eExtras2:
                     {
                         foreach (var tRegla1 in m_col.Values)
@@ -250,7 +216,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eVerbos:
                     {
                         foreach (var tContenido in Eliza.ColVerbos.Valores) // .Values
@@ -261,7 +226,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eRS:
                     {
                         foreach (var tContenido in Eliza.ColRS.Valores) // .Values
@@ -272,7 +236,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eSimp:
                     {
                         foreach (var tContenido in Eliza.ColSimp.Valores) // .Values
@@ -283,7 +246,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eRec:
                     {
                         foreach (var tContenido in Eliza.ColRec.Valores) // .Values
@@ -294,7 +256,6 @@ namespace ElizaNETCS
 
                         break;
                     }
-
                 case cEliza.eTiposDeClaves.eBU:
                     {
                         foreach (var tContenido in Eliza.ColBaseUser.Valores) // .Values
