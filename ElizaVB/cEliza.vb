@@ -172,7 +172,7 @@ Public Class cEliza
     'End Property
 
     ' Evento para indicar que el usuario se ha despedido
-    Public Event Terminado()
+    'Public Event Terminado()
 
     ' Colección para recordar lo que ha dicho el usuario                (12/Jun/98)
     Private ReadOnly m_colRec As New cRespuestas
@@ -770,15 +770,18 @@ Public Class cEliza
 
         sRespuesta = ComprobarEspeciales(sRespuesta, sEntrada, sPalabra)
 
+        ' Ahora se comprueba en el propio formulario si se debe terminar. (26/ene/23)
+
         ' Si la respuesta es la despedida, disparar un evento indicando que se termina
         ' con adios no llega aquí, a ver si llega con quit que es lo que se indica en [*rs*]
         ' sí, llega con quit                                    (24/ene/23 22.05)
         '
         'If sRespuesta.StartsWith("adios", StringComparison.OrdinalIgnoreCase) Then
         'If sRespuesta.StartsWith("adios", StringComparison.OrdinalIgnoreCase) Then
-        If sRespuesta.StartsWith("quit", StringComparison.OrdinalIgnoreCase) Then
-            RaiseEvent Terminado()
-        End If
+        'If sRespuesta.StartsWith("quit", StringComparison.OrdinalIgnoreCase) Then
+        '    RaiseEvent Terminado()
+        'End If
+
         Return sRespuesta
     End Function
 

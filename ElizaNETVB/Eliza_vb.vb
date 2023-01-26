@@ -253,10 +253,10 @@ Friend Class fEliza
         End If
     End Sub
 
-    Private Sub Eliza_Terminado() Handles Eliza.Terminado
-        'El usuario ha decidido terminar
-        m_Terminado = True
-    End Sub
+    'Private Sub Eliza_Terminado() Handles Eliza.Terminado
+    '    'El usuario ha decidido terminar
+    '    m_Terminado = True
+    'End Sub
 
     Private Sub fEliza_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Interval = 300
@@ -445,13 +445,19 @@ Friend Class fEliza
                 '---Esto tampoco soluciona el GPF
                 Application.DoEvents()
 
-                ' Si se ha producido el evento de Terminar
-                If m_Terminado Then
+                If sTmp.StartsWith("adios", StringComparison.OrdinalIgnoreCase) Then
                     sEntradaAnterior = ""
                     SesionGuardada = False
                     m_Terminado = False
                     cmdNuevo_Click(cmdNuevo, New System.EventArgs())
                 End If
+                '' Si se ha producido el evento de Terminar
+                'If m_Terminado Then
+                '    sEntradaAnterior = ""
+                '    SesionGuardada = False
+                '    m_Terminado = False
+                '    cmdNuevo_Click(cmdNuevo, New System.EventArgs())
+                'End If
             End If
         Else
             ImprimirDOS("¿Te lo estás pensando?")
