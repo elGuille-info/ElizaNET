@@ -20,7 +20,17 @@ Imports ElizaVB
 Friend Class Eliza_claves
 	Inherits System.Windows.Forms.Form
 
-	Public Eliza As cEliza
+	Public Sub New(eli As cEliza)
+		' This call is required by the designer.
+		InitializeComponent()
+
+		' Add any initialization after the InitializeComponent() call.
+
+		Eliza = eli
+	End Sub
+
+	'Public Eliza As cEliza
+	Private Eliza As cEliza
 
 	Private clavesTag As cEliza.eTiposDeClaves() = {cEliza.eTiposDeClaves.eClaves, cEliza.eTiposDeClaves.eVerbos, cEliza.eTiposDeClaves.eRS, cEliza.eTiposDeClaves.eSimp, cEliza.eTiposDeClaves.eRec, cEliza.eTiposDeClaves.eBU}
 
@@ -149,7 +159,7 @@ Friend Class Eliza_claves
 		End If
 		'sw.Stop()
 		'_Label1_2.Text = "Tiempo en asignar las palabras: " & sw.Elapsed.ToString("mm\:ss\.fff") '.Seconds & " segundos."
-		ToolTip1.SetToolTip(_Label1_2, _Label1_2.Text)
+		toolTip1.SetToolTip(_Label1_2, _Label1_2.Text)
 
 	End Sub
 

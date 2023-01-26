@@ -303,7 +303,7 @@ Friend Class fEliza
 
     Public Sub mnuEliza_claves_Click(sender As Object, e As EventArgs) Handles mnuEliza_claves.Click
         Hide()
-        Dim fClaves As New Eliza_claves With {.Eliza = Eliza}
+        Dim fClaves As New Eliza_claves(Eliza) ' With {.Eliza = Eliza}
         fClaves.ShowDialog()
         'With Eliza_claves
         '    .Eliza = Eliza

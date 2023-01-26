@@ -16,7 +16,7 @@
 	End Sub
 	'Required by the Windows Form Designer
 	Private components As System.ComponentModel.IContainer
-	Public ToolTip1 As System.Windows.Forms.ToolTip
+
     'Public WithEvents Label1 As Microsoft.VisualBasic.Compatibility.VB6.LabelArray
     'Public WithEvents List1 As Microsoft.VisualBasic.Compatibility.VB6.ListBoxArray
     'NOTE: The following procedure is required by the Windows Form Designer
@@ -25,7 +25,7 @@
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Eliza_claves))
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.toolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me._List1_1 = New System.Windows.Forms.ListBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Combo1 = New System.Windows.Forms.ComboBox()
@@ -157,6 +157,7 @@
 
     End Sub
 
+    Private toolTip1 As System.Windows.Forms.ToolTip
     Private WithEvents Timer1 As Timer
     Private WithEvents _List1_1 As ListBox
     Private WithEvents List2 As ListBox
