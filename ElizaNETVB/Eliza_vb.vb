@@ -58,7 +58,8 @@ Friend Class fEliza
     Private sNombre As String = "" ' asignarle una cadena vacía, 24-ene-2023 12.24
     Private m_Sexo As cEliza.eSexo
 
-    Private WithEvents Eliza As cEliza
+    'Private WithEvents Eliza As cEliza
+    Private Eliza As cEliza
     Private m_Terminado As Boolean
     'Private m_Idioma As eIdioma
 
@@ -283,7 +284,7 @@ Friend Class fEliza
 
         'If Year(Now) > 2002 Then
         If Date.Now.Year > 2023 Then
-            LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023-" & CStr(Year(Now))
+            LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023-" & Date.Now.Year.ToString()
         Else
             'LabelInfo.Text = "Eliza para Visual Basic © Guillermo 'guille' Som, 1998-2002, 2023"
             LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023"

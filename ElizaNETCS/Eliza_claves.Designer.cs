@@ -1,4 +1,6 @@
-﻿namespace ElizaNETCS
+﻿using System.Windows.Forms;
+
+namespace ElizaNETCS
 {
     partial class Eliza_claves
     {
@@ -29,6 +31,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Eliza_claves));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.Combo1 = new System.Windows.Forms.ComboBox();
             this._List1_1 = new System.Windows.Forms.ListBox();
@@ -38,6 +41,7 @@
             this.List2 = new System.Windows.Forms.ListBox();
             this._Label1_2 = new System.Windows.Forms.Label();
             this._Label1_3 = new System.Windows.Forms.Label();
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // Combo1
@@ -47,6 +51,7 @@
             this.Combo1.Name = "Combo1";
             this.Combo1.Size = new System.Drawing.Size(358, 33);
             this.Combo1.TabIndex = 1;
+            this.Combo1.SelectedIndexChanged += new System.EventHandler(this.Combo1_SelectedIndexChanged);
             // 
             // _List1_1
             // 
@@ -57,6 +62,7 @@
             this._List1_1.Name = "_List1_1";
             this._List1_1.Size = new System.Drawing.Size(358, 179);
             this._List1_1.TabIndex = 7;
+            this._List1_1.SelectedIndexChanged += new System.EventHandler(this.List1_SelectedIndexChanged);
             // 
             // _List1_0
             // 
@@ -69,6 +75,7 @@
             this._List1_0.Size = new System.Drawing.Size(358, 154);
             this._List1_0.Sorted = true;
             this._List1_0.TabIndex = 5;
+            this._List1_0.SelectedIndexChanged += new System.EventHandler(this.List1_SelectedIndexChanged);
             // 
             // _Label1_0
             // 
@@ -129,6 +136,10 @@
             this._Label1_3.Text = "Label1";
             this._Label1_3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // Timer1
+            // 
+            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
             // Eliza_claves
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -142,16 +153,18 @@
             this.Controls.Add(this._Label1_0);
             this.Controls.Add(this._Label1_1);
             this.Controls.Add(this.Combo1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Eliza_claves";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mantenimiento de claves y respuestas de Eliza";
+            this.Load += new System.EventHandler(this.Eliza_claves_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Timer Timer1 = new();
+        //private System.Windows.Forms.Timer Timer1 = new();
         private ToolTip toolTip1;
         private ComboBox Combo1;
         private ListBox _List1_1;
@@ -161,5 +174,6 @@
         private ListBox List2;
         private Label _Label1_2;
         private Label _Label1_3;
+        private System.Windows.Forms.Timer Timer1;
     }
 }

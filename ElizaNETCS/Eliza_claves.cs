@@ -53,11 +53,11 @@ namespace ElizaNETCS
             _Label1_3.Text = "";
         }
 
-        private bool inicializando;
+        //private bool inicializando;
 
         private void Eliza_claves_Load(object sender, EventArgs e)
         {
-            inicializando = true;
+            //inicializando = true;
             _Label1_2.Text = "Cargando el formulario...";
             Timer1.Interval = 300;
             Timer1.Enabled = true;
@@ -94,7 +94,7 @@ namespace ElizaNETCS
         {
             Timer1.Enabled = false;
             Inicializar();
-            inicializando = false;
+            //inicializando = false;
         }
 
         private void Inicializar()
@@ -116,13 +116,12 @@ namespace ElizaNETCS
                 _Label1_2.Text = "Tiempo en inicializar (y asignar las palabras): " + sw.Elapsed.ToString(@"mm\:ss\.fff"); // .Seconds & " segundos."
             }
             {
-                var withBlock = Combo1;
-                withBlock.Items.Add("Claves");
-                withBlock.Items.Add("Verbos");
-                withBlock.Items.Add("RS (reglas simplif.)");
-                withBlock.Items.Add("Simp (simpl. en respuesta)");
-                withBlock.Items.Add("Recordar lo que dijo el user");
-                withBlock.Items.Add("Base datos user");
+                Combo1.Items.Add("Claves");
+                Combo1.Items.Add("Verbos");
+                Combo1.Items.Add("RS (reglas simplif.)");
+                Combo1.Items.Add("Simp (simpl. en respuesta)");
+                Combo1.Items.Add("Recordar lo que dijo el user");
+                Combo1.Items.Add("Base datos user");
             }
 
             Combo1.SelectedIndex = 0;
