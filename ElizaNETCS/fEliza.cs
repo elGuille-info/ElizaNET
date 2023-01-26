@@ -6,7 +6,6 @@
 //
 // ©Guillermo Som (Guille), 1998-2002, 2023
 //-----------------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
