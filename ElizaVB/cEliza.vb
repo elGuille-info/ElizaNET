@@ -2146,6 +2146,10 @@ Public Class cEliza
         'que puedan estar en la respuesta generada          (13/Jun/98)
         Dim i, j As Integer
         Static restoAnt As String
+        ' Por si quiero comprobar si hace las cosas bien.       (26/ene/23 12.26)
+        Dim sRespuestaInicial = sRespuesta
+        Dim sEntradaInicial = sEntrada
+        Dim sPalabraInicial = sPalabra
 
         'comprueba si la respuesta contiene caracteres especiales
         If String.IsNullOrEmpty(sRespuesta) = False Then
@@ -2266,12 +2270,13 @@ Public Class cEliza
         If i > -1 Then
             'El formato será: {*iif(condición; ES-TRUE)(ES-FALSE)}
             sUsarPregunta = sRespuesta.Substring(i)
-            sRespuesta = sRespuesta.Substring(0, i - 1)
+            'sRespuesta = sRespuesta.Substring(0, i - 1)
+            sRespuesta = sRespuesta.Substring(0, i)
             j = sUsarPregunta.IndexOf(";")
             If j > -1 Then
                 i = sUsarPregunta.IndexOf("(", j)
                 If i > -1 Then
-                    sRespuestas(cNegativa) = sUsarPregunta.Substring(i + 1, sUsarPregunta.Length - i - 2)
+                    sRespuestas(cNegativa) = sUsarPregunta.Substring(i + 1, sUsarPregunta.Length - i - 3)
                     sRespuestas(cAfirmativa) = sUsarPregunta.Substring(j + 1, i - j - 2)
                     sUsarPregunta = sUsarPregunta.Substring(6, j - 6)
                 End If
