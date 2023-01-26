@@ -1937,6 +1937,35 @@ Por favor *NOMBRE*, continúa.
 Veo que insistes en los nombres.
 Cuéntame más sobre lo que te sugieren los nombres.
 
+;que sabe Eliza, 26/ene/23 18.10
+[temas]
+4@
+[*extras*]
+[{* de; sobre} {* que; qué} {* tema; temas} {* sabes; conoces; podemos hablar}]
+*equal:=temas Eliza
+*equal:=que sabe Eliza
+;[{* que; qué} {* tema; temas} {* sabes; conoces}]
+;*equal:=que sabe Eliza
+[/extras]
+*equal:=temas Eliza
+*equal:=que sabe Eliza
+
+[que sabe Eliza]
+4@
+Algo sé, no mucho, pero puede que lo suficiente para ayudarte.
+Podemos hablar de tus sueños, de los horóscopos, y de temas generales.
+Compruébalo, hazme preguntas y podrás averiguar lo que se ;-)
+Solo sé que no sé nada... no es mío, lo dijo Sócrates.
+A ver que piense sobre lo que sé... ¡Nada! :-D
+
+[temas Eliza]
+4
+Podemos hablar de los sueños, los horóscopos, cosas que te intrigan, del tiempo o de temas generales.
+Mi especialidad son los sueños, estoy muy versada en ello gracias a Sve.
+De los horóscopos también estoy informada, no muy a fondo, pero algo sé.
+Mejor dejemos los temas que onozco y simplemente pregúntame algo.
+*equal:=que sabe Eliza
+
 [cómo {* estás; estamos; lo llevas}]
 3@
 *equal:=hola Eliza
