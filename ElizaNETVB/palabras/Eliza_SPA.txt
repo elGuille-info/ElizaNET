@@ -1930,7 +1930,9 @@ Cuéntame más sobre lo que te sugieren los nombres.
 *equal:=hola
 
 [hola]
-1@
+; darle prioridad 0, a ver si comprueba lo que se diga después de hola, 26/ene/23 12.29
+;1@
+0@
 Hola, *NOMBRE*, aquí estamos, soy toda oídos...
 Hola, aquí estoy para echar un ratillo, ¿qué te cuentas?
 Hola, *NOMBRE*, ¿cómo estás? Por favor exponme tu problema.
@@ -1954,7 +1956,7 @@ En las hojas de cálculos, el Lotus 1-2-3 fue el líder durante mucho tiempo, pe
 
 [organize]
 2
-El Organize es una 'agenda' muy completa.
+El Organize era una 'agenda' muy completa, aunque ya no se usa.
 
 [excel]
 2
