@@ -926,13 +926,14 @@ Public Class cEliza
         Dim otrosEliza As String()
 
         ' El directorio de datos
-        sDir = System.IO.Path.Combine(AppPath(), "palabras")
+        ' Ahora está en el directorio de estq DLL.              (26/ene/23 22.20)
+        'sDir = System.IO.Path.Combine(AppPath(), "palabras")
+        sDir = System.IO.Path.Combine(DLLPath(), "palabras")
 
         ' El primer fichero en leer será Eliza_SPA.txt
         ' El resto se leerán a continuación, permitiendo de esta forma
         ' sustituir algunas reglas y palabras existentes
         sFic = System.IO.Path.Combine(sDir, "Eliza_SPA.txt")
-        'If Len(Dir$(sFic)) > 0 Then
         If System.IO.File.Exists(sFic) Then
             LeerReglas(sFic)
         End If
@@ -2506,6 +2507,17 @@ Public Class cEliza
 
     Private Function AppPath() As String
         Return m_AppPath
+    End Function
+
+    ''' <summary>
+    ''' El directorio de esta DLL.
+    ''' </summary>
+    ''' <returns></returns>
+    Private Shared Function DLLPath() As String
+        'Return m_AppPath
+        Dim ensamblado = GetType(cEliza).Assembly
+        Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
+        Return elPath & If(elPath.EndsWith("\"), "", "\")
     End Function
 
     Public Shared Function VersionDLL() As String

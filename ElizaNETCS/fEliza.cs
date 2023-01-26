@@ -292,14 +292,15 @@ namespace ElizaNETCS
         public void mnuEstadísticas_Click(object sender, EventArgs e)
         {
             cRespuestas tRespuestas;
-            string sMsg;
+            StringBuilder sMsg = new();
 
             tRespuestas = Eliza.Estadísticas();
-            sMsg = "Datos estadísticos de Eliza para Visual Basic:" + CrLf + CrLf;
+            sMsg.AppendLine("Datos estadísticos de Eliza para C# (usando la DLL en Visual Basic):");
+            sMsg.AppendLine();
             foreach (var tContenido in tRespuestas.Valores)
-                sMsg = sMsg + tContenido.ID + " = " + tContenido.Contenido + CrLf;
+                sMsg.AppendLine(tContenido.ID + " = " + tContenido.Contenido);
 
-            Dialogos.MessageBoxShow(sMsg, "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Dialogos.MessageBoxShow(sMsg.ToString(), "Estadísticas de Eliza para C#", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public void mnuAcercaDe_Click(object sender, EventArgs e)

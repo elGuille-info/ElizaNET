@@ -279,15 +279,16 @@ Friend Class fEliza
     Public Sub mnuEstadísticas_Click(sender As Object, e As EventArgs) Handles mnuEstadísticas.Click
         Dim tRespuestas As cRespuestas
         Dim tContenido As cContenido
-        Dim sMsg As String
+        Dim sMsg As New System.Text.StringBuilder()
 
         tRespuestas = Eliza.Estadísticas
-        sMsg = "Datos estadísticos de Eliza para Visual Basic:" & vbCrLf & vbCrLf
+        sMsg.AppendLine("Datos estadísticos de Eliza para Visual Basic:")
+        sMsg.AppendLine()
         For Each tContenido In tRespuestas.Valores '.Values
-            sMsg = sMsg & tContenido.ID & " = " & tContenido.Contenido & vbCrLf
+            sMsg.AppendLine(tContenido.ID & " = " & tContenido.Contenido)
         Next tContenido
 
-        Dialogos.MessageBoxShow(sMsg, "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dialogos.MessageBoxShow(sMsg.ToString(), "Estadísticas de Eliza", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     Public Sub mnuAcercaDe_Click(sender As Object, e As EventArgs) Handles mnuAcercaDe.Click
