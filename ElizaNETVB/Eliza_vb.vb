@@ -51,6 +51,8 @@ Option Compare Text
 
 Imports ElizaVB
 
+Imports UtilidadesDialog
+
 Friend Class fEliza
     Inherits System.Windows.Forms.Form
 

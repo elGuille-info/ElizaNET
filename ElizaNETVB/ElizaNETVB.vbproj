@@ -36,6 +36,7 @@ Actual en .NET: revisión del 25/ene/2023
 
   <ItemGroup>
     <Compile Remove="ApplicationEvents.vb" />
+    <Compile Remove="Dialogos.vb" />
   </ItemGroup>
 
   <ItemGroup>

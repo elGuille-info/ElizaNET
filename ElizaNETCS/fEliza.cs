@@ -19,6 +19,8 @@ using System.Windows.Forms;
 
 using ElizaVB;
 
+using UtilidadesDialog;
+
 namespace ElizaNETCS
 {
     public partial class fEliza : Form
@@ -64,7 +66,7 @@ namespace ElizaNETCS
             // Preguntar el nombre y el sexo
             do
             {
-                if (UtilidadesDialog.UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", ref sNombre) != DialogResult.OK)
+                if (UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", ref sNombre) != DialogResult.OK)
                     sNombre = "";
                 sNombre = sNombre.Trim();
                 if (sNombre.Length == 0)
