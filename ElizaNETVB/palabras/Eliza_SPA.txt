@@ -1014,7 +1014,7 @@ vivir
 [tienes {*un;} coche]
 4
 No, aún no me han implementado para conducir un coche, y tú ¿tienes alguno?{*iif(*true*;¿Qué marca es tu coche?{*base:=coche})(Vaya, tampoco tienes coche, mejor, menos polucionas.)}
-No, como te dije antes no tngo coche.
+No, como te dije antes no tengo coche.
 No insistas con saber si tengo coche, ya te dije que no.
 Creo que es mejor cambiar del tema de si tengo coche.{*iif(*true*;Gracias, cuéntame algo para ver si puedo ayudarte.)(Buenos, si quieres insistir...)}
 *equal:=Eliza cambia de tema
@@ -1047,17 +1047,30 @@ Siento que no estés bien, espero que mejore a lo largo del día.
 Tómate unos minutos, respira profundo y seguro que mejora tu día.
 Un poco de relación podría mejorar tu día.
 
-[windows]
-2@
 ; Nota: 15/Sep/2002
 ; habría que cambiar el sistema operativo, aunque debería quedar constancia que se programó inicialmente en Win95 y VB5
-Estoy programada para trabajar en Windows 95 y/o superior, es decir en NT, Win98 y en algunos emuladores (creo)
-Me siento a gusto en cualquier compatible con Win95, en un Mac aún no he estado.
-El único mundo que conozco es el de un PC compatible, el Windows 95 y el Visual Basic.
+;2@
+[windows]
+0
 La verdad es que te puedo contar poco de este tema, yo sólo sé que inicialmente me programaron en Visual Basic y Win95.
+Inicialmente me programaron para trabajar en Windows 95 y/o superior, pero ahora en cualquier Windows de 32 o 64 bits.
+Me siento a gusto en cualquier compatible con Windows, en un Mac aún no he estado.
+El único mundo que conozco es el de un PC compatible.
+*equal:=sistema operativo
 *equal:=lenguaje programación
 
-[visual {* basic; c; c++; dbase; j++; studio}]
+[sistema operativo]
+0@
+Los sistemas operativos (SO o OS) es lo que hace que un ordenador funcione o facilite interactuar con los usuarios.
+El sistema operativo depende del tipo de ordenador o dispositivo que estés usando.
+El que mejor conozco (por así decirlo) es Windows.
+Lo poco que sé de los sistemas operativos es que dependen de 'la máquina' donde se usen, por ejemplo, ordenadores, móviles, tabletas o relojes...
+Por ahora he visitado varias versiones de Windows, desde Win95 hasta Windows 11.
+Sé que el guille está pensando hacer una versión mía para usar en dispositivos móviles: Android y para usar en los iPhone, iPad, etcétera.
+*equal:=windows
+
+;[visual {* basic; c; c++; dbase; j++; studio}]
+[visual {* basic; c; c++; c#; j++; studio}]
 2@
 *equal:=lenguaje programación
 
@@ -1067,7 +1080,8 @@ Estoy programada en Visual Basic. Aunque la idea la tomó el guille de un progra
 Lo importante no es el lenguaje de programación, sino saber programar.
 Si quieres algunos trucos, listados y consejos en visual basic, pasate por las páginas de el guille.
 No sé mucho de lenguajes de programación, pero podría informarme y comentartelo en otra ocasión.
-Aunque no le gusta recibir consultas, puedes escribirle al guille a: guille@costasol.net
+;Aunque no le gusta recibir consultas, puedes escribirle al guille a: guille@costasol.net
+Aunque no le gusta recibir consultas, puedes echarle un vistazo al blog https://www.elguillemola.com
 
 ;
 ;===== Temas relacionados con la personalidad de Eliza
@@ -1407,8 +1421,9 @@ No tienes algún otro tema más interesante que la política?
 ¡Ya basta! ¡No quiero oír una palabra más de la política!
 ¡Si vuelves a mencionar la política en mi presencia, te juro que soy capaz de arruinar tu sistema!
 
+;2@
 [gracias]
-2@
+0@
 De nada.
 Ya sabes que estoy aquí para ayudarte.
 No hay de qué.
@@ -1540,7 +1555,8 @@ Lo estoy intentando.
 Parece que hay algo que te hace creer que no te entiendo.
 Si no te entiendo, puede ser que no te expliques lo suficiente.
 Sé más explicit*oa* y así me resultará más fácil comprenderte.
-*equal:=no comprendo
+*equal:=no comprendes
+;*equal:=no comprendo
 
 [no me {* entiendes; comprendes}]
 4
@@ -1747,11 +1763,12 @@ No deberías estar pensando continuamente, date un respiro y relaja la mente.
 Sí, te comprendo, *RESTO* da mucho para pensar
 Me parece que te gusta pensar en *RESTO* ¿cierto?
 
-[para]
-0
-;Esta clave sale un poco 'chueca'.
-;¿Seguro que es para *RESTO*?
-¿Eso es lo que crees?
+;la quito, 26/ene/23 12.43
+;[para]
+;0
+;;Esta clave sale un poco 'chueca'.
+;;¿Seguro que es para *RESTO*?
+;¿Eso es lo que crees?
 
 [tu padre]
 2
@@ -1898,7 +1915,6 @@ Pues entonces deberías acostarte, así te relajarás.
 Si tienes sueño, ¿por qué no te acuestas?
 Entonces, ya tardas en ir a dormir.
 
-
 [quizás]
 0
 *NOMBRE*, no se te ve muy segur*oa*.
@@ -1929,9 +1945,10 @@ Cuéntame más sobre lo que te sugieren los nombres.
 1@
 *equal:=hola
 
-[hola]
-; darle prioridad 0, a ver si comprueba lo que se diga después de hola, 26/ene/23 12.29
+;darle prioridad 0, a ver si comprueba lo que se diga después de hola, 26/ene/23 12.29
 ;1@
+
+[hola]
 0@
 Hola, *NOMBRE*, aquí estamos, soy toda oídos...
 Hola, aquí estoy para echar un ratillo, ¿qué te cuentas?
@@ -1943,7 +1960,7 @@ Hola, aún sigo por aquí, continúa por favor.
 Encantada de volver a verte, ¿qué fue de tu vida?
 
 ;
-; Tema: programas informáticos
+; Tema: programas informáticos, estos están algo obsoletos...
 ;
 [1-2-3]
 1
