@@ -474,9 +474,13 @@ Friend Class fEliza
         Dim sDir = System.IO.Path.Combine(AppPath(), "sesiones")
         'sFic = AppPath() & "sesiones\" & sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt"
         Dim sFic = System.IO.Path.Combine(sDir, sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt")
-        sFic = InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic)
-        sFic = sFic.Trim()
-        If Len(sFic) > 0 Then
+        'sFic = InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic)
+        If UtilidadesDialog.UtilDialog.InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic) <> DialogResult.OK Then
+            sFic = ""
+        Else
+            sFic = sFic.Trim()
+        End If
+        If String.IsNullOrEmpty(sFic) = False Then
             List1.Items.Add("-----------------------------------------------")
             List1.Items.Add($"Sesión guardada el: {Date.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}")
 
