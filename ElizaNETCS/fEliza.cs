@@ -1,4 +1,13 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------------
+// Eliza para C#                                                    (26/ene/23)
+//
+// Convertido a C# a partir de la versión de Visual Basic .NET
+// A su vez basada en Eliza para Visual Basic de 1998, 2002
+//
+// ©Guillermo Som (Guille), 1998-2002, 2023
+//-----------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -275,10 +284,10 @@ namespace ElizaNETCS
             List2.Items.Clear();
 
             if (DateTime.Now.Year > 2023)
-                LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023-" + DateTime.Now.Year.ToString();
+                LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023-" + DateTime.Now.Year.ToString();
             else
                 // LabelInfo.Text = "Eliza para Visual Basic © Guillermo 'guille' Som, 1998-2002, 2023"
-                LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023";
+                LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023";
 
             Show();
 
@@ -326,7 +335,8 @@ namespace ElizaNETCS
             var ensamblado = typeof(fEliza).Assembly;
             var fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location);
 
-            msg.AppendLine("Eliza para Visual Basic,");
+            //msg.AppendLine("Eliza para Visual Basic,");
+            msg.Append("Eliza para C#,");
             msg.AppendLine($"versión {fvi.ProductVersion} ({fvi.FileVersion})");
             msg.AppendLine(fvi.ProductName);
             msg.AppendLine($"{fvi.LegalCopyright}");
@@ -335,6 +345,7 @@ namespace ElizaNETCS
             msg.AppendLine("Versión para VB5    iniciada el Sábado, 30/May/1998 17:30");
             msg.AppendLine("Versión para VB6    iniciada el Miércoles, 18/Sep/2002 04:30");
             msg.AppendLine("Versión para VB.NET iniciada el Domingo, 22/Ene/2023 10:08");
+            msg.AppendLine("Versión para C#     iniciada el Jueves, 26/Ene/2023 19:20");
             msg.AppendLine();
             msg.AppendLine("La idea del formato de las reglas y simplificación de entradas, están basadas en 'ELIZA in Prolog' de Viren Patel.");
             msg.AppendLine();
@@ -343,7 +354,7 @@ namespace ElizaNETCS
             msg.Append("un toque más femenino del que yo jamás le hubiese podido dar... ");
             msg.AppendLine("y, sobre todo, por motivarme a hacer este programa, sin su ayuda no hubiera sido posible...");
 
-            Dialogos.MessageBoxShow(msg.ToString(), "Acerca de Eliza para VB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Dialogos.MessageBoxShow(msg.ToString(), "Acerca de Eliza para C#", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public void mnuFileReleer_Click(object sender, EventArgs e)

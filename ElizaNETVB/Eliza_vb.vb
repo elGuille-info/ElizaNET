@@ -56,7 +56,7 @@ Friend Class fEliza
     Inherits System.Windows.Forms.Form
 
     Private sNombre As String = "" ' asignarle una cadena vacía, 24-ene-2023 12.24
-    Private m_Sexo As cEliza.eSexo
+    'Private m_Sexo As cEliza.eSexo
 
     'Private WithEvents Eliza As cEliza
     Private Eliza As cEliza
@@ -334,7 +334,7 @@ Friend Class fEliza
         Dim ensamblado = GetType(fEliza).Assembly
         Dim fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location)
 
-        msg.AppendLine("Eliza para Visual Basic,")
+        msg.Append("Eliza para Visual Basic,")
         msg.AppendLine($"versión {fvi.ProductVersion} ({fvi.FileVersion})")
         msg.AppendLine(fvi.ProductName)
         msg.AppendLine($"{fvi.LegalCopyright}")
@@ -343,6 +343,7 @@ Friend Class fEliza
         msg.AppendLine("Versión para VB5    iniciada el Sábado, 30/May/1998 17:30")
         msg.AppendLine("Versión para VB6    iniciada el Miércoles, 18/Sep/2002 04:30")
         msg.AppendLine("Versión para VB.NET iniciada el Domingo, 22/Ene/2023 10:08")
+        msg.AppendLine("Versión para C#     iniciada el Jueves, 26/Ene/2023 19:20")
         msg.AppendLine()
         msg.AppendLine("La idea del formato de las reglas y simplificación de entradas, están basadas en 'ELIZA in Prolog' de Viren Patel.")
         msg.AppendLine()

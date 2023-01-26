@@ -1,4 +1,13 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------------
+// Eliza claves para C#                                             (26/ene/23)
+//
+// Convertido a C# a partir de la versión de Visual Basic .NET
+// A su vez basada en Eliza para Visual Basic de 1998, 2002
+//
+// ©Guillermo Som (Guille), 1998-2002, 2023
+//-----------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
