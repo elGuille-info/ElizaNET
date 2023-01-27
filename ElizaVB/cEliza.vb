@@ -131,18 +131,15 @@ Public Class cEliza
     Private m_Releer As Boolean
 
     ' Para la revisión 00.06.00
-    ' Estos arrays tendrán cada palabra de la frase original
-    Private FraseOrig() As String
-    ' y la convertida
-    'Private FraseConv() As String
+    ' Este array tendrá cada palabra de la frase original
+    'Private FraseOrig As String()
+    Private ReadOnly FraseOrig As New List(Of String)
     ' el número de la palabra actual
     Private PalabraOrig As Integer
-    'Private PalabraConv As Integer
     ' aunque el número de palabras se puede conseguir con UBound(array)
     ' es conveniente mantener una variable, entre otras cosas para saber
     ' cuál es la que se añade
-    Private PalabrasOrig As Integer
-    'Private PalabrasConv As Integer
+    'Private PalabrasOrig As Integer
 
     Public Nombre As String
 
@@ -452,7 +449,6 @@ Public Class cEliza
         Dim sSeparador1 As String = ""
         Dim nuevaEntrada As New System.Text.StringBuilder()
 
-        'nuevaEntrada = ""
         Do
             ' Buscar dos palabras seguidas
             ' En sPalabra estará la primera palabra antes de un separador,
@@ -467,7 +463,6 @@ Public Class cEliza
                 ' Si existen las dos palabras juntas
                 If m_colRS.ExisteItem(sPalabra & sSeparador & sPalabra1) Then
                     sPalabra = m_colRS.Item(sPalabra & sSeparador & sPalabra1).Contenido
-                    'nuevaEntrada = nuevaEntrada & sPalabra & sSeparador1
                     nuevaEntrada.Append(sPalabra)
                     nuevaEntrada.Append(sSeparador1)
                 Else
@@ -475,7 +470,6 @@ Public Class cEliza
                     If m_colRS.ExisteItem(sPalabra) Then
                         sPalabra = m_colRS.Item(sPalabra).Contenido
                     End If
-                    'nuevaEntrada = nuevaEntrada & sPalabra & sSeparador
                     nuevaEntrada.Append(sPalabra)
                     nuevaEntrada.Append(sSeparador)
                     ' dejar la entrada como estaba
@@ -485,14 +479,6 @@ Public Class cEliza
                     sPalabra1 = sPalabra1Ant
                     ' Creo que no hay que invertir las palabras (24/ene/23 15.57)
                     sEntrada = sPalabra1 & sSeparador1 & sEntrada
-                    ' Estaba usando nuevaEntrada y debía ser sEntrada
-                    'Dim sb = nuevaEntrada.ToString()
-                    'nuevaEntrada.Clear()
-                    'nuevaEntrada.Append(sPalabra1)
-                    'nuevaEntrada.Append(sSeparador1)
-                    'nuevaEntrada.Append(sb)
-                    'nuevaEntrada.Append(sPalabra1)
-                    'nuevaEntrada.Append(sSeparador1)
                 End If
             Else
                 ' Sólo debería cumplirse esta cláusula
@@ -500,7 +486,6 @@ Public Class cEliza
                     If m_colRS.ExisteItem(sPalabra) Then
                         sPalabra = m_colRS.Item(sPalabra).Contenido
                     End If
-                    'nuevaEntrada = nuevaEntrada & sPalabra & sSeparador
                     nuevaEntrada.Append(sPalabra)
                     nuevaEntrada.Append(sSeparador)
                 End If
@@ -508,7 +493,6 @@ Public Class cEliza
                     If m_colRS.ExisteItem(sPalabra1) Then
                         sPalabra1 = m_colRS.Item(sPalabra1).Contenido
                     End If
-                    'nuevaEntrada = nuevaEntrada & sPalabra1 & sSeparador1
                     nuevaEntrada.Append(sPalabra1)
                     nuevaEntrada.Append(sSeparador1)
                 End If
@@ -567,7 +551,6 @@ Public Class cEliza
                     sPalabra1 = sPalabra1Ant
                     ' Creo que no hay que invertir las palabras (24/ene/23 15.57)
                     sEntrada = sPalabra1 & sSeparador1 & sEntrada
-                    'sEntrada = sEntrada & sSeparador1 & sPalabra1
                 End If
             Else
                 ' Sólo debería cumplirse esta cláusula
@@ -824,7 +807,8 @@ Public Class cEliza
         Else
             i = 0 ' 1
             'Do While i <= sValor.Length
-            Do While i < sValor.Length
+            'Do While i < sValor.Length
+            Do While i + iLen < sValor.Length
                 If sValor.Substring(i, iLen) = sCaracter Then
                     If bPoner Then
                         sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + iLen)}"
@@ -1386,8 +1370,10 @@ Public Class cEliza
         ' es 'el' o 'un' en ese caso, no se conjugará
         ' el juego X -> el juegas X, sino el juego -> el juego
         hallado = False
-        If PalabraOrig > 1 AndAlso PalabraOrig < PalabrasOrig Then
-            If " el un al del ".IndexOf(FraseOrig(PalabraOrig - 1)) > -1 Then
+        'If PalabraOrig > 1 AndAlso PalabraOrig < PalabrasOrig Then
+        If PalabraOrig > 0 AndAlso PalabraOrig < FraseOrig.Count Then
+            'If " el un al del ".IndexOf(FraseOrig(PalabraOrig - 1)) > -1 Then
+            If " el un al del ".IndexOf(FraseOrig(PalabraOrig)) > -1 Then
                 hallado = True
             End If
         End If
@@ -1457,7 +1443,6 @@ Public Class cEliza
                 For Each tContenido In m_Verbos.Valores '.Values
                     hallado = False
                     With tContenido
-                        'If InStr(" " & sPalabra, " " & .ID) > 0 Then
                         If (" " & sPalabra).IndexOf(" " & .ID) > -1 Then
                             '------------------------------------------------------
                             ' Terminaciones en 'ar'
@@ -1660,7 +1645,6 @@ Public Class cEliza
         End If
 
         'devolver la nueva palabra o la original
-        'ComprobarVerbos = sPalabra
         Return sPalabra
     End Function
 
@@ -1723,19 +1707,6 @@ Public Class cEliza
 
     Private Shared Function QuitarEspaciosExtras(sCadena As String) As String
         ' Quita los espacios extras dentro de la cadena                 ( 5/Jun/98)
-        'Dim i As Integer
-
-        'sCadena = sCadena.Trim()
-        'Do
-        '    i = sCadena.IndexOf("  ")
-        '    If i > -1 Then
-        '        'sCadena = Left$(sCadena, i - 1) & " " & LTrim$(Mid$(sCadena, i + 2))
-        '        'sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).Trimstart()
-        '        sCadena = sCadena.Substring(0, i - 1) & " " & sCadena.Substring(i + 2).TrimStart()
-        '    End If
-        'Loop While i > -1
-        'Return sCadena
-
         Return sCadena.Replace("  ", " ")
     End Function
 
@@ -1746,31 +1717,33 @@ Public Class cEliza
 
         Dim sPalabra As String
         Dim sSeparador As String = ""
-        Dim RecordarFrase As Integer
+        Dim RecordarFrase As Integer = -1
         Dim sEntradaOrig As String
 
         ' Iniciar los valores del número de palabras y la actual
-        PalabrasOrig = 0
+        'PalabrasOrig = 0
         PalabraOrig = 0
         sEntradaOrig = sEntrada
 
         Do While sEntrada.Length > 0
             sPalabra = SiguientePalabra(sEntrada, sSeparador)
             If sPalabra.Length > 0 Then
-                PalabrasOrig += 1
-                ReDim Preserve FraseOrig(PalabrasOrig)
-                FraseOrig(PalabrasOrig) = sPalabra
+                'PalabrasOrig += 1
+                ' Se usa desde 1 hasta PalabrasOrig - 1
+                'ReDim Preserve FraseOrig(PalabrasOrig)
+                'FraseOrig(PalabrasOrig) = sPalabra
+                FraseOrig.Add(sPalabra)
                 If sPalabra = "mi" OrElse sPalabra = "mis" Then
-                    If RecordarFrase = 0 Then
-                        RecordarFrase = PalabrasOrig
+                    If RecordarFrase = -1 Then
+                        RecordarFrase = FraseOrig.Count - 1 ' PalabrasOrig
                     End If
                 End If
             End If
         Loop
         ' si ha mencionado mi o mis
-        If RecordarFrase > 0 Then
+        If RecordarFrase > -1 Then
             ' sólo si no es la última palabra
-            If RecordarFrase < PalabrasOrig Then
+            If RecordarFrase < FraseOrig.Count Then 'PalabrasOrig Then
                 ' Añadirla a la colección o sustituirla por la nueva entrada
                 ' Sólo se usará la última letra en caso de que sea S
                 ' Para después usar tu(s) xxx
@@ -1788,8 +1761,8 @@ Public Class cEliza
                 ' Por tanto creo que se debería comprobar si es una
                 ' de las palabras clave para que así se pueda dirigir
                 ' mejor el diálogo.
-                'FraseOrig(RecordarFrase + 1)
-                m_colRec.Item(sSeparador & FraseOrig(RecordarFrase + 1)).Contenido = sEntradaOrig
+                'm_colRec.Item(sSeparador & FraseOrig(RecordarFrase + 1)).Contenido = sEntradaOrig
+                m_colRec.Item(sSeparador & FraseOrig(RecordarFrase)).Contenido = sEntradaOrig
             End If
         End If
     End Sub
@@ -1854,7 +1827,7 @@ Public Class cEliza
         ' devolver la siguiente respuesta
         Dim tRegla As cRegla
         Dim sRespuesta As String = ""
-        Dim i As Integer
+        'Dim i As Integer
 
         ' Comprobar primero si está en las reglas de simplificación
 
@@ -1887,12 +1860,10 @@ Public Class cEliza
         ' Si el contenido de sRespuesta es:*equal:=xxx
         ' quiere decir que se debe buscar en la clave "xxx"
 
-        i = sRespuesta.IndexOf("*equal:=", StringComparison.OrdinalIgnoreCase)
         ' Como ahora se pueden tener respuestas que incluyan *equal:=
         ' se debe buscar respuesta sólo si esta "clave" está al
         ' principio de la respuesta                                     (13/Jun/98)
-        'Do While i = 0 'i = 1
-        Do While sRespuesta.StartsWith("*equal:=", StringComparison.OrdinalIgnoreCase) 'i = 0 'i = 1
+        Do While sRespuesta.StartsWith("*equal:=", StringComparison.OrdinalIgnoreCase)
             sPalabra = sRespuesta.Substring(8).TrimStart()
             If ColReglas.ContainsKey(sPalabra) Then
                 tRegla = ColReglas(sPalabra)
@@ -1908,7 +1879,6 @@ Public Class cEliza
                 Next
 
             End If
-            'i = sRespuesta.IndexOf("*equal:=", StringComparison.OrdinalIgnoreCase)
             ' repetir mientras en sRespuesta empiece por *equal:=
         Loop
         Return sRespuesta
@@ -1931,7 +1901,6 @@ Public Class cEliza
         Else
             Return sRespuesta
         End If
-        'tRegla = m_col(sPalabra)
         ' sólo si son dos o más cosas que no ha entendido
         If tRegla.Respuestas.UltimoItem > 2 Then
             If m_colRec.Count > 0 Then
@@ -1940,7 +1909,6 @@ Public Class cEliza
                 j = 0
                 Do
                     j += 1
-                    'i = Int(Rnd() * m_colRec.Count) + 1
                     i = m_rnd.Next(m_colRec.Count) '+ 1
                     ' Sólo usar este tema si se ha mencionado antes
                     If m_colRec.UltimoItem <> i Then
@@ -1962,7 +1930,6 @@ Public Class cEliza
                 j = 0
                 ' le damos más "peso" al uso de este tipo de respuestas
                 ' de Eliza para "aparentar" más inteligencia
-                'If Int(Rnd() * 10) > 3 Then
                 If m_rnd.Next(10) > 3 Then
                     j = UsarEstaRespuesta
                 End If
@@ -2044,17 +2011,11 @@ Public Class cEliza
                 sRespuesta = sRespuesta.Replace("*LA_HORA*", Date.Now.ToString("H"), StringComparison.OrdinalIgnoreCase)
             End If
 
-            'i = sRespuesta.IndexOf("*HORA*", StringComparison.OrdinalIgnoreCase)
-            'If i > -1 Then
             If sRespuesta.Contains("*HORA*", StringComparison.OrdinalIgnoreCase) Then
-                'sRespuesta = Left$(sRespuesta, i - 1) & Format$(Now, "hh:mm") & Mid$(sRespuesta, i + Len("*HORA*"))
                 sRespuesta = sRespuesta.Replace("*HORA*", Date.Now.ToString("HH:mm"), StringComparison.OrdinalIgnoreCase)
             End If
             'Comprobar si hay que poner el día de hoy
-            'i = sRespuesta.IndexOf("*HOY*", StringComparison.OrdinalIgnoreCase)
-            'If i > -1 Then
             If sRespuesta.Contains("*HOY*", StringComparison.OrdinalIgnoreCase) Then
-                'sRespuesta = Left$(sRespuesta, i - 1) & Format$(Now, "dddd, dd") & " de " & StrConv(Format$(Now, "mmmm"), vbProperCase) & Mid$(sRespuesta, i + Len("*HOY*"))
                 sRespuesta = sRespuesta.Replace("*HOY*", Date.Now.ToString("dddd, dd MMMM"), StringComparison.OrdinalIgnoreCase)
             End If
 
@@ -2078,7 +2039,6 @@ Public Class cEliza
             sRespuesta = sEntrada
         End If
         'Cambiar los *ea* por el correspondiente según el sexo
-        'If sRespuesta.IndexOf("*ea*", StringComparison.OrdinalIgnoreCase) > -1 Then
         If sRespuesta.Contains("*ea*", StringComparison.OrdinalIgnoreCase) Then
             sPalabra = "e"
             If m_Sexo = eSexo.Femenino Then
@@ -2088,7 +2048,6 @@ Public Class cEliza
             sRespuesta = QuitarCaracterEx(sRespuesta, "*ea*", sPalabra)
         End If
         'Cambiar los *oa* por el correspondiente según el sexo
-        'If sRespuesta.IndexOf("*oa*", StringComparison.OrdinalIgnoreCase) > -1 Then
         If sRespuesta.Contains("*oa*", StringComparison.OrdinalIgnoreCase) Then
             sPalabra = "o"
             If m_Sexo = eSexo.Femenino Then
@@ -2112,25 +2071,16 @@ Public Class cEliza
             If sRespuesta.EndsWith(comoTermina & comoTermina) Then
                 sRespuesta = sRespuesta.Substring(0, i - 1)
             End If
-            'If sRespuesta.Substring(i - 1, 1) = RightN(sRespuesta, 1) Then
-            '    sRespuesta = sRespuesta.Substring(0, i - 1)
-            'End If
         End If
 
         ' si se indica *mi_edad*, calcular la edad                      (18/Sep/02)
-        'i = sRespuesta.IndexOf("*mi_edad*", StringComparison.OrdinalIgnoreCase)
-        'If i > -1 Then
         If sRespuesta.Contains("*mi_edad*", StringComparison.OrdinalIgnoreCase) Then
-            'sRespuesta = sRespuesta.Substring(0, i - 1) & (Date.Now.Year - 1998).ToString() & sRespuesta.Substring(i + 9)
             sRespuesta = sRespuesta.Replace("*mi_edad*", (Date.Now.Year - 1998).ToString(), StringComparison.OrdinalIgnoreCase)
         End If
 
         'Cambiar *NOMBRE* por el nombre
-        'i = sRespuesta.IndexOf("*NOMBRE*", StringComparison.OrdinalIgnoreCase)
-        'If i > -1 Then
         If sRespuesta.Contains("*NOMBRE*", StringComparison.OrdinalIgnoreCase) Then
             'Usar siempre el nombre
-            'sRespuesta = Left$(sRespuesta, i - 1) & Nombre & Mid$(sRespuesta, i + Len("*NOMBRE*"))
             sRespuesta = sRespuesta.Replace("*NOMBRE*", Nombre, StringComparison.OrdinalIgnoreCase)
         End If
 
@@ -2154,7 +2104,6 @@ Public Class cEliza
         If i > -1 Then
             'El formato será: {*iif(condición; ES-TRUE)(ES-FALSE)}
             sUsarPregunta = sRespuesta.Substring(i)
-            'sRespuesta = sRespuesta.Substring(0, i - 1)
             sRespuesta = sRespuesta.Substring(0, i)
             j = sUsarPregunta.IndexOf(";")
             If j > -1 Then
@@ -2248,13 +2197,6 @@ Public Class cEliza
     End Function
 
     Public Property Iniciado As Boolean
-    '    Get
-    '        Return m_Iniciado
-    '    End Get
-    '    Set(value As Boolean)
-    '        m_Iniciado = value
-    '    End Set
-    'End Property
 
     Private Sub DatosUsuario(Optional AccionLeer As Boolean = True)
         'Leerá la base de datos de este usuario.            (14/Jun/98)
@@ -2325,7 +2267,6 @@ Public Class cEliza
                     sEntrada = "Creo que no has usado un signo del zodíaco..."
                 End If
             Case "edad"
-                'i = CInt(sEntrada)
                 i = 0
                 If Integer.TryParse(sEntrada, i) = False Then
                     sEntrada = "Por favor indica la edad con números, gracias."
@@ -2347,6 +2288,9 @@ Public Class cEliza
         Return sEntrada
     End Function
 
+    ''' <summary>
+    ''' El path de la aplicación ejecutable.
+    ''' </summary>
     Private Function AppPath() As String
         Return m_AppPath
     End Function
@@ -2356,7 +2300,6 @@ Public Class cEliza
     ''' </summary>
     ''' <returns></returns>
     Private Shared Function DLLPath() As String
-        'Return m_AppPath
         Dim ensamblado = GetType(cEliza).Assembly
         Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
         Return elPath & If(elPath.EndsWith("\"), "", "\")
