@@ -2,7 +2,7 @@
 Eliza para .NET basado en ElizaVB
 
 
-Esta versión para Visual Basic .NET usando .NET 7.0 está basado en la versión de Visual Basic 6: revisión 0.17.0.1300 del 18/Sep/2002 (29/Jun/98).<br>
+Esta versión, para Visual Basic .NET y C# usando .NET 7.0, está basado en la versión de Visual Basic 6: revisión 0.17.0.1300 del 18/Sep/2002 (29/Jun/98).<br>
 El original fue creado con Visual Basic 5 el Sábado, 30/May/98 17:30.<br>
 
 El programa ELIZA original fue creado por Joseph Weizenbaum.<br>
@@ -14,3 +14,4 @@ Agradecimiento especial a Svetlana por toda la información aportada, además de
 
 > **Nota:** <br>
 > Incluyo el código original para Visual Basic 6.0. <br>
+> Incluyo proyectos para usar la versión de .NET tanto con Visual Basic como con C# usando .NET 7.0.
