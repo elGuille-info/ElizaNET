@@ -185,7 +185,7 @@ Public Class cEliza
         End Get
     End Property
 
-    Private ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
+    Private Shared ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
 
     ' Colección de Reglas
     'Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
@@ -293,13 +293,43 @@ Public Class cEliza
                 sUsarPregunta.IndexOf("*true*", StringComparison.OrdinalIgnoreCase) > -1 Then
                 ' Comprobar si el contenido de sEntrada es una respuesta
                 ' afirmativa
-                If EsAfirmativo(sEntrada) Then
-                    sUsarPregunta = sRespuestas(cAfirmativa)
-                ElseIf EsNegativo(sEntrada) Then
-                    sUsarPregunta = sRespuestas(cNegativa)
+                Dim res = EsRespuestaNegativaPositiva(sEntrada, esNegativo:=False).Trim()
+                ' Si es una cadena vacía, no es positiva
+                If String.IsNullOrEmpty(res) Then
+                    res = EsRespuestaNegativaPositiva(sEntrada, esNegativo:=True).Trim()
+                    ' Si es una cadena vacía, no es negativa
+                    If String.IsNullOrEmpty(res) Then
+                        sUsarPregunta = sEntrada
+                    Else
+                        sUsarPregunta = sRespuestas(cNegativa)
+                    End If
                 Else
-                    sUsarPregunta = sEntrada
+                    sUsarPregunta = sRespuestas(cAfirmativa)
+                    ' Puede que después de la parte afirmativa indique lo que es (27/ene/23 16.57)
+                    i = sEntrada.IndexOf(res)
+                    If i > -1 Then
+                        'sCopiaEntrada = sEntrada
+                        sEntrada = sEntrada.Substring(i + res.Length).Trim()
+                        sEntrada = QuitarSeparadores(sEntrada, delPrincipio:=True)
+                        i = sUsarPregunta.IndexOf("{*base:=", StringComparison.OrdinalIgnoreCase)
+                        If i > -1 Then
+                            ' Tomar lo que haya después de {*base:=...} sin la llave final
+                            sUsarBaseDatos = sUsarPregunta.Substring(i + "{*base:=".Length).TrimEnd("}"c)
+                            '    sUsarPregunta = "Ya veo, tienes " & sEntrada & sUsarPregunta.Substring(i)
+                            'Else
+                            '    sUsarPregunta = "Ya veo, tienes " & sEntrada
+                        End If
+                        'sEntrada = sCopiaEntrada
+                    End If
                 End If
+                'If EsAfirmativo(sEntrada) Then
+                '    sUsarPregunta = sRespuestas(cAfirmativa)
+                '    ' Puede que después de la parte afirmativa indique lo que es (27/ene/23 16.57)
+                'ElseIf EsNegativo(sEntrada) Then
+                '    sUsarPregunta = sRespuestas(cNegativa)
+                'Else
+                '    sUsarPregunta = sEntrada
+                'End If
             Else
                 ' procesar la comparación
                 ' para probar se asume que es negativa
@@ -342,7 +372,8 @@ Public Class cEliza
             Loop
             i = sUsarPregunta.IndexOf("{*iif", StringComparison.OrdinalIgnoreCase)
             ' Si el usuario no ha contestado con lo esperado
-            If sUsarPregunta <> sEntrada Then
+            'If sUsarPregunta <> sEntrada Then
+            If String.IsNullOrEmpty(sUsarBaseDatos) AndAlso sUsarPregunta <> sEntrada Then
                 Dim res = ComprobarEspeciales(sUsarPregunta, sEntrada, sPalabra)
                 If i = -1 Then
                     sUsarPregunta = ""
@@ -351,7 +382,6 @@ Public Class cEliza
             End If
         End If
 
-        'If Len(sUsarBaseDatos) Then
         If String.IsNullOrEmpty(sUsarBaseDatos) = False Then
             ' antes de almacenar los datos, se debería chequear
             ' para que el usuario no nos de 'datos erróneos'
@@ -406,6 +436,24 @@ Public Class cEliza
         BuscarClaves(sEntradaSimp, sClaves)
         Return CrearRespuesta(sClaves, sEntradaSimp)
 
+    End Function
+
+    Private Shared Function QuitarSeparadores(sEntrada As String, delPrincipio As Boolean) As String
+        If delPrincipio Then
+            'Do While sEntrada.Substring(0, 1).IndexOfAny(sSeparadores.ToCharArray()) > -1
+            '    sEntrada = sEntrada.Substring(1)
+            'Loop
+            ' Quitar los signos de separación del principio
+            Do While sSeparadores.IndexOf(sEntrada.Substring(0, 1)) > -1
+                sEntrada = sEntrada.Substring(1)
+            Loop
+        Else
+            ' Quitar los signos de separación del final
+            Do While sSeparadores.IndexOf(RightN(sEntrada, 1)) > -1
+                sEntrada = sEntrada.Substring(0, sEntrada.Length - 1)
+            Loop
+        End If
+        Return sEntrada
     End Function
 
     Public Sub Inicializar()
@@ -783,32 +831,32 @@ Public Class cEliza
         End If
 
         ' Si el caracter a quitar/cambiar es Chr$(0), usar otro método
-        If AscW(sCaracter) = 0 Then
-            ' Quitar todos los chr$(0) del final
-            Do While RightN(sValor, 1) = ChrW(0)
-                sValor = sValor.Substring(0, sValor.Length - 1)
-                If sValor.Length = 0 Then Exit Do
-            Loop
-            iLen = 0 '1 usando Instr
-            Do
-                i = sValor.IndexOf(sCaracter, iLen)
-                If i > -1 Then
-                    If bPoner Then
-                        sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + 1)}"
-                    Else
-                        sValor = $"{sValor.Substring(0, i)}{sValor.Substring(i + 1)}"
-                    End If
-                    iLen = i
-                Else
-                    ' ya no hay más, salir del bucle
-                    Exit Do
-                End If
-            Loop
-        Else
-            i = 0 ' 1
-            'Do While i <= sValor.Length
-            'Do While i < sValor.Length
-            Do While i + iLen < sValor.Length
+        'If AscW(sCaracter) = 0 Then
+        '    ' Quitar todos los chr$(0) del final
+        '    Do While RightN(sValor, 1) = ChrW(0)
+        '        sValor = sValor.Substring(0, sValor.Length - 1)
+        '        If sValor.Length = 0 Then Exit Do
+        '    Loop
+        '    iLen = 0 '1 usando Instr
+        '    Do
+        '        i = sValor.IndexOf(sCaracter, iLen)
+        '        If i > -1 Then
+        '            If bPoner Then
+        '                sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + 1)}"
+        '            Else
+        '                sValor = $"{sValor.Substring(0, i)}{sValor.Substring(i + 1)}"
+        '            End If
+        '            iLen = i
+        '        Else
+        '            ' ya no hay más, salir del bucle
+        '            Exit Do
+        '        End If
+        '    Loop
+        'Else
+        i = 0 ' 1
+        'Do While i <= sValor.Length
+        'Do While i < sValor.Length
+        Do While i + iLen < sValor.Length
                 If sValor.Substring(i, iLen) = sCaracter Then
                     If bPoner Then
                         sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + iLen)}"
@@ -825,7 +873,7 @@ Public Class cEliza
                 End If
                 i += 1
             Loop
-        End If
+        'End If
 
         Return sValor
     End Function
@@ -1956,24 +2004,49 @@ Public Class cEliza
         Return sRespuesta
     End Function
 
-    Private Shared Function EsNegativoPositivo(sEntrada As String, esNegativo As Boolean) As Boolean
-        'comprobar si en la cadena de entrada hay alguna palabra
-        'que denote negación o afirmación
-
+    ''' <summary>
+    ''' Comprueba si ha contestado negativa o positivamente y devolver la respuesta o una cadena vacía si no tiene alguna de las consideradas.
+    ''' </summary>
+    ''' <param name="sEntrada"></param>
+    ''' <param name="esNegativo">Entrada para saber si se comprueban las respuestas negativas o positivas.</param>
+    Private Shared Function EsRespuestaNegativaPositiva(sEntrada As String, esNegativo As Boolean) As String
         Dim palabrasNegPos As String()
         If esNegativo Then
             palabrasNegPos = {" no ", " no,", " nope", " nop", " nil", " negativo", " falso", " nada", " ya est", " ya vale"}
         Else
-            palabrasNegPos = {" sí ", " si ", " sí,", " si,", " yep", " afirmativo", " efectivamente", " así es", " asi es", " por supuesto", " ciertamente", " eso es", " vale", " ok", " o.k.", " de acuerdo", " muy bien", " ya que insistes", " claro"}
+            palabrasNegPos = {" sí ", " si ", " sí,", " si,", " yep", " afirmativo", " positivo", " efectivamente", " así es", " asi es", " por supuesto", " ciertamente", " eso es", " vale", " ok", " o.k.", " de acuerdo", " muy bien", " ya que insistes", " claro"}
         End If
 
         sEntrada = " " & sEntrada & " "
         For i = 0 To palabrasNegPos.Length - 1
             If sEntrada.IndexOf(palabrasNegPos(i), StringComparison.OrdinalIgnoreCase) > -1 Then
-                Return True
+                Return palabrasNegPos(i)
             End If
         Next
-        Return False
+        Return ""
+    End Function
+
+    Private Shared Function EsNegativoPositivo(sEntrada As String, esNegativo As Boolean) As Boolean
+        'comprobar si en la cadena de entrada hay alguna palabra
+        'que denote negación o afirmación
+
+        Dim res = EsRespuestaNegativaPositiva(sEntrada, esNegativo)
+        Return String.IsNullOrEmpty(res)
+
+        'Dim palabrasNegPos As String()
+        'If esNegativo Then
+        '    palabrasNegPos = {" no ", " no,", " nope ", " nop ", " nil ", " negativo ", " falso", " nada ", " ya est", " ya vale"}
+        'Else
+        '    palabrasNegPos = {" sí ", " si ", " sí,", " si,", " yep ", " afirmativo", " positivo", " efectivamente", " así es", " asi es", " por supuesto", " ciertamente", " eso es", " vale", " ok", " o.k.", " de acuerdo", " muy bien", " ya que insistes", " claro"}
+        'End If
+
+        'sEntrada = " " & sEntrada & " "
+        'For i = 0 To palabrasNegPos.Length - 1
+        '    If sEntrada.IndexOf(palabrasNegPos(i), StringComparison.OrdinalIgnoreCase) > -1 Then
+        '        Return True
+        '    End If
+        'Next
+        'Return False
     End Function
 
     Private Shared Function EsNegativo(sEntrada As String) As Boolean
