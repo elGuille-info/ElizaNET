@@ -371,6 +371,7 @@ Friend Class fEliza
                 ' mostrar en la lista lo que se ha escrito
                 ImprimirDOS(sTmp)
                 If sTmp.StartsWith("> ") Then
+                    ' esto solo se puede usar en C#: sTmp = sTmp[2..].TrimStart()
                     sTmp = sTmp.Substring(2).TrimStart()
                 End If
                 ' si se escribe ?, -?, --?, -h o --help			(24/ene/23 17.58)
@@ -492,12 +493,13 @@ Friend Class fEliza
             Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
                 Do While Not sr.EndOfStream
                     Dim tmpNombre = sr.ReadLine().Trim()
-                    ' Da error si no está inicializado sNombre, 24-ene-2023 12.24
                     If sNombre.Length = 0 Then
                         sNombre = tmpNombre
                     End If
                     List2.Items.Add(tmpNombre)
-                    tmpNombre = sr.ReadLine()
+                    'tmpNombre = sr.ReadLine()
+                    ' Era para el sexo, pero no se usa
+                    'sr.ReadLine()
                 Loop
             End Using
         End If
@@ -510,7 +512,7 @@ Friend Class fEliza
         Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
             For i = 0 To List2.Items.Count - 1
                 sw.WriteLine(List2.Items(i).ToString)
-                sw.WriteLine("0") ' el sexo
+                'sw.WriteLine("0") ' el sexo
             Next
         End Using
     End Sub

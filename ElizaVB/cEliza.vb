@@ -80,7 +80,7 @@ Option Compare Text
 
 Public Class cEliza
 
-    Private m_AppPath As String
+    Private ReadOnly m_AppPath As String
 
     Public Sub New(appPath As String)
         'm_Idioma = Spanish
@@ -93,7 +93,7 @@ Public Class cEliza
 
     ' ¿Esto se debe usar con signos de admiración, etc.?
     'Public SiNo As String() = {"si", "sí", "ok", "vale", "yep", "yes", "no", "non", "nope", "nop", "nil", "nain"}
-    Private m_rnd As New Random()
+    Private ReadOnly m_rnd As New Random()
 
     Public Enum eTiposDeClaves
         eClaves '= 0
@@ -122,7 +122,7 @@ Public Class cEliza
     Const cAfirmativa As Integer = 1
     Const cNegativa As Integer = 0
     ' de cero a uno
-    Private sRespuestas(cAfirmativa) As String
+    Private ReadOnly sRespuestas(cAfirmativa) As String
     ' Esta variable servirá de 'flag' y contendrá la condición que
     ' usará Eliza para evaluar una "respuesta" que contenga "{*iif("
     Private sUsarPregunta As String
@@ -221,6 +221,8 @@ Public Class cEliza
     '    'Return tRegla
     'End Function
 
+    Private ModoConsulta As Boolean ' para no usar static en ProcesarEntrada (27/ene/23 11.17)
+
     ' Esto es lo que en realidad hay que revisar porque no lo analiza... (24/ene/23 13.37)
     Public Function ProcesarEntrada(sEntrada As String) As String
         ' Se procesará la entrada del usuario y devolverá la cadena con la respuesta
@@ -230,7 +232,7 @@ Public Class cEliza
         Dim sEntradaSimp As String
         Dim sClaves As String = ""
         Dim sCopiaEntrada As String
-        Static ModoConsulta As Boolean
+        'Static ModoConsulta As Boolean
 
         Dim i As Integer
         Dim sPalabra As String = ""
@@ -766,7 +768,7 @@ Public Class cEliza
         Return sRespuesta
     End Function
 
-    Private Function QuitarCaracterEx(sValor As String, sCaracter As String, Optional sPoner As String = "") As String
+    Private Shared Function QuitarCaracterEx(sValor As String, sCaracter As String, Optional sPoner As String = "") As String
         '--------------------------------------------------------------------------
         ' Cambiar/Quitar caracteres                                     (17/Sep/97)
         ' Si se especifica sPoner, se cambiará por ese carácter
@@ -1931,11 +1933,13 @@ Public Class cEliza
         Return sRespuesta
     End Function
 
+    Private UsarEstaRespuesta As Integer ' para no usar static en CrearRespuestaRecordando. (27/ene/23 11.18)
+
     Private Function CrearRespuestaRecordando(sPalabra As String) As String
         Dim tRegla As cRegla
         Dim i As Integer, j As Integer
         Dim sRespuesta As String
-        Static UsarEstaRespuesta As Integer
+        'Static UsarEstaRespuesta As Integer
         '$Para probar usar el valor de las respuestas que tenemos,
         'en casos normales usar un valor mayor
         Const NUM_RESPUESTAS As Integer = 10
@@ -2029,44 +2033,26 @@ Public Class cEliza
         'que denote negación
 
         Return EsNegativoPositivo(sEntrada, esNegativo:=True)
-
-        ''Dim i As Integer
-        'sEntrada = " " & sEntrada & " "
-        ''Crear un array con palabras "negativas"
-        'Dim aNegativo = {" no ", " no,", " nope", " nil", " negativo", " falso", " nada", " ya est", " ya vale"}
-        'For i = 0 To aNegativo.Length - 1
-        '    If sEntrada.IndexOf(aNegativo(i), StringComparison.OrdinalIgnoreCase) > -1 Then
-        '        Return True
-        '    End If
-        'Next
-        'Return False
     End Function
 
     Private Shared Function EsAfirmativo(sEntrada As String) As Boolean
         'comprobar si en la cadena de entrada hay alguna palabra
         'que denote afirmación
         Return EsNegativoPositivo(sEntrada, esNegativo:=False)
-
-        'Dim i As Integer
-        'sEntrada = " " & sEntrada & " "
-        'Dim aAfirmativo = {" sí ", " si ", " sí,", " si,", " afirmativo", " efectivamente", " así es", " asi es", " por supuesto", " ciertamente", " eso es", " vale", " ok", " o.k.", " de acuerdo", " muy bien", " ya que insistes", " claro"}
-        'For i = 0 To aAfirmativo.Length - 1
-        '    If sEntrada.IndexOf(aAfirmativo(i), StringComparison.OrdinalIgnoreCase) > -1 Then
-        '        Return True
-        '    End If
-        'Next
-        'Return False
     End Function
+
+    ' Para no usar static dentro de la función ComprobarEspeciales. (27/ene/23 11.16)
+    Private restoAnt As String
 
     Private Function ComprobarEspeciales(sRespuesta As String, sEntrada As String, sPalabra As String) As String
         'Comprobar las claves especiales de sustitución y otras
         'que puedan estar en la respuesta generada          (13/Jun/98)
         Dim i, j As Integer
-        Static restoAnt As String
+        'Static restoAnt As String
         ' Por si quiero comprobar si hace las cosas bien.       (26/ene/23 12.26)
-        Dim sRespuestaInicial = sRespuesta
-        Dim sEntradaInicial = sEntrada
-        Dim sPalabraInicial = sPalabra
+        'Dim sRespuestaInicial = sRespuesta
+        'Dim sEntradaInicial = sEntrada
+        'Dim sPalabraInicial = sPalabra
 
         'comprueba si la respuesta contiene caracteres especiales
         If String.IsNullOrEmpty(sRespuesta) = False Then

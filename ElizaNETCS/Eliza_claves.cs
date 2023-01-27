@@ -36,7 +36,7 @@ namespace ElizaNETCS
 
         private cEliza Eliza;
 
-        private cEliza.eTiposDeClaves[] clavesTag = new[] { cEliza.eTiposDeClaves.eClaves, cEliza.eTiposDeClaves.eVerbos, cEliza.eTiposDeClaves.eRS, cEliza.eTiposDeClaves.eSimp, cEliza.eTiposDeClaves.eRec, cEliza.eTiposDeClaves.eBU };
+        private readonly cEliza.eTiposDeClaves[] clavesTag = new[] { cEliza.eTiposDeClaves.eClaves, cEliza.eTiposDeClaves.eVerbos, cEliza.eTiposDeClaves.eRS, cEliza.eTiposDeClaves.eSimp, cEliza.eTiposDeClaves.eRec, cEliza.eTiposDeClaves.eBU };
 
         private void Combo1_SelectedIndexChanged(object sender, EventArgs e)
         {

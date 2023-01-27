@@ -16,7 +16,7 @@ Option Infer On
 Option Explicit On
 
 Public Class cKeyWords
-    Private m_col As New Dictionary(Of String, cRespuestas)
+    Private ReadOnly m_col As New Dictionary(Of String, cRespuestas)
 
     'Default Public ReadOnly Property Item(ByVal newContenido As String) As cRespuestas
     Public ReadOnly Property Item(newContenido As String) As cRespuestas

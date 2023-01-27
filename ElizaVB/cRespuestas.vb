@@ -26,7 +26,7 @@ Public Class cRespuestas
         Me.Contenido = contenido
     End Sub
 
-    Private m_col As New Dictionary(Of String, cContenido) ' Collection
+    Private ReadOnly m_col As New Dictionary(Of String, cContenido)
 
     ' Número de elementos en la colección
     Public ReadOnly Property Count As Integer
@@ -97,9 +97,8 @@ Public Class cRespuestas
         Return m_col.ContainsKey(sContenido)
     End Function
 
-    Public ReadOnly Property Valores As Dictionary(Of String, cContenido).ValueCollection 'Dictionary(Of String, cContenido)
+    Public ReadOnly Property Valores As Dictionary(Of String, cContenido).ValueCollection
         Get
-            'Dim valors = m_col.Values
             Return m_col.Values
         End Get
     End Property

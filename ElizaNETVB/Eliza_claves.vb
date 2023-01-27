@@ -29,10 +29,9 @@ Friend Class Eliza_claves
 		Eliza = eli
 	End Sub
 
-	'Public Eliza As cEliza
 	Private Eliza As cEliza
 
-	Private clavesTag As cEliza.eTiposDeClaves() = {cEliza.eTiposDeClaves.eClaves, cEliza.eTiposDeClaves.eVerbos, cEliza.eTiposDeClaves.eRS, cEliza.eTiposDeClaves.eSimp, cEliza.eTiposDeClaves.eRec, cEliza.eTiposDeClaves.eBU}
+	Private ReadOnly clavesTag As cEliza.eTiposDeClaves() = {cEliza.eTiposDeClaves.eClaves, cEliza.eTiposDeClaves.eVerbos, cEliza.eTiposDeClaves.eRS, cEliza.eTiposDeClaves.eSimp, cEliza.eTiposDeClaves.eRec, cEliza.eTiposDeClaves.eBU}
 
 	Private Sub Combo1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Combo1.SelectedIndexChanged
 		Dim i As Decimal

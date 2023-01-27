@@ -49,7 +49,7 @@ namespace ElizaNETCS
             string sSexo;
             int tmpSexo;
             string sMsgTmp;
-            Random m_rnd = new Random();
+            Random m_rnd = new();
 
             // Si no se ha guardado la sesión anterior, preguntar si se quiere guardar.
             if (!SesionGuardada)
@@ -282,7 +282,7 @@ namespace ElizaNETCS
         public void mnuEliza_claves_Click(object sender, EventArgs e)
         {
             Hide();
-            Eliza_claves fClaves = new Eliza_claves(Eliza);
+            Eliza_claves fClaves = new(Eliza);
             fClaves.ShowDialog();
             Show();
         }
@@ -390,7 +390,10 @@ namespace ElizaNETCS
                     // mostrar en la lista lo que se ha escrito
                     ImprimirDOS(sTmp);
                     if (sTmp.StartsWith("> "))
-                        sTmp = sTmp.Substring(2).TrimStart();
+                    {
+                        //sTmp = sTmp.Substring(2).TrimStart();
+                        sTmp = sTmp[2..].TrimStart();
+                    }
                     // si se escribe ?, -?, --?, -h o --help			(24/ene/23 17.58)
                     // mostrar la ayuda de comandos en principio ponerlo en modo consulta.
                     var losHelp = new string[] { "?", "-?", "--?", "-h", "--h", "--help", "-help" };
@@ -442,27 +445,31 @@ namespace ElizaNETCS
             // o crearlo automáticamente
 
             var sDir = System.IO.Path.Combine(AppPath(), "sesiones");
-            var sFic = System.IO.Path.Combine(sDir, sNombre + "_" + DateTime.Now.ToString("ddMMMyyyy_HHmm") + ".txt");
-            if (UtilidadesDialog.UtilDialog.InputBox(sNombre + " escribe el nombre del fichero:", "Guardar sesión", ref sFic) != DialogResult.OK)
+            var sFic = System.IO.Path.Combine(sDir, $"{sNombre}_{DateTime.Now:ddMMMyyyy_HHmm}.txt");
+            if (UtilDialog.InputBox(sNombre + " escribe el nombre del fichero:", "Guardar sesión", ref sFic) != DialogResult.OK)
+            {
                 sFic = "";
+            }
             else
+            {
                 sFic = sFic.Trim();
+            }
+
             if (string.IsNullOrEmpty(sFic) == false)
             {
                 List1.Items.Add("-----------------------------------------------");
-                List1.Items.Add($"Sesión guardada el: {DateTime.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}");
+                List1.Items.Add($"Sesión guardada el: {DateTime.Now:dddd, dd/MMM/yyyy HH:mm}");
 
                 // Crear los directorios indicados en el nombre del archivo  (18/Sep/02)
                 if (System.IO.Directory.Exists(sDir) == false)
-                    System.IO.Directory.CreateDirectory(sDir);
-
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(sFic, false, System.Text.Encoding.UTF8))
                 {
-                    {
-                        for (var i = 0; i <= List1.Items.Count - 1; i++)
-                            sw.WriteLine(List1.Items[i].ToString());
-                    }
+                    System.IO.Directory.CreateDirectory(sDir);
                 }
+
+                //using (System.IO.StreamWriter sw = new System.IO.StreamWriter(sFic, false, System.Text.Encoding.UTF8))
+                using System.IO.StreamWriter sw = new(sFic, false, Encoding.UTF8);
+                for (var i = 0; i < List1.Items.Count; i++)
+                    sw.WriteLine(List1.Items[i].ToString());
             }
         }
 
@@ -526,17 +533,17 @@ namespace ElizaNETCS
             {
                 {
                     List2.Items.Clear();
-                    using (System.IO.StreamReader sr = new System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, true))
+                    //using (System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true))
+                    using System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true);
+                    while (!sr.EndOfStream)
                     {
-                        while (!sr.EndOfStream)
-                        {
-                            tmpNombre = sr.ReadLine().Trim();
-                            // Da error si no está inicializado sNombre, 24-ene-2023 12.24
-                            if (sNombre.Length == 0)
-                                sNombre = tmpNombre;
-                            List2.Items.Add(tmpNombre);
-                            tmpNombre = sr.ReadLine();
-                        }
+                        tmpNombre = sr.ReadLine().Trim();
+                        // Da error si no está inicializado sNombre, 24-ene-2023 12.24
+                        if (sNombre.Length == 0)
+                            sNombre = tmpNombre;
+                        List2.Items.Add(tmpNombre);
+                        // Era para el sexo, pero no se usa
+                        //tmpNombre = sr.ReadLine();
                     }
                 }
             }
@@ -547,13 +554,12 @@ namespace ElizaNETCS
             string sFic;
 
             sFic = AppPath() + "ListaDeNombres.txt";
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(sFic, false, System.Text.Encoding.UTF8))
+            //using (System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8))
+            using System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8);
+            for (var i = 0; i <= List2.Items.Count - 1; i++)
             {
-                for (var i = 0; i <= List2.Items.Count - 1; i++)
-                {
-                    sw.WriteLine(List2.Items[i].ToString());
-                    sw.WriteLine("0"); // el sexo
-                }
+                sw.WriteLine(List2.Items[i].ToString());
+                //sw.WriteLine("0"); // el sexo
             }
         }
 
@@ -567,7 +573,7 @@ namespace ElizaNETCS
 
             s = txtSalida.Text + sText;
             if (NuevaLinea)
-                s += "\r\n";
+                s += CrLf;
             txtSalida.Text = s;
             List1.Items.Add(sText);
             // Posicionar el cursor al final de la caja de texto
@@ -584,7 +590,7 @@ namespace ElizaNETCS
             if (e.KeyData == Keys.Return)
             {
                 e.Handled = true;
-                txtEntrada.Text = txtEntrada.Text.Replace("\r\n", "");
+                txtEntrada.Text = txtEntrada.Text.Replace(CrLf, "");
                 ProcesarEntrada();
             }
             else if (e.KeyData == Keys.Up)
