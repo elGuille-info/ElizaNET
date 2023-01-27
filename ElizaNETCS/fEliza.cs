@@ -78,8 +78,7 @@ namespace ElizaNETCS
                 // Comprobar si está en la lista
                 tmpSexo = -1;
                 {
-                    var withBlock = List2;
-                    for (var i = 0; i <= withBlock.Items.Count - 1; i++)
+                    for (var i = 0; i <= List2.Items.Count - 1; i++)
                     {
                         if (List2.Items[i].ToString() == sNombre)
                         {
@@ -146,8 +145,7 @@ namespace ElizaNETCS
             // Comprobar si está en la lista
             tmpSexo = -1;
             {
-                var withBlock = List2;
-                for (var i = 0; i <= withBlock.Items.Count - 1; i++)
+                for (var i = 0; i <= List2.Items.Count - 1; i++)
                 {
                     if (List2.Items[i].ToString() == sNombre)
                     {
@@ -160,8 +158,7 @@ namespace ElizaNETCS
             {
                 // añadirlo
                 {
-                    var withBlock = List2;
-                    withBlock.Items.Add(sNombre);
+                    List2.Items.Add(sNombre);
                 }
                 // guardar los nombres
                 GuardarNombres();
@@ -180,19 +177,19 @@ namespace ElizaNETCS
 
             // Inicializar los valores, mientras el usuario escribe
             {
-                var withBlock = Eliza;
-                if (withBlock.Iniciado)
+                if (Eliza.Iniciado)
                 {
                     // Si es la primera vez... dar un poco de tiempo.
-                    switch (m_rnd.Next(10))
+                    var unMensaje = m_rnd.Next(10);
+                    switch (unMensaje)
                     {
-                        case object _ when m_rnd.Next(10) > 6:
+                        case > 6:
                             {
                                 sMsgTmp = "Espera un momento, mientras ordeno mi base de datos...";
                                 break;
                             }
 
-                        case object _ when m_rnd.Next(10) > 3:
+                        case  > 3:
                             {
                                 sMsgTmp = "Espera un momento, mientras busco un bolígrafo...";
                                 break;
@@ -206,12 +203,12 @@ namespace ElizaNETCS
                     }
                     ImprimirDOS(sMsgTmp);
                 }
-                withBlock.Sexo = tSexo;
-                withBlock.Nombre = sNombre;
+                Eliza.Sexo = tSexo;
+                Eliza.Nombre = sNombre;
                 var sw = Stopwatch.StartNew();
-                withBlock.Inicializar();
+                Eliza.Inicializar();
                 sw.Stop();
-                if (!withBlock.Iniciado)
+                if (!Eliza.Iniciado)
                 {
                     sMsgTmp = "Tiempo en inicializar (y asignar las palabras): " + sw.Elapsed.ToString(@"mm\:ss\.fff");
                     ImprimirDOS(sMsgTmp);
@@ -255,10 +252,9 @@ namespace ElizaNETCS
             // Inicializar las variables
             txtSalida.Text = "";
             {
-                var withBlock = txtEntrada;
-                withBlock.Text = "";
-                withBlock.TabIndex = 0;
-                withBlock.Left = txtSalida.Left;
+                txtEntrada.Text = "";
+                txtEntrada.TabIndex = 0;
+                txtEntrada.Left = txtSalida.Left;
             }
 
             SesionGuardada = true;
@@ -529,8 +525,7 @@ namespace ElizaNETCS
             if (System.IO.File.Exists(sFic))
             {
                 {
-                    var withBlock = List2;
-                    withBlock.Items.Clear();
+                    List2.Items.Clear();
                     using (System.IO.StreamReader sr = new System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, true))
                     {
                         while (!sr.EndOfStream)
@@ -539,7 +534,7 @@ namespace ElizaNETCS
                             // Da error si no está inicializado sNombre, 24-ene-2023 12.24
                             if (sNombre.Length == 0)
                                 sNombre = tmpNombre;
-                            withBlock.Items.Add(tmpNombre);
+                            List2.Items.Add(tmpNombre);
                             tmpNombre = sr.ReadLine();
                         }
                     }
