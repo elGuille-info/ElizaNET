@@ -304,7 +304,7 @@ namespace ElizaNETCS
         public void mnuAcercaDe_Click(object sender, EventArgs e)
         {
             // Mostrar la información del programa
-            System.Text.StringBuilder msg = new System.Text.StringBuilder();
+            StringBuilder msg = new();
             var ensamblado = typeof(fEliza).Assembly;
             var fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location);
 

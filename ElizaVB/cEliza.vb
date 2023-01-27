@@ -653,11 +653,11 @@ Public Class cEliza
         Do
             i = sClaves.IndexOf("}")
             If i > -1 Then
-                sNivel = LeftN(sClaves, i)
+                sNivel = sClaves.Substring(0, i)
                 sClaves = MidN(sClaves, i + 1)
                 i = sClaves.IndexOf(",")
                 If i > -1 Then
-                    sPalabra = LeftN(sClaves, i)
+                    sPalabra = sClaves.Substring(0, i)
                     sClaves = MidN(sClaves, i + 1)
                     ' asignar como ID el nivel y como contenido la palabra, 26/ene/23 13.54
                     'tContenidos.Item(sPalabra).Contenido = sNivel
@@ -730,7 +730,7 @@ Public Class cEliza
 
         Dim i = sClaves.IndexOf(",")
         If i > -1 Then
-            sPalabra = LeftN(sClaves, i).Trim()
+            sPalabra = sClaves.Substring(0, i).Trim()
         Else
             ' si no tiene coma, usar sClaves como la palabra    (26/ene/23 13.30)
             sPalabra = sClaves
@@ -804,20 +804,17 @@ Public Class cEliza
         If AscW(sCaracter) = 0 Then
             ' Quitar todos los chr$(0) del final
             Do While RightN(sValor, 1) = ChrW(0)
-                sValor = LeftN(sValor, sValor.Length - 1)
+                sValor = sValor.Substring(0, sValor.Length - 1)
                 If sValor.Length = 0 Then Exit Do
             Loop
             iLen = 0 '1 usando Instr
             Do
-                'i = InStr(iLen, sValor, sCaracter)
                 i = sValor.IndexOf(sCaracter, iLen)
                 If i > -1 Then
                     If bPoner Then
-                        'sValor = LeftN(sValor, i - 1) & sCh & MidN(sValor, i + 1)
-                        sValor = LeftN(sValor, i) & sCh & MidN(sValor, i + 1)
+                        sValor = sValor.Substring(0, i) & sCh & MidN(sValor, i + 1)
                     Else
-                        'sValor = LeftN(sValor, i - 1) & MidN(sValor, i + 1)
-                        sValor = LeftN(sValor, i) & MidN(sValor, i + 1)
+                        sValor = sValor.Substring(0, i) & MidN(sValor, i + 1)
                     End If
                     iLen = i
                 Else
@@ -831,8 +828,7 @@ Public Class cEliza
             Do While i < sValor.Length
                 If MidN(sValor, i, iLen) = sCaracter Then
                     If bPoner Then
-                        'sValor = LeftN(sValor, i - 1) & sCh & MidN(sValor, i + iLen)
-                        sValor = LeftN(sValor, i) & sCh & MidN(sValor, i + iLen)
+                        sValor = sValor.Substring(0, i) & sCh & MidN(sValor, i + iLen)
                         i -= 1
                         ' Si lo que hay que poner está incluido en
                         ' lo que se busca, incrementar el puntero
@@ -841,8 +837,7 @@ Public Class cEliza
                             i += 1
                         End If
                     Else
-                        'sValor = LeftN(sValor, i - 1) & MidN(sValor, i + iLen)
-                        sValor = LeftN(sValor, i) & MidN(sValor, i + iLen)
+                        sValor = sValor.Substring(0, i) & MidN(sValor, i + iLen)
                     End If
                 End If
                 i += 1
@@ -999,7 +994,7 @@ Public Class cEliza
                             sPalabra1 = " " & sPalabra1
                         End If
                     End If
-                    sSubKey = LeftN(sContenidoRegla, posContenidoRegla)
+                    sSubKey = sContenidoRegla.Substring(0, posContenidoRegla)
                     sTmp = MidN(sContenidoRegla, i + 2)
 
                     ' La siguiente palabra será la que esté separada por
@@ -1032,7 +1027,7 @@ Public Class cEliza
                         If sPalabra.Length > 0 Then
                             i = sPalabra.IndexOf("}")
                             If i > -1 Then
-                                sPalabra = LeftN(sPalabra.Trim(), i)
+                                sPalabra = sPalabra.Substring(0, i).Trim()
                                 sTmp = ""
                             End If
                             sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
@@ -1072,9 +1067,9 @@ Public Class cEliza
                 '        sPalabra1 = " " & sPalabra1
                 '    End If
                 'End If
-                'sSubKey = LeftN(tRegla.Contenido, i)
+                'sSubKey = tRegla.Contenido.Substring(0, i)
                 'sTmp = MidN(tRegla.Contenido, i + 2)
-                ''Dim sSubKey0 = LeftN(tRegla.Contenido, i - 1)
+                ''Dim sSubKey0 = tRegla.Contenido.Substring(0, i - 1)
                 ''Dim sTmp0 = MidN(tRegla.Contenido, i + 2)
 
                 '' La siguiente palabra será la que esté separada por
@@ -1099,7 +1094,7 @@ Public Class cEliza
                 '    If sPalabra.Length > 0 Then
                 '        i = sPalabra.IndexOf("}")
                 '        If i > -1 Then
-                '            sPalabra = LeftN(sPalabra.Trim(), i)
+                '            sPalabra = sPalabra.Substring(0, i).Trim()
                 '            sTmp = ""
                 '        End If
                 '        sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
@@ -1143,8 +1138,7 @@ Public Class cEliza
                             sPalabra1 = " " & sPalabra1
                         End If
                     End If
-                    'sSubKey = LeftN(tRespuestas.Contenido, i - 1)
-                    sSubKey = LeftN(tRespuestas.Contenido, i)
+                    sSubKey = tRespuestas.Contenido.Substring(0, i)
                     sTmp = MidN(tRespuestas.Contenido, i + 2)
                     sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
 
@@ -1156,8 +1150,7 @@ Public Class cEliza
                         If sPalabra.Length > 0 Then
                             i = sPalabra.IndexOf("}")
                             If i > -1 Then
-                                'sPalabra = LeftN(sPalabra.Trim(), i - 1)
-                                sPalabra = LeftN(sPalabra.Trim(), i)
+                                sPalabra = sPalabra.Substring(0, i).Trim()
                                 sTmp = ""
                             End If
 
@@ -1286,7 +1279,7 @@ Public Class cEliza
                                 ' por una acentuada
                                 ' sólo se busca la 'i'
                                 If RightN(sKey, 1) = "i" Then
-                                    sSubKey = LeftN(sKey, sKey.Length - 1) & "í"
+                                    sSubKey = sKey.Substring(0, sKey.Length - 1) & "í"
                                     m_Verbos.Item(sSubKey).Contenido = sTmp
                                 End If
                                 sSubKey = ""
@@ -1420,29 +1413,29 @@ Public Class cEliza
             Dim sCase = RightN(sPalabra, 3)
             Select Case sCase'RightN(sPalabra, 3)
                 Case "rme"
-                    sPalabra = LeftN(sPalabra, i) & "rte"
+                    sPalabra = sPalabra.Substring(0, i) & "rte"
                     hallado = True
                 Case "rte"
-                    sPalabra = LeftN(sPalabra, i) & "rme"
+                    sPalabra = sPalabra.Substring(0, i) & "rme"
                     hallado = True
             End Select
             'Comprobar las terminaciones telo/melo tela/mela
             sCase = RightN(sPalabra, 4)
             Select Case sCase 'RightN(sPalabra, 4)
                 Case "melo"
-                    sPalabra = LeftN(sPalabra, i - 1) & "telo"
+                    sPalabra = sPalabra.Substring(0, i - 1) & "telo"
                     i -= 2
                     hallado = True
                 Case "telo"
-                    sPalabra = LeftN(sPalabra, i - 1) & "melo"
+                    sPalabra = sPalabra.Substring(0, i - 1) & "melo"
                     i -= 2
                     hallado = True
                 Case "mela"
-                    sPalabra = LeftN(sPalabra, i - 1) & "tela"
+                    sPalabra = sPalabra.Substring(0, i - 1) & "tela"
                     i -= 2
                     hallado = True
                 Case "tela"
-                    sPalabra = LeftN(sPalabra, i - 1) & "mela"
+                    sPalabra = sPalabra.Substring(0, i - 1) & "mela"
                     i -= 2
                     hallado = True
             End Select
@@ -1453,7 +1446,7 @@ Public Class cEliza
             If hallado Then
                 'pero sólo tomamos la parte sin la forma infinitiva,
                 'de am-arme nos quedamos con am
-                sInfinitivo = LeftN(sPalabra, i - 1)
+                sInfinitivo = sPalabra.Substring(0, i - 1)
                 hallado = False
                 For Each tContenido In m_Verbos.Valores '.Values
                     If sInfinitivo = tContenido.ID Then
@@ -1991,7 +1984,7 @@ Public Class cEliza
                 ' para ello se asigna una cadena vacia a sRespuesta
                 Select Case j
                     Case 1
-                        sRespuesta = "Antes mencionaste tu" & m_colRec.Item(i).ID & ", hablame más de ello " & LeftN(m_colRec.Item(i).ID, 1).Trim() & "."
+                        sRespuesta = "Antes mencionaste tu" & m_colRec.Item(i).ID & ", hablame más de ello " & m_colRec.Item(i).ID.Substring(0, 1).Trim() & "."
                     Case 2
                         sRespuesta = "Me comentabas sobre tu" & m_colRec.Item(i).ID & ", ¿cómo te influye?"
                     Case 3
@@ -2088,9 +2081,9 @@ Public Class cEliza
                 If i > -1 Then
                     sEntrada = SimplificarEntrada(sEntrada)
                     ' Guardar la respuesta anterior,                    (17/Sep/02)
-                    ' por si se usa pra asignar a la base de datos del usuario.
+                    ' por si se usa para asignar a la base de datos del usuario.
                     restoAnt = sEntrada.Trim()
-                    sRespuesta = sRespuesta.Substring(0, i) & sEntrada & sRespuesta.Substring(i + "*RESTO*".Length)
+                    sRespuesta = $"{sRespuesta.Substring(0, i)}{sEntrada}{sRespuesta.Substring(i + "*RESTO*".Length)}"
                 End If
             End If
         Else
@@ -2145,7 +2138,7 @@ Public Class cEliza
         End If
 
         'Cambiar *NOMBRE* por el nombre
-        i = sRespuesta.IndexOf("*NOMBRE*", StringComparison.OrdinalIgnoreCase)
+        'i = sRespuesta.IndexOf("*NOMBRE*", StringComparison.OrdinalIgnoreCase)
         'If i > -1 Then
         If sRespuesta.Contains("*NOMBRE*", StringComparison.OrdinalIgnoreCase) Then
             'Usar siempre el nombre
@@ -2192,17 +2185,17 @@ Public Class cEliza
             'El formato será: {*base:=clave_base}
             'sUsarBaseDatos contendrá la clave de la base de datos
             sUsarBaseDatos = MidN(sRespuesta, i + 8)
-            sRespuesta = LeftN(sRespuesta, i)
+            sRespuesta = sRespuesta.Substring(0, i)
             'Quitarle el } del final
             i = sUsarBaseDatos.IndexOf("}")
             If i > -1 Then
                 ' si a continuación sigue un := asignar el valor indicado
                 j = sUsarBaseDatos.IndexOf(":=*restoant*", StringComparison.OrdinalIgnoreCase)
                 If j > -1 Then
-                    sUsarBaseDatos = LeftN(sUsarBaseDatos, j)
+                    sUsarBaseDatos = sUsarBaseDatos.Substring(0, j)
                     ValidarDatosParaBase(restoAnt)
                 Else
-                    sUsarBaseDatos = LeftN(sUsarBaseDatos, i)
+                    sUsarBaseDatos = sUsarBaseDatos.Substring(0, i)
                 End If
             End If
         End If
@@ -2218,19 +2211,19 @@ Public Class cEliza
             Dim sTrue As String = ""
             Dim sFalse As String = ""
 
-            sEntrada = LeftN(sRespuesta, i - 1)
+            sEntrada = sRespuesta.Substring(0, i)
             sClave = MidN(sRespuesta, i + 11)
             j = sClave.IndexOf(";")
             If j > -1 Then
-                sClave = LeftN(sClave, j)
-                j = InStr(sRespuesta, ";")
+                sClave = sClave.Substring(0, j)
+                j = sRespuesta.IndexOf(";")
                 sRespuesta = MidN(sRespuesta, j + 1)
                 j = sRespuesta.IndexOf(")(")
                 If j > -1 Then
-                    sTrue = LeftN(sRespuesta, j - 1)
+                    sTrue = sRespuesta.Substring(0, j)
                     sFalse = MidN(sRespuesta, j + 2)
                     If RightN(sFalse, 1) = ")" Then
-                        sFalse = LeftN(sFalse, sFalse.Length - 1)
+                        sFalse = sFalse.Substring(0, sFalse.Length - 1)
                     End If
                 End If
                 If ColBaseUser.ExisteItem(sClave) Then
@@ -2239,13 +2232,12 @@ Public Class cEliza
                     'Si después de la clave se
                     i = sTrue.IndexOf("*usarbase:=", StringComparison.OrdinalIgnoreCase)
                     If i > -1 Then
-                        'j = InStr(i + 1, sTrue, "*")
                         j = sTrue.IndexOf("*", i + 1)
                         sClave = MidN(sTrue, i + "*usarbase:=".Length, j - (i + "*usarbase:=".Length))
                         If ColBaseUser.ExisteItem(sClave) Then
-                            sTrue = LeftN(sTrue, i - 1) & " " & ColBaseUser.Item(sClave).Contenido & " " & MidN(sTrue, j + 1)
+                            sTrue = sTrue.Substring(0, i) & " " & ColBaseUser.Item(sClave).Contenido & " " & MidN(sTrue, j + 1)
                         Else
-                            sTrue = LeftN(sTrue, i - 1) & " " & MidN(sTrue, j + 1)
+                            sTrue = sTrue.Substring(0, i) & " " & MidN(sTrue, j + 1)
                         End If
                     End If
                     sRespuesta = sTrue
@@ -2401,24 +2393,24 @@ Public Class cEliza
     Public Shared Function RightN(texto As String, n As Integer) As String
         If String.IsNullOrEmpty(texto) Then Return texto
         Dim len = texto.Length
-        If n > len OrElse n < 1 Then Return "" 'texto
+        If n > len OrElse n < 1 Then Return ""
 
         Return texto.Substring(len - n, n)
     End Function
 
-    ''' <summary>
-    ''' Devuelve los n primeros caracteres de la cadena indicada.
-    ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="n"></param>
-    ''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    Public Shared Function LeftN(texto As String, n As Integer) As String
-        If String.IsNullOrEmpty(texto) Then Return texto
-        Dim len = texto.Length
-        If n > len OrElse n < 1 Then Return "" 'texto
+    '''' <summary>
+    '''' Devuelve los n primeros caracteres de la cadena indicada.
+    '''' </summary>
+    '''' <param name="texto"></param>
+    '''' <param name="n"></param>
+    '''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
+    'Public Shared Function LeftN(texto As String, n As Integer) As String
+    '    If String.IsNullOrEmpty(texto) Then Return texto
+    '    Dim len = texto.Length
+    '    If n > len OrElse n < 1 Then Return "" 'texto
 
-        Return texto.Substring(0, n)
-    End Function
+    '    Return texto.Substring(0, n)
+    'End Function
 
     ''' <summary>
     ''' Devuelve a partir del carácter n de la cadena indicada.

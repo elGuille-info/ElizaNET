@@ -109,7 +109,7 @@ namespace ElizaNETCS
 
         private void List1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            decimal i =0;
+            decimal i = 0;
             int j;
 
             var list1 = sender as ListBox;
