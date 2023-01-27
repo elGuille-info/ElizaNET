@@ -174,7 +174,7 @@ Friend Class fEliza
 
         sMsgTmp = "Hola " & sNombre & ", soy Eliza para Visual Basic"
         ImprimirDOS(sMsgTmp)
-        sMsgTmp = "Por favor, intenta evitar los monosílabos y tuteame, yo así lo haré."
+        sMsgTmp = "Por favor, intenta evitar los monosílabos y tutéame, yo así lo haré."
         ImprimirDOS(sMsgTmp)
 
         Cursor = System.Windows.Forms.Cursors.WaitCursor

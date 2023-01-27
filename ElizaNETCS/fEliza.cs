@@ -168,9 +168,9 @@ namespace ElizaNETCS
             List1.Items.Add($"Sesión iniciada el: {DateTime.Now}");
             List1.Items.Add("-----------------------------------------------");
 
-            sMsgTmp = "Hola " + sNombre + ", soy Eliza para Visual Basic";
+            sMsgTmp = "Hola " + sNombre + ", soy Eliza para C#";
             ImprimirDOS(sMsgTmp);
-            sMsgTmp = "Por favor, intenta evitar los monosílabos y tuteame, yo así lo haré.";
+            sMsgTmp = "Por favor, intenta evitar los monosílabos y tutéame, yo así lo haré.";
             ImprimirDOS(sMsgTmp);
 
             Cursor = System.Windows.Forms.Cursors.WaitCursor;
