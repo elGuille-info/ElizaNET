@@ -107,7 +107,13 @@ Public Class cEliza
     End Enum
 
     ' Para la base de datos del usuario                                 (14/Jun/98)
-    Private BaseUser As New cRespuestas
+    Private ReadOnly m_colBaseUser As New cRespuestas()
+    Public ReadOnly Property ColBaseUser As cRespuestas
+        Get
+            Return m_colBaseUser
+        End Get
+    End Property
+
     Private sUsarBaseDatos As String
 
     ' Para interactuar con el usuario, se usará un array cuando se le
@@ -175,42 +181,36 @@ Public Class cEliza
     'Public Event Terminado()
 
     ' Colección para recordar lo que ha dicho el usuario                (12/Jun/98)
-    Private ReadOnly m_colRec As New cRespuestas
-    ' colección para los verbos
-    Private ReadOnly m_Verbos As New cRespuestas
-    ' Colección para las palabras de las reglas de simplificación
-    ' Estas serán las que se usarán en SustituirEnEntrada
-    Private ReadOnly m_colRS As New cRespuestas
-    ' Estas serán las que se usarán en SimplificarEntrada
-    Private ReadOnly m_colSimp As New cRespuestas
-
-    Private ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
-
-    Public ReadOnly Property ColVerbos As cRespuestas
-        Get
-            Return m_Verbos
-        End Get
-    End Property
+    Private ReadOnly m_colRec As New cRespuestas()
     Public ReadOnly Property ColRec As cRespuestas
         Get
             Return m_colRec
         End Get
     End Property
+    ' colección para los verbos
+    Private ReadOnly m_Verbos As New cRespuestas()
+    Public ReadOnly Property ColVerbos As cRespuestas
+        Get
+            Return m_Verbos
+        End Get
+    End Property
+    ' Colección para las palabras de las reglas de simplificación
+    ' Estas serán las que se usarán en SustituirEnEntrada
+    Private ReadOnly m_colRS As New cRespuestas()
     Public ReadOnly Property ColRS As cRespuestas
         Get
             Return m_colRS
         End Get
     End Property
+    ' Estas serán las que se usarán en SimplificarEntrada
+    Private ReadOnly m_colSimp As New cRespuestas()
     Public ReadOnly Property ColSimp As cRespuestas
         Get
             Return m_colSimp
         End Get
     End Property
-    Public ReadOnly Property ColBaseUser As cRespuestas
-        Get
-            Return BaseUser
-        End Get
-    End Property
+
+    Private ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
 
     ' Colección de Reglas
     'Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
@@ -969,9 +969,9 @@ Public Class cEliza
 
         Dim sContenidoRegla As String
         Dim posContenidoRegla As Integer
-        Dim nContenidoRegla As Integer
-        Dim rContenidoRegla As cRegla = Nothing
-        Dim totalContenidoRegla As Integer = 0
+        'Dim nContenidoRegla As Integer
+        'Dim rContenidoRegla As cRegla = Nothing
+        'Dim totalContenidoRegla As Integer = 0
 
         sSubKey = ""
 
@@ -995,17 +995,9 @@ Public Class cEliza
             End If
             If n > cuantasReglas Then Exit Do
 
-            'If n > 469 Then
-            '    Debug.WriteLine("{0}, {1}, {2}", n, cuantasReglasInicial, cuantasReglas)
-            'End If
-
             tRegla = ColReglas.Values.ElementAt(n)
 
-            ' Para probar si encontraba esto
-            'If tRegla.Contenido.Contains("color {* son tus") Then
-            '    i = 0
-            'End If
-            nContenidoRegla = 0
+            'nContenidoRegla = 0
 
             ' Comprobar si tiene {* ...}
             i = tRegla.Contenido.IndexOf("{*")
@@ -1013,13 +1005,13 @@ Public Class cEliza
                 '
                 '<Forma nueva 25/ago/23>
                 '
-                rContenidoRegla = New cRegla()
+                'rContenidoRegla = New cRegla()
                 sContenidoRegla = tRegla.Contenido
                 posContenidoRegla = i
-                Do While i > -1
+                Do While posContenidoRegla > -1
                     ' En el caso que se ponga alguna palabra después
                     ' de la llave de cierre, se usará también
-                    j = sContenidoRegla.IndexOf("}", i)
+                    j = sContenidoRegla.IndexOf("}", posContenidoRegla)
                     sPalabra1 = ""
                     If j > -1 Then
                         sPalabra1 = MidN(sContenidoRegla, j + 1).Trim()
@@ -1027,7 +1019,7 @@ Public Class cEliza
                             sPalabra1 = " " & sPalabra1
                         End If
                     End If
-                    sSubKey = LeftN(sContenidoRegla, i)
+                    sSubKey = LeftN(sContenidoRegla, posContenidoRegla)
                     sTmp = MidN(sContenidoRegla, i + 2)
 
                     ' La siguiente palabra será la que esté separada por
@@ -1046,13 +1038,13 @@ Public Class cEliza
                         .Respuestas.Add("*equal:=" & tRegla.Contenido)
                     End With
                     ' Para probar
-                    With rContenidoRegla.Item(sPalabra)
-                        .Nivel = tRegla.Nivel
-                        .Aleatorio = tRegla.Aleatorio
-                        .Respuestas.Add("*equal:=" & tRegla.Contenido)
-                    End With
-                    nContenidoRegla += 1
-                    totalContenidoRegla += 1
+                    'With rContenidoRegla.Item(sPalabra)
+                    '    .Nivel = tRegla.Nivel
+                    '    .Aleatorio = tRegla.Aleatorio
+                    '    .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                    'End With
+                    'nContenidoRegla += 1
+                    'totalContenidoRegla += 1
 
                     Do While sTmp.Length > 0
                         ' Si no tiene este separador se devuelve lo mismo
@@ -1070,13 +1062,13 @@ Public Class cEliza
                                 .Respuestas.Add("*equal:=" & tRegla.Contenido)
                             End With
                             ' Para probar
-                            With rContenidoRegla.Item(sPalabra)
-                                .Nivel = tRegla.Nivel
-                                .Aleatorio = tRegla.Aleatorio
-                                .Respuestas.Add("*equal:=" & tRegla.Contenido)
-                            End With
-                            nContenidoRegla += 1
-                            totalContenidoRegla += 1
+                            'With rContenidoRegla.Item(sPalabra)
+                            '    .Nivel = tRegla.Nivel
+                            '    .Aleatorio = tRegla.Aleatorio
+                            '    .Respuestas.Add("*equal:=" & tRegla.Contenido)
+                            'End With
+                            'nContenidoRegla += 1
+                            'totalContenidoRegla += 1
                         End If
                     Loop
 
@@ -1399,94 +1391,6 @@ Public Class cEliza
             Loop
         End Using
     End Sub
-
-#Region " Se usa directamente en el formulario Eliza_claves "
-
-    'Public Function AsignarPalabras(
-    '        ByVal unList As ListBox,
-    '        Optional ByVal unList1 As ListBox,
-    '        Optional ByVal esClave As eTiposDeClaves = eTiposDeClaves.eClaves,
-    '        Optional ByRef sClave As String = "") As Decimal 'Currency
-    '    ' Asigna las palabras a los listbox del form
-    '    ' Devolverá el número de palabras asignadas al ListBox
-    '    Dim tRegla As cRegla
-    '    Dim tRespuestas As cRespuestas
-    '    Dim tContenido As cContenido
-    '    Dim i As Integer, j As Integer
-
-    '    unList.Clear()
-    '    Select Case esClave
-    '        Case eTiposDeClaves.eClaves
-    '            unList1.Clear
-    '            For Each tRegla In m_col.Values
-    '                unList.AddItem(tRegla.Contenido)
-    '                i = i + 1
-    '                For Each tRespuestas In tRegla.Extras.Valores.Values
-    '                    unList1.AddItem(tRespuestas.Contenido)
-    '                    j = j + 1
-    '                Next
-    '            Next
-    '        Case eTiposDeClaves.eExtras
-    '            'Set tRegla = m_col(sClave)
-    '            tRegla = m_col(sClave)
-    '            If tRegla.Extras.Count() > 0 Then
-    '                unList.AddItem("---Extras---")
-    '                For Each tRespuestas In tRegla.Extras.Valores.Values
-    '                    unList.AddItem(tRespuestas.Contenido)
-    '                    i = i + 1
-    '                Next
-    '            End If
-    '            If tRegla.Respuestas.Count > 0 Then
-    '                unList.AddItem("---Respuestas---")
-    '                For Each tContenido In tRegla.Respuestas.Valores.Values
-    '                    unList.AddItem(tContenido.Contenido)
-    '                    j = j + 1
-    '                Next
-    '            End If
-    '        Case eTiposDeClaves.eExtras2
-    '            For Each tRegla In m_col.Values
-    '                If tRegla.Extras.Count > 0 Then
-    '                    For Each tRespuestas In tRegla.Extras.Valores.Values
-    '                        If tRespuestas.Contenido = sClave Then
-    '                            For Each tContenido In tRespuestas.Valores.Values
-    '                                unList.AddItem(tContenido.Contenido)
-    '                                j = j + 1
-    '                            Next
-    '                        End If
-    '                    Next
-    '                End If
-    '            Next
-    '        Case eTiposDeClaves.eVerbos
-    '            For Each tContenido In m_Verbos.Valores.Values
-    '                unList.AddItem(tContenido.ID & " -- " & tContenido.Contenido)
-    '                i = i + 1
-    '            Next
-    '        Case eTiposDeClaves.eRS
-    '            For Each tContenido In m_colRS.Valores.Values
-    '                unList.AddItem(tContenido.ID & " -- " & tContenido.Contenido)
-    '                i = i + 1
-    '            Next
-    '        Case eTiposDeClaves.eSimp
-    '            For Each tContenido In m_colSimp.Valores.Values
-    '                unList.AddItem(tContenido.ID & " -- " & tContenido.Contenido)
-    '                i = i + 1
-    '            Next
-    '        Case eTiposDeClaves.eRec
-    '            For Each tContenido In m_colRec.Valores.Values
-    '                unList.AddItem(tContenido.ID & " -- " & tContenido.Contenido)
-    '                i = i + 1
-    '            Next
-    '        Case eTiposDeClaves.eBU
-    '            For Each tContenido In BaseUser.Valores.Values
-    '                unList.AddItem(tContenido.ID & " -- " & tContenido.Contenido)
-    '                i = i + 1
-    '            Next
-    '    End Select
-    '    'AsignarPalabras = CDec(i + j / 1000)
-    '    Return CDec(i + j / 1000)
-    'End Function
-
-#End Region
 
     Public Property Sexo As eSexo
         Get
@@ -2369,7 +2273,7 @@ Public Class cEliza
                         sFalse = LeftN(sFalse, sFalse.Length - 1)
                     End If
                 End If
-                If BaseUser.ExisteItem(sClave) Then
+                If ColBaseUser.ExisteItem(sClave) Then
                     'Comprobar si hay que sustituir el dato
                     '*usarbase:=signo_zodiaco*
                     'Si después de la clave se
@@ -2378,8 +2282,8 @@ Public Class cEliza
                         'j = InStr(i + 1, sTrue, "*")
                         j = sTrue.IndexOf("*", i + 1)
                         sClave = MidN(sTrue, i + "*usarbase:=".Length, j - (i + "*usarbase:=".Length))
-                        If BaseUser.ExisteItem(sClave) Then
-                            sTrue = LeftN(sTrue, i - 1) & " " & BaseUser.Item(sClave).Contenido & " " & MidN(sTrue, j + 1)
+                        If ColBaseUser.ExisteItem(sClave) Then
+                            sTrue = LeftN(sTrue, i - 1) & " " & ColBaseUser.Item(sClave).Contenido & " " & MidN(sTrue, j + 1)
                         Else
                             sTrue = LeftN(sTrue, i - 1) & " " & MidN(sTrue, j + 1)
                         End If
@@ -2429,10 +2333,10 @@ Public Class cEliza
         sFic = System.IO.Path.Combine(sPath, "Datos_" & Nombre & ".txt")
 
         If AccionLeer Then
-            BaseUser = New cRespuestas
+            ColBaseUser.Clear() ' = New cRespuestas
             'Para que tenga algunos datos
-            BaseUser.Item("Nombre").Contenido = Nombre
-            BaseUser.Item("Sexo").Contenido = If(m_Sexo = eSexo.Femenino, "Femenino", "Masculino")
+            ColBaseUser.Item("Nombre").Contenido = Nombre
+            ColBaseUser.Item("Sexo").Contenido = If(m_Sexo = eSexo.Femenino, "Femenino", "Masculino")
             'Leer los datos, si hay...
             If System.IO.File.Exists(sFic) Then
                 Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
@@ -2443,7 +2347,7 @@ Public Class cEliza
                             If i > -1 Then
                                 sClave = sTmp.Substring(0, i).Trim()
                                 sTmp = sTmp.Substring(i + 1).Trim()
-                                BaseUser.Item(sClave).Contenido = sTmp
+                                ColBaseUser.Item(sClave).Contenido = sTmp
                             End If
                         End If
                     Loop
@@ -2452,12 +2356,9 @@ Public Class cEliza
         Else
             'Guardar los datos
             Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
-                For Each tContenido In BaseUser.Valores '.Values
+                For Each tContenido In ColBaseUser.Valores '.Values
                     sw.WriteLine($"{tContenido.ID}={tContenido.Contenido}")
                 Next
-                'For i = 0 To BaseUser.Count - 1
-                '    sw.WriteLine($"{BaseUser(i).ID}={BaseUser(i).Contenido}")
-                'Next
             End Using
         End If
     End Sub
@@ -2474,7 +2375,7 @@ Public Class cEliza
                 hallado = False
                 For i = 0 To vArray.Length - 1
                     If sEntrada.IndexOf(vArray(i), StringComparison.OrdinalIgnoreCase) > -1 Then
-                        BaseUser.Item(sUsarBaseDatos).Contenido = vArray(i).TrimStart()
+                        ColBaseUser.Item(sUsarBaseDatos).Contenido = vArray(i).TrimStart()
                         hallado = True
                         Exit For
                     End If
@@ -2498,7 +2399,7 @@ Public Class cEliza
             Case Else
                 ' Comprobar si hay que quitar texto de la respuesta,
                 ' por ejemplo, el color del pelo o los ojos: también castaños, etc.
-                BaseUser.Item(sUsarBaseDatos).Contenido = sEntrada
+                ColBaseUser.Item(sUsarBaseDatos).Contenido = sEntrada
         End Select
         ' Guardar los datos
         DatosUsuario(False)

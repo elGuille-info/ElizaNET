@@ -26,9 +26,7 @@ Public Class cRespuestas
         Me.Contenido = contenido
     End Sub
 
-
     Private m_col As New Dictionary(Of String, cContenido) ' Collection
-    'Private m_Contenido As New cContenido
 
     ' Número de elementos en la colección
     Public ReadOnly Property Count As Integer
@@ -36,6 +34,21 @@ Public Class cRespuestas
             Return m_col.Count
         End Get
     End Property
+
+    Public Sub Add(newContenido As String)
+        ' Añadirlo a la colección
+        newContenido = newContenido.Trim()
+        If String.IsNullOrEmpty(newContenido) = False Then
+            Item(newContenido).Contenido = newContenido
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Limpiar el contenido de la colección.
+    ''' </summary>
+    Public Sub Clear()
+        m_col.Clear()
+    End Sub
 
     ''' <summary>
     ''' El elemento con la clave indicada. Si no existe, lo crea y añade a la colección.
@@ -79,14 +92,6 @@ Public Class cRespuestas
             End If
         End Get
     End Property
-
-    Public Sub Add(newContenido As String)
-        ' Añadirlo a la colección
-        newContenido = newContenido.Trim()
-        If String.IsNullOrEmpty(newContenido) = False Then
-            Item(newContenido).Contenido = newContenido
-        End If
-    End Sub
 
     Public Function ExisteItem(sContenido As String) As Boolean
         Return m_col.ContainsKey(sContenido)
