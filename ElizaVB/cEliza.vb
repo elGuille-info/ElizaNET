@@ -155,28 +155,6 @@ Public Class cEliza
     End Enum
     Private m_Sexo As eSexo
 
-    'Public Enum eIdioma
-    '    Spanish '= 0
-    '    English '= 1
-    '    Ninguno '= 2
-    'End Enum
-    'Private m_Idioma As eIdioma
-    'Public Property Get Idioma() As eIdioma
-    '    Idioma = m_Idioma
-    'End Property
-    'Public Property Let Idioma(ByVal NewIdioma As eIdioma)
-    '    'sólo se deben admitir los valores indicados
-    '    'de no ser así se asignará Spanish
-    '    Select Case NewIdioma
-    '    Case Spanish, English
-    '        'nada
-    '    Case Else
-    '        NewIdioma = Spanish
-    '    End Select
-    '    m_Idioma = NewIdioma
-    '
-    'End Property
-
     ' Evento para indicar que el usuario se ha despedido
     'Public Event Terminado()
 
@@ -1236,7 +1214,6 @@ Public Class cEliza
                 If String.IsNullOrEmpty(sTmp) OrElse sTmp.StartsWith(";") Then
                     Continue Do
                 End If
-                'If sTmp.Length > 0 AndAlso sTmp.Substring(0, 1) <> ";" Then
                 sTmpLower = sTmp.ToLower()
                 ' Si no es una sección EXTRAS
                 If sTmpLower <> "[*extras*]" Then
@@ -1247,13 +1224,11 @@ Public Class cEliza
                         ' siempre deben ir por pares
                         Do While Not sr.EndOfStream
                             ' Las palabras estarán separadas por comas
-                            'Line Input #nFic, sTmp
                             sTmp = sr.ReadLine().Trim()
                             If String.IsNullOrEmpty(sTmp) OrElse sTmp.StartsWith(";") Then
                                 Continue Do
                             End If
                             sTmpLower = sTmp.ToLower()
-                            'If sTmp.Length > 0 AndAlso sTmp.Substring(0, 1) <> ";" Then
                             If sTmpLower = "[/rs]" Then
                                 Exit Do
                             ElseIf sTmpLower = "[*simp*]" Then
@@ -1282,7 +1257,6 @@ Public Class cEliza
                                     m_colSimp.Item(sKey).Contenido = sTmp
                                 End If
                             End If
-                            'End If
                         Loop
                     ElseIf sTmpLower = "[*verbos*]" Then
                         ' leer los verbos y sus terminaciones
@@ -1317,7 +1291,6 @@ Public Class cEliza
                             End If
                             ' añadirlo a la colección
                             m_Verbos.Item(sKey).Contenido = sTmp
-                            'End If
                         Loop
                     Else
                         ' debe ser una clave normal
@@ -1361,7 +1334,6 @@ Public Class cEliza
                         If String.IsNullOrEmpty(sTmp) OrElse sTmp.StartsWith(";") Then
                             Continue Do
                         End If
-                        'If sTmp.Length > 0 AndAlso sTmp.Substring(0, 1) <> ";" Then
                         If sTmpLower = "[/extras]" Then
                             Exit Do
                         End If
@@ -1384,10 +1356,8 @@ Public Class cEliza
                                 lasReglas.Item(sKey).Extras.Item(sSubKey).Add(sTmp)
                             End If
                         End If
-                        'End If
                     Loop
                 End If
-                'End If
             Loop
         End Using
     End Sub
@@ -1397,14 +1367,18 @@ Public Class cEliza
             Return m_Sexo
         End Get
         Set(value As eSexo)
-            Select Case value
-                Case eSexo.Masculino, eSexo.Femenino
-                    'nada
-                    m_Sexo = value
-                Case Else
-                    m_Sexo = eSexo.Masculino
-            End Select
-            'm_Sexo = NewSexo
+            If value = eSexo.Ninguno Then
+                m_Sexo = eSexo.Masculino
+            Else
+                m_Sexo = value
+            End If
+            'Select Case value
+            '    Case eSexo.Masculino, eSexo.Femenino
+            '        'nada
+            '        m_Sexo = value
+            '    Case Else
+            '        m_Sexo = eSexo.Masculino
+            'End Select
         End Set
     End Property
 
@@ -1420,8 +1394,6 @@ Public Class cEliza
         Dim sPalabraAnt As String
 
         If String.IsNullOrEmpty(sPalabra) Then
-            'ComprobarVerbos = ""
-            'Exit Function
             Return ""
         End If
 
@@ -1443,7 +1415,8 @@ Public Class cEliza
             'Guardar la palabra por si resulta que no es un verbo
             sPalabraAnt = sPalabra
             hallado = False
-            Select Case RightN(sPalabra, 3)
+            Dim sCase = RightN(sPalabra, 3)
+            Select Case sCase'RightN(sPalabra, 3)
                 Case "rme"
                     sPalabra = LeftN(sPalabra, i) & "rte"
                     hallado = True
@@ -1452,7 +1425,8 @@ Public Class cEliza
                     hallado = True
             End Select
             'Comprobar las terminaciones telo/melo tela/mela
-            Select Case RightN(sPalabra, 4)
+            sCase = RightN(sPalabra, 4)
+            Select Case sCase 'RightN(sPalabra, 4)
                 Case "melo"
                     sPalabra = LeftN(sPalabra, i - 1) & "telo"
                     i -= 2

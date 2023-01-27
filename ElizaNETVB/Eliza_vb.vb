@@ -102,14 +102,12 @@ Friend Class fEliza
             End If
             ' Comprobar si está en la lista
             tmpSexo = -1
-            With List2
-                For i = 0 To .Items.Count - 1
-                    If List2.Items(i).ToString() = sNombre Then
-                        tmpSexo = i
-                        Exit For
-                    End If
-                Next
-            End With
+            For i = 0 To List2.Items.Count - 1
+                If List2.Items(i).ToString() = sNombre Then
+                    tmpSexo = i
+                    Exit For
+                End If
+            Next
             If tmpSexo > -1 Then
                 tSexo = CType(tmpSexo, cEliza.eSexo)
                 Exit Do
@@ -153,24 +151,19 @@ Friend Class fEliza
             Dialogos.MessageBoxShow(sMsgTmp, "", MessageBoxButtons.OK)
             Close()
             Return
-            'End
         End If
 
         ' Comprobar si está en la lista
         tmpSexo = -1
-        With List2
-            For i = 0 To .Items.Count - 1
-                If List2.Items(i).ToString() = sNombre Then
-                    tmpSexo = i
-                    Exit For
-                End If
-            Next
-        End With
+        For i = 0 To List2.Items.Count - 1
+            If List2.Items(i).ToString() = sNombre Then
+                tmpSexo = i
+                Exit For
+            End If
+        Next
         If tmpSexo = -1 Then
             'añadirlo
-            With List2
-                .Items.Add(sNombre)
-            End With
+            List2.Items.Add(sNombre)
             'guardar los nombres
             GuardarNombres()
         End If
@@ -443,11 +436,9 @@ Friend Class fEliza
             End If
 
             Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
-                With List1
-                    For i = 0 To .Items.Count - 1
-                        sw.WriteLine(.Items(i).ToString())
-                    Next
-                End With
+                For i = 0 To List1.Items.Count - 1
+                    sw.WriteLine(.Items(i).ToString())
+                Next
             End Using
         End If
     End Sub
@@ -495,25 +486,20 @@ Friend Class fEliza
     End Function
 
     Private Sub LeerNombres()
-        Dim sFic As String
-        Dim tmpNombre As String
-
-        sFic = AppPath() & "ListaDeNombres.txt"
+        Dim sFic = AppPath() & "ListaDeNombres.txt"
         If System.IO.File.Exists(sFic) Then
-            With List2
-                .Items.Clear()
-                Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
-                    Do While Not sr.EndOfStream
-                        tmpNombre = sr.ReadLine().Trim()
-                        ' Da error si no está inicializado sNombre, 24-ene-2023 12.24
-                        If sNombre.Length = 0 Then
-                            sNombre = tmpNombre
-                        End If
-                        .Items.Add(tmpNombre)
-                        tmpNombre = sr.ReadLine()
-                    Loop
-                End Using
-            End With
+            List2.Items.Clear()
+            Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
+                Do While Not sr.EndOfStream
+                    Dim tmpNombre = sr.ReadLine().Trim()
+                    ' Da error si no está inicializado sNombre, 24-ene-2023 12.24
+                    If sNombre.Length = 0 Then
+                        sNombre = tmpNombre
+                    End If
+                    List2.Items.Add(tmpNombre)
+                    tmpNombre = sr.ReadLine()
+                Loop
+            End Using
         End If
     End Sub
 
