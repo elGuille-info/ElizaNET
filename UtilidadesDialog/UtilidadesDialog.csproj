@@ -5,6 +5,15 @@
     <!--<Nullable>enable</Nullable>-->
     <UseWindowsForms>true</UseWindowsForms>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
+      <Title>Utilidades para los cuadros de diálogo</Title>
+      <Description>Biblioteca de clases para usar los cuadros de diálogo usando TaskDialog.
+Revisión actual del 27/ene/2023
+      </Description>
+      <Authors>Guillermo Som</Authors>
+      <Company>Guille</Company>
+      <Version>1.0</Version>
+      <Copyright>Guillermo Som (Guille), 1998-2002, 2023</Copyright>
+
   </PropertyGroup>
 
 </Project>

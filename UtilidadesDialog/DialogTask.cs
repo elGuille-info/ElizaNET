@@ -24,11 +24,6 @@ namespace UtilidadesDialog;
 
 public class DialogTask
 {
-
-    //
-    // NOTA: Si se modifica este método, actualizar la versión de Visual Basic. (06/abr/22 08.50)
-    //
-
     /// <summary>
     /// Convierte un MessageBox normal a TaskDialog. Indicando el owner (formulario).
     /// </summary>

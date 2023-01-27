@@ -7,6 +7,18 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>disable</ImplicitUsings>
       <!--<ImplicitUsings>enable</ImplicitUsings>-->
+      <Title>ELIZA para C#</Title>
+      <Description>Versión de ELIZA para C#
+El programa ELIZA original fue creado por Joseph Weizenbaum.
+Basado en la versión de Visual Basic 6: revisión 0.17.0.1300 del 18/Sep/2002 (29/Jun/98).
+El original fue creado con Visual Basic 5 el Sábado, 30/May/98 17:30.
+Actual en .NET: revisión del 27/ene/2023
+      </Description>
+      <Authors>Guillermo Som</Authors>
+      <Company>Guille</Company>
+      <Version>1.0</Version>
+      <Copyright>Guillermo Som (Guille), 1998-2002, 2023</Copyright>
+
   </PropertyGroup>
 
   <ItemGroup>

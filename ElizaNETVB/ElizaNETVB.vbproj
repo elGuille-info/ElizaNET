@@ -12,7 +12,7 @@
 El programa ELIZA original fue creado por Joseph Weizenbaum.
 Basado en la versión de Visual Basic 6: revisión 0.17.0.1300 del 18/Sep/2002 (29/Jun/98).
 El original fue creado con Visual Basic 5 el Sábado, 30/May/98 17:30.
-Actual en .NET: revisión del 25/ene/2023
+Actual en .NET: revisión del 27/ene/2023
       </Description>
       <Authors>Guillermo Som</Authors>
       <Company>Guille</Company>
@@ -25,7 +25,7 @@ Actual en .NET: revisión del 25/ene/2023
       <ApplicationIcon>ElizaVB.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Compile Remove="My Project\**" />
     <Compile Remove="palabras\**" />
     <EmbeddedResource Remove="My Project\**" />
@@ -37,7 +37,7 @@ Actual en .NET: revisión del 25/ene/2023
   <ItemGroup>
     <Compile Remove="ApplicationEvents.vb" />
     <Compile Remove="Dialogos.vb" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <Content Include="ElizaVB.ico" />
