@@ -437,7 +437,7 @@ Friend Class fEliza
 
             Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
                 For i = 0 To List1.Items.Count - 1
-                    sw.WriteLine(.Items(i).ToString())
+                    sw.WriteLine(List1.Items(i).ToString())
                 Next
             End Using
         End If
