@@ -186,14 +186,6 @@ Public Class cEliza
 
     Private ReadOnly sSeparadores As String = " .,;:¿?¡!()[]/-" & ChrW(9) & ChrW(34) & vbCr & vbLf
 
-    ''' <summary>
-    ''' Las colección con las reglas
-    ''' </summary>
-    Public ReadOnly Property ColReglas As Dictionary(Of String, cRegla)
-        Get
-            Return m_colReglas
-        End Get
-    End Property
     Public ReadOnly Property ColVerbos As cRespuestas
         Get
             Return m_Verbos
@@ -221,24 +213,35 @@ Public Class cEliza
     End Property
 
     ' Colección de Reglas
-    Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
+    'Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
+    Private ReadOnly lasReglas As New cRegla("Eliza")
 
     ''' <summary>
-    ''' Acceder a una regla en concreto. Si no existe, se añade.
+    ''' Las colección con las reglas
     ''' </summary>
-    ''' <param name="newRegla">La regla que queremos</param>
-    Public Function Reglas(newRegla As String) As cRegla
-        Dim tRegla As cRegla
+    Public ReadOnly Property ColReglas As Dictionary(Of String, cRegla)
+        Get
+            Return lasReglas.Reglas 'm_colReglas
+        End Get
+    End Property
 
-        If m_colReglas.ContainsKey(newRegla) Then
-            tRegla = m_colReglas.Item(newRegla)
-        Else
-            ' Si no existe añadirlo
-            tRegla = New cRegla(newRegla)
-            m_colReglas.Add(newRegla, tRegla)
-        End If
-        Return tRegla
-    End Function
+    '''' <summary>
+    '''' Acceder a una regla en concreto. Si no existe, se añade.
+    '''' </summary>
+    '''' <param name="newRegla">La regla que queremos</param>
+    'Public Function Reglas(newRegla As String) As cRegla
+    '    Return lasReglas.Item(newRegla)
+    '    'Dim tRegla As cRegla
+
+    '    'If ColReglas.ContainsKey(newRegla) Then
+    '    '    tRegla = ColReglas.Item(newRegla)
+    '    'Else
+    '    '    ' Si no existe añadirlo
+    '    '    tRegla = New cRegla(newRegla)
+    '    '    ColReglas.Add(newRegla, tRegla)
+    '    'End If
+    '    'Return tRegla
+    'End Function
 
     ' Esto es lo que en realidad hay que revisar porque no lo analiza... (24/ene/23 13.37)
     Public Function ProcesarEntrada(sEntrada As String) As String
@@ -340,8 +343,8 @@ Public Class cEliza
                 sPalabra = sUsarPregunta.Substring(i + 8).TrimStart()
                 Dim tRegla As cRegla
 
-                If m_colReglas.ContainsKey(sPalabra) Then
-                    tRegla = m_colReglas(sPalabra)
+                If ColReglas.ContainsKey(sPalabra) Then
+                    tRegla = ColReglas(sPalabra)
                 Else
                     tRegla = Nothing
                 End If
@@ -350,7 +353,7 @@ Public Class cEliza
                 Else
                     ' No existe como clave principal,
                     ' hay que buscarlo en las sub-claves
-                    For Each tRegla In m_colReglas.Values
+                    For Each tRegla In ColReglas.Values
                         sUsarPregunta = BuscarReglas(sPalabra, tRegla)
                         If String.IsNullOrEmpty(sUsarPregunta) = False Then
                             Exit For
@@ -446,7 +449,7 @@ Public Class cEliza
             LeerReglasEliza()
         Else
             ' Inicializar el valor del último item usado
-            For Each tRegla In m_colReglas.Values
+            For Each tRegla In ColReglas.Values
                 ' poner a cero las respuestas normales
                 tRegla.Respuestas.UltimoItem = 0
                 ' poner a cero las respuestas de la sección Extras
@@ -612,7 +615,7 @@ Public Class cEliza
         Dim i As Integer
 
         sClaves = ""
-        For Each tRegla In m_colReglas.Values
+        For Each tRegla In ColReglas.Values
             i = sEntrada.IndexOf(tRegla.Contenido, StringComparison.OrdinalIgnoreCase)
             If i > -1 Then
                 ' comprobar si es una palabra completa
@@ -983,12 +986,12 @@ Public Class cEliza
         ' De esta forma se continúa aunque se añadan más reglas
         Dim n As Integer = -1
         'Dim cuantasReglasInicial = m_col.Values.Count - 1
-        Dim cuantasReglas = m_colReglas.Values.Count - 1 'cuantasReglasInicial
+        Dim cuantasReglas = ColReglas.Values.Count - 1 'cuantasReglasInicial
         Do
             n += 1
             ' ajustar el límite por si se añaden nuevas reglas
-            If m_colReglas.Values.Count - 1 > cuantasReglas Then
-                cuantasReglas = m_colReglas.Values.Count - 1
+            If ColReglas.Values.Count - 1 > cuantasReglas Then
+                cuantasReglas = ColReglas.Values.Count - 1
             End If
             If n > cuantasReglas Then Exit Do
 
@@ -996,7 +999,7 @@ Public Class cEliza
             '    Debug.WriteLine("{0}, {1}, {2}", n, cuantasReglasInicial, cuantasReglas)
             'End If
 
-            tRegla = m_colReglas.Values.ElementAt(n)
+            tRegla = ColReglas.Values.ElementAt(n)
 
             ' Para probar si encontraba esto
             'If tRegla.Contenido.Contains("color {* son tus") Then
@@ -1037,7 +1040,7 @@ Public Class cEliza
 
                     ' Para que no hayan dos espacios seguidos en la clave
                     sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                    With Reglas(sPalabra)
+                    With lasReglas.Item(sPalabra)
                         .Nivel = tRegla.Nivel
                         .Aleatorio = tRegla.Aleatorio
                         .Respuestas.Add("*equal:=" & tRegla.Contenido)
@@ -1061,7 +1064,7 @@ Public Class cEliza
                                 sTmp = ""
                             End If
                             sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                            With Reglas(sPalabra)
+                            With lasReglas.Item(sPalabra)
                                 .Nivel = tRegla.Nivel
                                 .Aleatorio = tRegla.Aleatorio
                                 .Respuestas.Add("*equal:=" & tRegla.Contenido)
@@ -1174,8 +1177,7 @@ Public Class cEliza
                     sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
 
                     sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                    Reglas(tRegla.Contenido).Extras.Item(sPalabra).Add("*equal:=" & tRespuestas.Contenido)
-                    '$Reglas(tRegla.Contenido).Extras(sPalabra).Add "*equal:=" & tRegla.Contenido
+                    lasReglas.Item(tRegla.Contenido).Extras.Item(sPalabra).Add("*equal:=" & tRespuestas.Contenido)
 
                     Do While sTmp.Length > 0
                         sPalabra = SiguientePalabra(sTmp, sSeparador, ";")
@@ -1188,8 +1190,7 @@ Public Class cEliza
                             End If
 
                             sPalabra = QuitarEspaciosExtras(sSubKey & sPalabra & sPalabra1)
-                            Reglas(tRegla.Contenido).Extras.Item(sPalabra).Add("*equal:=" & tRespuestas.Contenido)
-                            '$Reglas(tRegla.Contenido).Extras(sPalabra).Add "*equal:=" & tRegla.Contenido
+                            lasReglas.Item(tRegla.Contenido).Extras.Item(sPalabra).Add("*equal:=" & tRespuestas.Contenido)
                         End If
                     Loop
                 End If
@@ -1340,19 +1341,19 @@ Public Class cEliza
                             ' Si tiene @ es para tomarlo aleatoriamente
                             If sTmp.EndsWith("@") Then
                                 sTmp = sTmp.Replace("@", "")
-                                Reglas(sKey).Aleatorio = True
+                                lasReglas.Item(sKey).Aleatorio = True
                             Else
-                                Reglas(sKey).Aleatorio = False
+                                lasReglas.Item(sKey).Aleatorio = False
                             End If
 
                             Dim n = 0
                             Dim __ = Integer.TryParse(sTmp, n)
-                            Reglas(sKey).Nivel = n
+                            lasReglas.Item(sKey).Nivel = n
                         Else
                             ' Sino es una clave, es una respuesta
                             ' de la última clave encontrada.
                             ' Añadirla a la clave actual
-                            Reglas(sKey).Respuestas.Add(sTmp)
+                            lasReglas.Item(sKey).Respuestas.Add(sTmp)
                         End If
                     End If
                 Else
@@ -1375,7 +1376,7 @@ Public Class cEliza
                         ' Si es una clave, empezará por [
                         If sTmp.StartsWith("[") Then
                             sSubKey = sTmp.Substring(1, sTmp.Length - 2)
-                            Reglas(sKey).Extras.Item(sSubKey).Contenido = sSubKey
+                            lasReglas.Item(sKey).Extras.Item(sSubKey).Contenido = sSubKey
                         Else
                             ' si no es una clave
 
@@ -1388,7 +1389,7 @@ Public Class cEliza
                                 Exit Do
                             Else
                                 ' debe ser una respuesta para esta subClave
-                                Reglas(sKey).Extras.Item(sSubKey).Add(sTmp)
+                                lasReglas.Item(sKey).Extras.Item(sSubKey).Add(sTmp)
                             End If
                         End If
                         'End If
@@ -1950,7 +1951,7 @@ Public Class cEliza
         Dim nMayor As Integer = 0
         Dim sMayor As String = ""
 
-        For Each tRegla In m_colReglas.Values
+        For Each tRegla In ColReglas.Values
             'sub-claves (extras)
             i += tRegla.Extras.Count
             'respuestas
@@ -1969,10 +1970,10 @@ Public Class cEliza
             .Item("Palabras usadas para simplificar").Contenido = m_colRS.Count.ToString()
             .Item("Palabras usadas para sustitución").Contenido = m_colSimp.Count.ToString()
             .Item("Verbos").Contenido = m_Verbos.Count.ToString()
-            .Item("Palabras claves").Contenido = m_colReglas.Count.ToString()
+            .Item("Palabras claves").Contenido = ColReglas.Count.ToString()
             .Item("Sub-Claves (variantes de las claves)").Contenido = i.ToString()
             .Item("-----").Contenido = "-----"
-            .Item("Número total de palabras reconocidas").Contenido = (m_colSimp.Count + m_colRS.Count + m_Verbos.Count + m_colReglas.Count + i).ToString()
+            .Item("Número total de palabras reconocidas").Contenido = (m_colSimp.Count + m_colRS.Count + m_Verbos.Count + ColReglas.Count + i).ToString()
             .Item("------").Contenido = "-----"
             .Item("Respuestas en palabras claves").Contenido = j.ToString()
             .Item("Respuestas en Sub-Claves").Contenido = k.ToString()
@@ -2003,7 +2004,7 @@ Public Class cEliza
             End If
         End If
         ' Buscar esta palabra clave en la lista
-        For Each tRegla In m_colReglas.Values
+        For Each tRegla In ColReglas.Values
             ' buscar la palabra en cada una de las "claves" y subclaves
             sRespuesta = BuscarReglas(sPalabra, tRegla)
             If sRespuesta.Length > 0 Then
@@ -2032,13 +2033,13 @@ Public Class cEliza
             'sPalabra = MidN(sRespuesta, i + 8).TrimStart()
             sPalabra = MidN(sRespuesta, 8).TrimStart()
             'tRegla = m_col(sPalabra)
-            If m_colReglas.ContainsKey(sPalabra) Then
-                tRegla = m_colReglas(sPalabra)
+            If ColReglas.ContainsKey(sPalabra) Then
+                tRegla = ColReglas(sPalabra)
                 sRespuesta = BuscarReglas(sPalabra, tRegla)
             Else
                 ' No existe como clave principal,
                 ' hay que buscarlo en las sub-claves
-                For Each tRegla In m_colReglas.Values
+                For Each tRegla In ColReglas.Values
                     sRespuesta = BuscarReglas(sPalabra, tRegla)
                     If sRespuesta.Length > 0 Then
                         Exit For
@@ -2062,8 +2063,8 @@ Public Class cEliza
         Const NUM_RESPUESTAS As Integer = 10
 
         sRespuesta = ""
-        If m_colReglas.ContainsKey(sPalabra) Then
-            tRegla = m_colReglas(sPalabra)
+        If ColReglas.ContainsKey(sPalabra) Then
+            tRegla = ColReglas(sPalabra)
         Else
             Return sRespuesta
         End If

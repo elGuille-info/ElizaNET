@@ -17,19 +17,15 @@ Option Explicit On
 
 Public Class cRegla
 
+    ''' <summary>
+    ''' Una colección con reglas, solo se utiliza desde cEliza.
+    ''' </summary>
     Private ReadOnly m_colReglas As New Dictionary(Of String, cRegla)
-    'Public Function Reglas(newRegla As String) As cRegla
-    '    Dim tRegla As cRegla
 
-    '    If m_colReglas.ContainsKey(newRegla) Then
-    '        tRegla = m_colReglas.Item(newRegla)
-    '    Else
-    '        ' Si no existe añadirlo
-    '        tRegla = New cRegla(newRegla)
-    '        m_colReglas.Add(newRegla, tRegla)
-    '    End If
-    '    Return tRegla
-    'End Function
+    ''' <summary>
+    ''' Accede a un elemento de las reglas de esta clase. Si existe devuelve esa regla, si no, la añade.
+    ''' </summary>
+    ''' <param name="newContenido">La clave de la regla.</param>
     Public ReadOnly Property Item(newContenido As String) As cRegla
         Get
             Dim tRegla As cRegla
@@ -46,12 +42,14 @@ Public Class cRegla
         End Get
     End Property
 
-    Public ReadOnly Property LasReglas As Dictionary(Of String, cRegla)
+    ''' <summary>
+    ''' Accede a la colección interna de reglas.
+    ''' </summary>
+    Public ReadOnly Property Reglas As Dictionary(Of String, cRegla)
         Get
             Return m_colReglas
         End Get
     End Property
-
 
     ''' <summary>
     ''' Si se deben tomar las respuestas de forma aleatoria.
