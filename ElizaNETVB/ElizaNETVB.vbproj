@@ -7,7 +7,7 @@
       <StartupObject>Sub Main</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-      <Title>ELIZA para Visual Basic</Title>
+      <Title>ELIZA para Visual Basic .NET</Title>
       <Description>Versión de ELIZA para Visual Basic .NET.
 El programa ELIZA original fue creado por Joseph Weizenbaum.
 Basado en la versión de Visual Basic 6: revisión 0.17.0.1300 del 18/Sep/2002 (29/Jun/98).
