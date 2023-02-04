@@ -330,7 +330,7 @@ namespace ElizaNETCS
 
             Show();
 
-            Eliza = new cEliza(AppPath())
+            Eliza = new cEliza(ElizaLocalPath())
             {
                 Sexo = cEliza.eSexo.Ninguno
             };
@@ -506,7 +506,7 @@ namespace ElizaNETCS
             // preguntar el nombre del fichero
             // o crearlo automáticamente
 
-            var sDir = System.IO.Path.Combine(AppPath(), "sesiones");
+            var sDir = System.IO.Path.Combine(ElizaLocalPath(), "sesiones");
             var sFic = System.IO.Path.Combine(sDir, $"{sNombre}_{DateTime.Now:ddMMMyyyy_HHmm}.txt");
             if (UtilDialog.InputBox(sNombre + " escribe el nombre del fichero:", "Guardar sesión", ref sFic) != DialogResult.OK)
             {
@@ -590,7 +590,7 @@ namespace ElizaNETCS
         {
             //string sFic;
             //string tmpNombre;
-            //sFic = AppPath() + "ListaDeNombres.txt";
+            //sFic = ElizaLocalPath() + "ListaDeNombres.txt";
             //if (System.IO.File.Exists(sFic))
             //{
             //    List2.Items.Clear();
@@ -610,7 +610,7 @@ namespace ElizaNETCS
             //        }
             //    }
             //}
-            string sFic = System.IO.Path.Combine(AppPath(), "ListaDeNombres.txt");
+            string sFic = System.IO.Path.Combine(ElizaLocalPath(), "ListaDeNombres.txt");
             if (System.IO.File.Exists(sFic))
             {
                 ColList2.Clear();
@@ -637,7 +637,7 @@ namespace ElizaNETCS
         private void GuardarNombres()
         {
             //string sFic;
-            //sFic = AppPath() + "ListaDeNombres.txt";
+            //sFic = ElizaLocalPath() + "ListaDeNombres.txt";
             ////using (System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8))
             //using System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8);
             //for (var i = 0; i <= List2.Items.Count - 1; i++)
@@ -645,7 +645,7 @@ namespace ElizaNETCS
             //    sw.WriteLine(List2.Items[i].ToString());
             //    //sw.WriteLine("0"); // el sexo
             //}
-            string sFic = System.IO.Path.Combine(AppPath(),"ListaDeNombres.txt");
+            string sFic = System.IO.Path.Combine(ElizaLocalPath(),"ListaDeNombres.txt");
             using System.IO.StreamWriter sw = new(sFic, false, Encoding.UTF8);
             foreach (var unNombre in ColList2)
             {
@@ -692,12 +692,28 @@ namespace ElizaNETCS
                 e.Handled = true;
             }
         }
-        public static string AppPath()
+
+        //private static string _elizaDatos;
+        ///// <summary>
+        ///// Directorio donde se copian los datos de Eliza.
+        ///// </summary>
+        //public static string ElizaDatos { get => _elizaDatos; }
+
+        /// <summary>
+        /// El path donde se guardarán los datos (LocalApplicationData).
+        /// </summary>
+        /// <remarks>Antes en el directorio del ejecutable.</remarks>
+        public static string ElizaLocalPath()
         {
-            // Devuelve el path del ejecutable con la barra final            (15/Sep/02)
-            var ensamblado = typeof(fEliza).Assembly;
-            var elPath = System.IO.Path.GetDirectoryName(ensamblado.Location);
-            return elPath + (elPath.EndsWith(@"\") ? "" : @"\");
+            //// Devuelve el path del ejecutable con la barra final            (15/Sep/02)
+            //var ensamblado = typeof(fEliza).Assembly;
+            //var elPath = System.IO.Path.GetDirectoryName(ensamblado.Location);
+            //return elPath + (elPath.EndsWith(@"\") ? "" : @"\");
+
+            var localAppData = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            var localEliza = System.IO.Path.Combine(localAppData, "Eliza");
+            //_elizaDatos = localEliza;
+            return localEliza;
         }
     }
 }

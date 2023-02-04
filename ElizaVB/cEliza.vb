@@ -80,7 +80,7 @@ Option Compare Text
 
 Public Class cEliza
 
-    Private ReadOnly m_AppPath As String
+    Private ReadOnly m_ElizaLocalPath As String
 
     Public Sub New(appPath As String)
         'm_Idioma = Spanish
@@ -88,7 +88,7 @@ Public Class cEliza
         'm_Iniciado = False
         Iniciado = False
         m_Releer = False
-        m_AppPath = appPath
+        m_ElizaLocalPath = appPath
     End Sub
 
     ' ¿Esto se debe usar con signos de admiración, etc.?
@@ -857,22 +857,22 @@ Public Class cEliza
         'Do While i <= sValor.Length
         'Do While i < sValor.Length
         Do While i + iLen < sValor.Length
-                If sValor.Substring(i, iLen) = sCaracter Then
-                    If bPoner Then
-                        sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + iLen)}"
-                        i -= 1
-                        ' Si lo que hay que poner está incluido en
-                        ' lo que se busca, incrementar el puntero
-                        '                                   (11/Jun/98)
-                        If sCh.IndexOf(sCaracter) > -1 Then
-                            i += 1
-                        End If
-                    Else
-                        sValor = $"{sValor.Substring(0, i)}{sValor.Substring(i + iLen)}"
+            If sValor.Substring(i, iLen) = sCaracter Then
+                If bPoner Then
+                    sValor = $"{sValor.Substring(0, i)}{sCh}{sValor.Substring(i + iLen)}"
+                    i -= 1
+                    ' Si lo que hay que poner está incluido en
+                    ' lo que se busca, incrementar el puntero
+                    '                                   (11/Jun/98)
+                    If sCh.IndexOf(sCaracter) > -1 Then
+                        i += 1
                     End If
+                Else
+                    sValor = $"{sValor.Substring(0, i)}{sValor.Substring(i + iLen)}"
                 End If
-                i += 1
-            Loop
+            End If
+            i += 1
+        Loop
         'End If
 
         Return sValor
@@ -913,8 +913,10 @@ Public Class cEliza
         Return sPalabra.ToString()
     End Function
 
+    ' Habría que copiar las palabras en el directorio de ElizaLocalPath
+
     ''' <summary>
-    ''' Lee las reglas de los ficheros del directorio "palabras" donde está el ejecutable.
+    ''' Lee las reglas de los ficheros del directorio "palabras" donde está la DLL.
     ''' </summary>
     ''' <remarks>Lee los ficheros y crea las reglas y sub-reglas.</remarks>
     Private Sub LeerReglasEliza()
@@ -926,8 +928,13 @@ Public Class cEliza
         Dim otrosEliza As String()
 
         ' El directorio de datos
-        ' Ahora está en el directorio de estq DLL.              (26/ene/23 22.20)
-        'sDir = System.IO.Path.Combine(AppPath(), "palabras")
+        ' Ahora está en el directorio de esta DLL.              (26/ene/23 22.20)
+        '
+        ' El problema es que el path indicado será el de la carpeta del ejecutable,
+        ' y ahí no estarán los ficheros.
+        ' Por tanto, las palabras deben estar en el proyecto del ejecutable.
+        '
+        'sDir = System.IO.Path.Combine(ElizaLocalPath(), "palabras")
         sDir = System.IO.Path.Combine(DLLPath(), "palabras")
 
         ' El primer fichero en leer será Eliza_SPA.txt
@@ -2281,7 +2288,7 @@ Public Class cEliza
         Dim sClave As String
         Dim sPath As String
 
-        sPath = System.IO.Path.Combine(AppPath(), "Bases")
+        sPath = System.IO.Path.Combine(ElizaLocalPath(), "Bases")
         If System.IO.Directory.Exists(sPath) = False Then
             System.IO.Directory.CreateDirectory(sPath)
         End If
@@ -2291,7 +2298,7 @@ Public Class cEliza
             ColBaseUser.Clear() ' = New cRespuestas
             'Para que tenga algunos datos
             ColBaseUser.Item("Nombre").Contenido = Nombre
-            ColBaseUser.Item("Sexo").Contenido = If(m_Sexo = eSexo.Femenino, "Femenino", "Masculino")
+            ColBaseUser.Item("Sexo").Contenido = m_Sexo.ToString() 'If(m_Sexo = eSexo.Femenino, "Femenino", "Masculino")
             'Leer los datos, si hay...
             If System.IO.File.Exists(sFic) Then
                 Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
@@ -2362,34 +2369,33 @@ Public Class cEliza
     End Function
 
     ''' <summary>
-    ''' El path de la aplicación ejecutable.
+    ''' El path de la aplicación ejecutable (ahora el directorio Eliza en LocalPath).
     ''' </summary>
-    Private Function AppPath() As String
-        Return m_AppPath
+    Private Function ElizaLocalPath() As String
+        Return m_ElizaLocalPath
     End Function
 
     ''' <summary>
     ''' El directorio de esta DLL.
     ''' </summary>
-    ''' <returns></returns>
     Private Shared Function DLLPath() As String
         Dim ensamblado = GetType(cEliza).Assembly
         Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
         Return elPath & If(elPath.EndsWith("\"), "", "\")
     End Function
 
-    ''' <summary>
-    ''' Devuelve la información de esta DLL.
-    ''' </summary>
-    Public Shared Function VersionDLL() As String
-        Dim ensamblado = GetType(cEliza).Assembly
-        Dim fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location)
-        ' FileDescription en realidad muestra (o eso parece) lo mismo de ProductName
-        Dim s = $"{fvi.ProductName} v{fvi.ProductVersion} ({fvi.FileVersion})" &
-            $"{vbCrLf}{fvi.Comments}"
+    '''' <summary>
+    '''' Devuelve la información de esta DLL.
+    '''' </summary>
+    'Public Shared Function VersionDLL() As String
+    '    Dim ensamblado = GetType(cEliza).Assembly
+    '    Dim fvi = FileVersionInfo.GetVersionInfo(ensamblado.Location)
+    '    ' FileDescription en realidad muestra (o eso parece) lo mismo de ProductName
+    '    Dim s = $"{fvi.ProductName} v{fvi.ProductVersion} ({fvi.FileVersion})" &
+    '        $"{vbCrLf}{fvi.Comments}"
 
-        Return s
-    End Function
+    '    Return s
+    'End Function
 
     ''' <summary>
     ''' Devuelve los n últimos caracteres de la cadena indicada.
@@ -2404,49 +2410,5 @@ Public Class cEliza
 
         Return texto.Substring(len - n, n)
     End Function
-
-    '''' <summary>
-    '''' Devuelve los n primeros caracteres de la cadena indicada.
-    '''' </summary>
-    '''' <param name="texto"></param>
-    '''' <param name="n"></param>
-    '''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    'Public Shared Function LeftN(texto As String, n As Integer) As String
-    '    If String.IsNullOrEmpty(texto) Then Return texto
-    '    Dim len = texto.Length
-    '    If n > len OrElse n < 1 Then Return "" 'texto
-
-    '    Return texto.Substring(0, n)
-    'End Function
-
-    '''' <summary>
-    '''' Devuelve a partir del carácter n de la cadena indicada.
-    '''' </summary>
-    '''' <param name="texto"></param>
-    '''' <param name="n"></param>
-    '''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    'Public Shared Function MidN(texto As String, n As Integer) As String
-    '    If String.IsNullOrEmpty(texto) Then Return texto
-    '    Dim len = texto.Length
-    '    If n > len OrElse n < 1 Then Return "" 'texto
-
-    '    Return texto.Substring(n)
-    'End Function
-
-    '''' <summary>
-    '''' Devuelve t caracteres a partir del carácter n de la cadena indicada.
-    '''' </summary>
-    '''' <param name="texto"></param>
-    '''' <param name="n"></param>
-    '''' <param name="t"></param>
-    '''' <remarks>Si n es mayor que la longitud o es menor de uno, se devuelve la cadena vacía.</remarks>
-    'Public Shared Function MidN2(texto As String, n As Integer, t As Integer) As String
-    '    If String.IsNullOrEmpty(texto) Then Return texto
-    '    Dim len = texto.Length
-    '    If n > len OrElse n < 1 OrElse t > len OrElse t < 1 Then Return "" 'texto
-    '    If n + t > len Then Return ""
-
-    '    Return texto.Substring(n, t)
-    'End Function
 
 End Class

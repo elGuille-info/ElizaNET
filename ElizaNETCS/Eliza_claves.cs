@@ -88,7 +88,7 @@ namespace ElizaNETCS
                 Show();
                 _Label1_2.Text = "Un momento, mientras cargo la lista de claves...";
                 // Crear el objeto
-                Eliza = new cEliza(fEliza.AppPath());
+                Eliza = new cEliza(fEliza.ElizaLocalPath());
                 var sw = Stopwatch.StartNew();
                 Eliza.Inicializar();
                 sw.Stop();
