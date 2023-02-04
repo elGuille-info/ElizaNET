@@ -20,7 +20,7 @@ Revisión actual del 27/ene/2023
     <None Update="palabras\ElizaVB_prog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="palabras\ElizaVB_sueños.txt">
+    <None Update="palabras\ElizaVB_suenios.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="palabras\ElizaVB_zodiaco.txt">
