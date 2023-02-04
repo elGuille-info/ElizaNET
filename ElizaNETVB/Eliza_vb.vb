@@ -165,8 +165,10 @@ Friend Class fEliza
             'añadirlo
             List2.Items.Add(sNombre)
             'guardar los nombres
-            GuardarNombres()
+            'GuardarNombres()
         End If
+        'guardar siempre los nombres
+        GuardarNombres()
 
         List1.Items.Clear()
         List1.Items.Add($"Sesión iniciada el: {Date.Now:dddd, dd/MMM/yyyy HH:mm}")

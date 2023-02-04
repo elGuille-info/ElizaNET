@@ -36,18 +36,22 @@ namespace ElizaNETCS
 
         private string sNombre = ""; // asignarle una cadena vacía, 24-ene-2023 12.24
 
-        // Private WithEvents Eliza As cEliza
         private cEliza Eliza;
         private bool m_Terminado;
 
         private bool SesionGuardada;
         private string sEntradaAnterior = "";
 
+        // Los nombres y el sexo
+        private readonly Dictionary<string, cEliza.eSexo> ColList2 = new();
+
+
         private void cmdNuevo_Click(object sender, EventArgs e)
         {
             cEliza.eSexo tSexo = cEliza.eSexo.Masculino;
             string sSexo;
-            int tmpSexo;
+            //int tmpSexo;
+            bool tmpSexo;
             string sMsgTmp;
             Random m_rnd = new();
 
@@ -68,63 +72,85 @@ namespace ElizaNETCS
             {
                 if (UtilDialog.InputBox("Por favor dime tu nombre, o la forma en que quieres que te llame, (deja la respuesta en blanco para terminar)", "Saber quién eres", ref sNombre) != DialogResult.OK)
                     sNombre = "";
-                sNombre = sNombre.Trim();
-                if (sNombre.Length == 0)
+                //sNombre = sNombre.Trim();
+                //if (sNombre.Length == 0)
+                //{
+                //    m_Terminado = false;
+                //    sMsgTmp = "Adios, hasta la próxima sesión.";
+                //    break;
+                //}
+                if (!string.IsNullOrEmpty(sNombre))
+                {
+                    sNombre = sNombre.Trim();
+                }
+                if (string.IsNullOrEmpty(sNombre))
                 {
                     m_Terminado = false;
                     sMsgTmp = "Adios, hasta la próxima sesión.";
                     break;
                 }
                 // Comprobar si está en la lista
-                tmpSexo = -1;
+                //tmpSexo = -1;
+                //{
+                //    for (var i = 0; i <= List2.Items.Count - 1; i++)
+                //    {
+                //        if (List2.Items[i].ToString() == sNombre)
+                //        {
+                //            tmpSexo = i;
+                //            break;
+                //        }
+                //    }
+                //}
+                //if (tmpSexo > -1)
+                //{
+                //    tSexo = (cEliza.eSexo)tmpSexo;
+                //    break;
+                //}
+                tmpSexo = false;
+                foreach (var unNombre in ColList2)
                 {
-                    for (var i = 0; i <= List2.Items.Count - 1; i++)
+                    if (unNombre.Key == sNombre)
                     {
-                        if (List2.Items[i].ToString() == sNombre)
-                        {
-                            tmpSexo = i;
-                            break;
-                        }
+                        tSexo = unNombre.Value;
+                        tmpSexo = true;
+                        break;
                     }
                 }
-
-                if (tmpSexo > -1)
+                // Salir si se ha encontrado y está asignado el sexo
+                if (tmpSexo && tSexo != cEliza.eSexo.Ninguno)
                 {
-                    tSexo = (cEliza.eSexo)tmpSexo;
                     break;
                 }
+
                 // tener una serie de nombres para no pecar de "tonto"
-                sSexo = "masculino";
-                tSexo = cEliza.eSexo.Masculino;
-                if (sNombre.Length > 0)
+                //sSexo = "masculino";
+                //tSexo = cEliza.eSexo.Masculino;
+                tSexo = SexoNombre();
+                sSexo = tSexo == cEliza.eSexo.Femenino ? "femenino" : "masculino";
+                if (tSexo == cEliza.eSexo.Ninguno)
                 {
-                    tSexo = SexoNombre();
-                    sSexo = tSexo == cEliza.eSexo.Femenino ? "femenino" : "masculino";
-                    if (tSexo == cEliza.eSexo.Ninguno)
+                    if (sNombre.EndsWith("a"))
                     {
-                        if (sNombre.EndsWith("a"))
+                        sSexo = "femenino";
+                        tSexo = cEliza.eSexo.Femenino;
+                    }
+                    else
+                    {
+                        sSexo = "masculino";
+                        tSexo = cEliza.eSexo.Masculino;
+                    }
+
+                    if (Dialogos.MessageBoxShow(sNombre + " por favor confirmame que tu sexo es: " + sSexo, "", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        if (tSexo == cEliza.eSexo.Femenino)
                         {
-                            sSexo = "femenino";
-                            tSexo = cEliza.eSexo.Femenino;
+                            tSexo = cEliza.eSexo.Masculino;
+                            sSexo = "masculino";
                         }
                         else
                         {
-                            sSexo = "masculino";
-                            tSexo = cEliza.eSexo.Masculino;
-                        }
-
-                        if (Dialogos.MessageBoxShow(sNombre + " por favor confirmame que tu sexo es: " + sSexo, "", MessageBoxButtons.YesNo) == DialogResult.No)
-                        {
-                            if (tSexo == cEliza.eSexo.Femenino)
-                            {
-                                tSexo = cEliza.eSexo.Masculino;
-                                sSexo = "masculino";
-                            }
-                            else
-                            {
-                                tSexo = cEliza.eSexo.Femenino;
-                                sSexo = "femenino";
-                            }
+                            tSexo = cEliza.eSexo.Femenino;
+                            sSexo = "femenino";
                         }
                     }
                 }
@@ -143,26 +169,45 @@ namespace ElizaNETCS
             }
 
             // Comprobar si está en la lista
-            tmpSexo = -1;
+            //tmpSexo = -1;
+            //{
+            //    for (var i = 0; i <= List2.Items.Count - 1; i++)
+            //    {
+            //        if (List2.Items[i].ToString() == sNombre)
+            //        {
+            //            tmpSexo = i;
+            //            break;
+            //        }
+            //    }
+            //}
+            //if (tmpSexo == -1)
+            //{
+            //    // añadirlo
+            //    {
+            //        List2.Items.Add(sNombre);
+            //    }
+            //    // guardar los nombres
+            //    GuardarNombres();
+            //}
+            // Comprobar si está en la lista
+            tmpSexo = false;
+            foreach (var unNombre in ColList2)
             {
-                for (var i = 0; i <= List2.Items.Count - 1; i++)
+                if (unNombre.Key == sNombre)
                 {
-                    if (List2.Items[i].ToString() == sNombre)
-                    {
-                        tmpSexo = i;
-                        break;
-                    }
+                    tmpSexo = true;
+                    break;
                 }
             }
-            if (tmpSexo == -1)
+            if (tmpSexo == false)
             {
                 // añadirlo
-                {
-                    List2.Items.Add(sNombre);
-                }
+                ColList2.Add(sNombre, tSexo);
                 // guardar los nombres
-                GuardarNombres();
+                //GuardarNombres();
             }
+            // guardar siempre los nombres
+            GuardarNombres();
 
             List1.Items.Clear();
             List1.Items.Add($"Sesión iniciada el: {DateTime.Now}");
@@ -525,41 +570,69 @@ namespace ElizaNETCS
 
         private void LeerNombres()
         {
-            string sFic;
-            string tmpNombre;
-
-            sFic = AppPath() + "ListaDeNombres.txt";
+            //string sFic;
+            //string tmpNombre;
+            //sFic = AppPath() + "ListaDeNombres.txt";
+            //if (System.IO.File.Exists(sFic))
+            //{
+            //    List2.Items.Clear();
+            //    using System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true);
+            //    while (!sr.EndOfStream)
+            //    {
+            //        tmpNombre = sr.ReadLine();
+            //        if (string.IsNullOrEmpty(sNombre))
+            //        {
+            //            sNombre = tmpNombre;
+            //        }
+            //        List2.Items.Add(tmpNombre);
+            //        // Era para el sexo, pero no se usa
+            //        if (sr.EndOfStream == false)
+            //        {
+            //            tmpNombre = sr.ReadLine();
+            //        }
+            //    }
+            //}
+            string sFic = System.IO.Path.Combine(AppPath(), "ListaDeNombres.txt");
             if (System.IO.File.Exists(sFic))
             {
+                ColList2.Clear();
+                using System.IO.StreamReader sr = new(sFic, Encoding.UTF8, true);
+                while (!sr.EndOfStream)
                 {
-                    List2.Items.Clear();
-                    //using (System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true))
-                    using System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true);
-                    while (!sr.EndOfStream)
+                    cEliza.eSexo elSexo = cEliza.eSexo.Ninguno;
+                    var tmpNombre = sr.ReadLine();
+                    if (string.IsNullOrEmpty(sNombre))
                     {
-                        tmpNombre = sr.ReadLine().Trim();
-                        // Da error si no está inicializado sNombre, 24-ene-2023 12.24
-                        if (sNombre.Length == 0)
-                            sNombre = tmpNombre;
-                        List2.Items.Add(tmpNombre);
-                        // Era para el sexo, pero no se usa
-                        //tmpNombre = sr.ReadLine();
+                        sNombre = tmpNombre;
                     }
+                    if (sr.EndOfStream == false)
+                    {
+                        string tmpSexo = sr.ReadLine().Trim();
+                        if (tmpSexo == "masculino") elSexo = cEliza.eSexo.Masculino;
+                        else if (tmpSexo == "femenino") elSexo = cEliza.eSexo.Femenino;
+                    }
+                    ColList2.Add(tmpNombre, elSexo);
                 }
             }
         }
 
         private void GuardarNombres()
         {
-            string sFic;
-
-            sFic = AppPath() + "ListaDeNombres.txt";
-            //using (System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8))
-            using System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8);
-            for (var i = 0; i <= List2.Items.Count - 1; i++)
+            //string sFic;
+            //sFic = AppPath() + "ListaDeNombres.txt";
+            ////using (System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8))
+            //using System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8);
+            //for (var i = 0; i <= List2.Items.Count - 1; i++)
+            //{
+            //    sw.WriteLine(List2.Items[i].ToString());
+            //    //sw.WriteLine("0"); // el sexo
+            //}
+            string sFic = System.IO.Path.Combine(AppPath(),"ListaDeNombres.txt");
+            using System.IO.StreamWriter sw = new(sFic, false, Encoding.UTF8);
+            foreach (var unNombre in ColList2)
             {
-                sw.WriteLine(List2.Items[i].ToString());
-                //sw.WriteLine("0"); // el sexo
+                sw.WriteLine(unNombre.Key);
+                sw.WriteLine((int)unNombre.Value);
             }
         }
 
