@@ -42,6 +42,8 @@ namespace ElizaNETCS
         private bool SesionGuardada;
         private string sEntradaAnterior = "";
 
+        // El contenido de la sesión actual
+        private readonly List<string> ColList1 = new();
         // Los nombres y el sexo
         private readonly Dictionary<string, cEliza.eSexo> ColList2 = new();
 
@@ -223,9 +225,9 @@ namespace ElizaNETCS
             // guardar siempre los nombres
             GuardarNombres();
 
-            List1.Items.Clear();
-            List1.Items.Add($"Sesión iniciada el: {DateTime.Now}");
-            List1.Items.Add("-----------------------------------------------");
+            ColList1.Clear();
+            ColList1.Add($"Sesión iniciada el: {DateTime.Now}");
+            ColList1.Add("-----------------------------------------------");
 
             sMsgTmp = "Hola " + sNombre + ", soy Eliza para C#";
             ImprimirDOS(sMsgTmp);
@@ -517,8 +519,8 @@ namespace ElizaNETCS
 
             if (string.IsNullOrEmpty(sFic) == false)
             {
-                List1.Items.Add("-----------------------------------------------");
-                List1.Items.Add($"Sesión guardada el: {DateTime.Now:dddd, dd/MMM/yyyy HH:mm}");
+                ColList1.Add("-----------------------------------------------");
+                ColList1.Add($"Sesión guardada el: {DateTime.Now:dddd, dd/MMM/yyyy HH:mm}");
 
                 // Crear los directorios indicados en el nombre del archivo  (18/Sep/02)
                 if (System.IO.Directory.Exists(sDir) == false)
@@ -526,10 +528,11 @@ namespace ElizaNETCS
                     System.IO.Directory.CreateDirectory(sDir);
                 }
 
-                //using (System.IO.StreamWriter sw = new System.IO.StreamWriter(sFic, false, System.Text.Encoding.UTF8))
                 using System.IO.StreamWriter sw = new(sFic, false, Encoding.UTF8);
-                for (var i = 0; i < List1.Items.Count; i++)
-                    sw.WriteLine(List1.Items[i].ToString());
+                foreach (var item in ColList1)
+                {
+                    sw.WriteLine(item);
+                }
             }
         }
 
@@ -663,7 +666,7 @@ namespace ElizaNETCS
             if (NuevaLinea)
                 s += CrLf;
             txtSalida.Text = s;
-            List1.Items.Add(sText);
+            ColList1.Add(sText);
             // Posicionar el cursor al final de la caja de texto
             txtSalida.SelectionStart = s.Length;
             txtSalida.SelectionLength = 0;

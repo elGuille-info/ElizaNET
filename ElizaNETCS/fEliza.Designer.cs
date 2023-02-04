@@ -40,7 +40,6 @@ namespace ElizaNETCS
             this.txtSalida = new System.Windows.Forms.TextBox();
             this.txtEntrada = new System.Windows.Forms.TextBox();
             this.cmdNuevo = new System.Windows.Forms.Button();
-            this.List1 = new System.Windows.Forms.ListBox();
             this.MainMenu1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,26 +126,11 @@ namespace ElizaNETCS
             this.cmdNuevo.Text = "Iniciar nueva sesión";
             this.cmdNuevo.Click += new System.EventHandler(this.cmdNuevo_Click);
             // 
-            // List1
-            // 
-            this.List1.BackColor = System.Drawing.SystemColors.Window;
-            this.List1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.List1.ItemHeight = 25;
-            this.List1.Items.AddRange(new object[] {
-            "List1-No visible"});
-            this.List1.Location = new System.Drawing.Point(864, 58);
-            this.List1.Name = "List1";
-            this.List1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.List1.Size = new System.Drawing.Size(113, 29);
-            this.List1.TabIndex = 12;
-            this.List1.Visible = false;
-            // 
             // fEliza
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1002, 632);
-            this.Controls.Add(this.List1);
             this.Controls.Add(this.LabelInfo);
             this.Controls.Add(this.txtSalida);
             this.Controls.Add(this.txtEntrada);
@@ -175,7 +159,6 @@ namespace ElizaNETCS
         private TextBox txtSalida;
         private TextBox txtEntrada;
         private Button cmdNuevo;
-        public ListBox List1;
         public System.Windows.Forms.ToolStripMenuItem mnuFileReleer = new();
         public System.Windows.Forms.ToolStripSeparator mnuFileSep1 = new();
         public System.Windows.Forms.ToolStripMenuItem mnuEstadísticas = new();
