@@ -67,10 +67,16 @@ Friend Class fEliza
     Private SesionGuardada As Boolean
     Private sEntradaAnterior As String
 
+    ' El contenido de la sesión actual
+    Private ReadOnly ColList1 As New List(Of String)
+    ' Los nombres y el sexo
+    Private ReadOnly ColList2 As New Dictionary(Of String, cEliza.eSexo)
+
     Private Sub cmdNuevo_Click(sender As Object, e As EventArgs) Handles cmdNuevo.Click
         Dim tSexo As cEliza.eSexo
         Dim sSexo As String
-        Dim tmpSexo As Integer
+        'Dim tmpSexo As Integer
+        Dim tmpSexo As Boolean
         Dim sMsgTmp As String
         Dim m_rnd As New Random()
 
@@ -94,47 +100,68 @@ Friend Class fEliza
                                                     "Saber quién eres", sNombre) <> DialogResult.OK Then
                 sNombre = ""
             End If
-            sNombre = sNombre.Trim()
-            If sNombre.Length = 0 Then
+            'sNombre = sNombre.Trim()
+            'If sNombre.Length = 0 Then
+            '    m_Terminado = False
+            '    sMsgTmp = "Adios, hasta la próxima sesión."
+            '    Exit Do
+            'End If
+            If String.IsNullOrEmpty(sNombre) = False Then
+                sNombre = sNombre.Trim()
+            End If
+            If String.IsNullOrEmpty(sNombre) Then
                 m_Terminado = False
                 sMsgTmp = "Adios, hasta la próxima sesión."
                 Exit Do
             End If
+
             ' Comprobar si está en la lista
-            tmpSexo = -1
-            For i = 0 To List2.Items.Count - 1
-                If List2.Items(i).ToString() = sNombre Then
-                    tmpSexo = i
+            'tmpSexo = -1
+            'For i = 0 To List2.Items.Count - 1
+            '    If List2.Items(i).ToString() = sNombre Then
+            '        tmpSexo = i
+            '        Exit For
+            '    End If
+            'Next
+            'If tmpSexo > -1 Then
+            '    tSexo = CType(tmpSexo, cEliza.eSexo)
+            '    Exit Do
+            'End If
+            tmpSexo = False
+            For Each unNombre In ColList2
+                If unNombre.Key = sNombre Then
+                    tSexo = unNombre.Value
+                    tmpSexo = True
                     Exit For
                 End If
             Next
-            If tmpSexo > -1 Then
-                tSexo = CType(tmpSexo, cEliza.eSexo)
+            If tmpSexo AndAlso tSexo <> cEliza.eSexo.Ninguno Then
                 Exit Do
             End If
             ' tener una serie de nombres para no pecar de "tonto"
-            sSexo = "masculino"
-            tSexo = cEliza.eSexo.Masculino
-            If sNombre.Length > 0 Then
-                tSexo = SexoNombre()
-                sSexo = If(tSexo = cEliza.eSexo.Femenino, "femenino", "masculino")
-                If tSexo = cEliza.eSexo.Ninguno Then
-                    If sNombre.EndsWith("a") Then
-                        sSexo = "femenino"
-                        tSexo = cEliza.eSexo.Femenino
-                    Else
-                        sSexo = "masculino"
-                        tSexo = cEliza.eSexo.Masculino
-                    End If
-                    If Dialogos.MessageBoxShow(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
+            'sSexo = "masculino"
+            'tSexo = cEliza.eSexo.Masculino
+            ' Aquí no puede llegar con 0 caracteres
+            'If sNombre.Length > 0 Then
+            'End If
+            tSexo = SexoNombre()
+            sSexo = If(tSexo = cEliza.eSexo.Femenino, "femenino", "masculino")
+            If tSexo = cEliza.eSexo.Ninguno Then
+                If sNombre.EndsWith("a") Then
+                    sSexo = "femenino"
+                    tSexo = cEliza.eSexo.Femenino
+                Else
+                    sSexo = "masculino"
+                    tSexo = cEliza.eSexo.Masculino
+                End If
+                If Dialogos.MessageBoxShow(sNombre & " por favor confirmame que tu sexo es: " & sSexo,
                                                "", MessageBoxButtons.YesNo) = DialogResult.No Then
-                        If tSexo = cEliza.eSexo.Femenino Then
-                            tSexo = cEliza.eSexo.Masculino
-                            sSexo = "masculino"
-                        Else
-                            tSexo = cEliza.eSexo.Femenino
-                            sSexo = "femenino"
-                        End If
+                    If tSexo = cEliza.eSexo.Femenino Then
+                        tSexo = cEliza.eSexo.Masculino
+                        sSexo = "masculino"
+                    Else
+                        tSexo = cEliza.eSexo.Femenino
+                        sSexo = "femenino"
                     End If
                 End If
             End If
@@ -154,25 +181,43 @@ Friend Class fEliza
         End If
 
         ' Comprobar si está en la lista
-        tmpSexo = -1
-        For i = 0 To List2.Items.Count - 1
-            If List2.Items(i).ToString() = sNombre Then
-                tmpSexo = i
+        'tmpSexo = -1
+        'For i = 0 To List2.Items.Count - 1
+        '    If List2.Items(i).ToString() = sNombre Then
+        '        tmpSexo = i
+        '        Exit For
+        '    End If
+        'Next
+        'If tmpSexo = -1 Then
+        '    'añadirlo
+        '    List2.Items.Add(sNombre)
+        '    'guardar los nombres
+        '    'GuardarNombres()
+        'End If
+        tmpSexo = False
+        For Each unNombre In ColList2
+            If unNombre.Key = sNombre Then
+                tmpSexo = True
                 Exit For
             End If
         Next
-        If tmpSexo = -1 Then
-            'añadirlo
-            List2.Items.Add(sNombre)
-            'guardar los nombres
-            'GuardarNombres()
+        If tmpSexo = False Then
+            ColList2.Add(sNombre, tSexo)
+        Else
+            ' actualizarlo por si no se había definido el sexo previamente
+            If ColList2.ContainsKey(sNombre) Then
+                ColList2(sNombre) = tSexo
+            Else
+                ' Este caso no debería darse, pero ya que he puesto la comprobación...
+                ColList2.Add(sNombre, tSexo)
+            End If
         End If
         'guardar siempre los nombres
         GuardarNombres()
 
-        List1.Items.Clear()
-        List1.Items.Add($"Sesión iniciada el: {Date.Now:dddd, dd/MMM/yyyy HH:mm}")
-        List1.Items.Add("-----------------------------------------------")
+        ColList1.Clear()
+        ColList1.Add($"Sesión iniciada el: {Date.Now:dddd, dd/MMM/yyyy HH:mm}")
+        ColList1.Add("-----------------------------------------------")
 
         sMsgTmp = "Hola " & sNombre & ", soy Eliza para Visual Basic"
         ImprimirDOS(sMsgTmp)
@@ -246,7 +291,7 @@ Friend Class fEliza
 
         SesionGuardada = True
 
-        List2.Items.Clear()
+        ColList2.Clear()
 
         If Date.Now.Year > 2023 Then
             LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023-" & Date.Now.Year.ToString()
@@ -256,7 +301,7 @@ Friend Class fEliza
 
         Show()
 
-        Eliza = New cEliza(AppPath()) With {
+        Eliza = New cEliza(ElizaLocalPath()) With {
             .Sexo = cEliza.eSexo.Ninguno
         }
 
@@ -422,7 +467,7 @@ Friend Class fEliza
         ' preguntar el nombre del fichero
         ' o crearlo automáticamente
 
-        Dim sDir = System.IO.Path.Combine(AppPath(), "sesiones")
+        Dim sDir = System.IO.Path.Combine(ElizaLocalPath(), "sesiones")
         Dim sFic = System.IO.Path.Combine(sDir, sNombre & "_" & Date.Now.ToString("ddMMMyyyy_HHmm") & ".txt")
         If UtilidadesDialog.UtilDialog.InputBox(sNombre & " escribe el nombre del fichero:", "Guardar sesión", sFic) <> DialogResult.OK Then
             sFic = ""
@@ -430,8 +475,8 @@ Friend Class fEliza
             sFic = sFic.Trim()
         End If
         If String.IsNullOrEmpty(sFic) = False Then
-            List1.Items.Add("-----------------------------------------------")
-            List1.Items.Add($"Sesión guardada el: {Date.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}")
+            ColList1.Add("-----------------------------------------------")
+            ColList1.Add($"Sesión guardada el: {Date.Now.ToString("dddd, dd/MMM/yyyy HH:mm")}")
 
             ' Crear los directorios indicados en el nombre del archivo  (18/Sep/02)
             If System.IO.Directory.Exists(sDir) = False Then
@@ -439,8 +484,8 @@ Friend Class fEliza
             End If
 
             Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
-                For i = 0 To List1.Items.Count - 1
-                    sw.WriteLine(List1.Items(i).ToString())
+                For i = 0 To ColList1.Count - 1
+                    sw.WriteLine(ColList1(i).ToString())
                 Next
             End Using
         End If
@@ -489,32 +534,40 @@ Friend Class fEliza
     End Function
 
     Private Sub LeerNombres()
-        Dim sFic = AppPath() & "ListaDeNombres.txt"
+        Dim sFic = System.IO.Path.Combine(ElizaLocalPath(), "ListaDeNombres.txt")
         If System.IO.File.Exists(sFic) Then
-            List2.Items.Clear()
+            ColList2.Clear()
             Using sr As New System.IO.StreamReader(sFic, System.Text.Encoding.UTF8, True)
                 Do While Not sr.EndOfStream
-                    Dim tmpNombre = sr.ReadLine().Trim()
-                    If sNombre.Length = 0 Then
+                    Dim elSexo As cEliza.eSexo = cEliza.eSexo.Ninguno
+                    Dim tmpNombre = sr.ReadLine()
+
+                    If String.IsNullOrEmpty(sNombre) Then
                         sNombre = tmpNombre
                     End If
-                    List2.Items.Add(tmpNombre)
-                    'tmpNombre = sr.ReadLine()
-                    ' Era para el sexo, pero no se usa
-                    'sr.ReadLine()
+
+                    If sr.EndOfStream = False Then
+                        Dim tmpSexo As String = sr.ReadLine().Trim().ToLower()
+
+                        If tmpSexo = "masculino" Then
+                            elSexo = cEliza.eSexo.Masculino
+                        ElseIf tmpSexo = "femenino" Then
+                            elSexo = cEliza.eSexo.Femenino
+                        End If
+                    End If
+
+                    ColList2.Add(tmpNombre, elSexo)
                 Loop
             End Using
         End If
     End Sub
 
     Private Sub GuardarNombres()
-        Dim sFic As String
-
-        sFic = AppPath() & "ListaDeNombres.txt"
+        Dim sFic = System.IO.Path.Combine(ElizaLocalPath(), "ListaDeNombres.txt")
         Using sw As New System.IO.StreamWriter(sFic, False, System.Text.Encoding.UTF8)
-            For i = 0 To List2.Items.Count - 1
-                sw.WriteLine(List2.Items(i).ToString)
-                'sw.WriteLine("0") ' el sexo
+            For Each unNombre In ColList2
+                sw.WriteLine(unNombre.Key)
+                sw.WriteLine(unNombre.Value.ToString())
             Next
         End Using
     End Sub
@@ -531,20 +584,13 @@ Friend Class fEliza
             s &= vbCrLf
         End If
         txtSalida.Text = s
-        List1.Items.Add(sText)
+        ColList1.Add(sText)
         ' Posicionar el cursor al final de la caja de texto
         txtSalida.SelectionStart = s.Length
         txtSalida.SelectionLength = 0
         txtSalida.ScrollToCaret()
 
     End Sub
-
-    Public Shared Function AppPath() As String
-        ' Devuelve el path del ejecutable con la barra final            (15/Sep/02)
-        Dim ensamblado = GetType(fEliza).Assembly
-        Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
-        Return elPath & If(elPath.EndsWith("\"), "", "\")
-    End Function
 
     ' Comprobar si se ha pulsado la tecla "arriba",				(24/ene/23 13.16)
     ' si es así poner el texto anterior.
@@ -561,4 +607,19 @@ Friend Class fEliza
             e.Handled = True
         End If
     End Sub
+
+    ''' <summary>
+    ''' El path donde se guardarán los datos (LocalApplicationData).
+    ''' </summary>
+    ''' <remarks>>Antes en el directorio del ejecutable.</remarks>
+    Public Shared Function ElizaLocalPath() As String
+        '' Devuelve el path del ejecutable con la barra final            (15/Sep/02)
+        'Dim ensamblado = GetType(fEliza).Assembly
+        'Dim elPath = System.IO.Path.GetDirectoryName(ensamblado.Location)
+        'Return elPath & If(elPath.EndsWith("\"), "", "\")
+
+        Dim localAppData = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
+        Dim localEliza = System.IO.Path.Combine(localAppData, "Eliza")
+        Return localEliza
+    End Function
 End Class

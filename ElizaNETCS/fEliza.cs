@@ -47,7 +47,6 @@ namespace ElizaNETCS
         // Los nombres y el sexo
         private readonly Dictionary<string, cEliza.eSexo> ColList2 = new();
 
-
         private void cmdNuevo_Click(object sender, EventArgs e)
         {
             cEliza.eSexo tSexo = cEliza.eSexo.Masculino;

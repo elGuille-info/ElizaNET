@@ -106,7 +106,7 @@ Friend Class Eliza_claves
 			Show()
 			_Label1_2.Text = "Un momento, mientras cargo la lista de claves..."
 			' Crear el objeto
-			Eliza = New cEliza(fEliza.AppPath())
+			Eliza = New cEliza(fEliza.ElizaLocalPath())
 			Dim sw = Stopwatch.StartNew()
 			Eliza.Inicializar()
 			sw.Stop()
