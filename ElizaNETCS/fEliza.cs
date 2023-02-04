@@ -304,7 +304,8 @@ namespace ElizaNETCS
 
             SesionGuardada = true;
 
-            List2.Items.Clear();
+            //List2.Items.Clear();
+            ColList2.Clear();
 
             if (DateTime.Now.Year > 2023)
                 LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023-" + DateTime.Now.Year.ToString();
