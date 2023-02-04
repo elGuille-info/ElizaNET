@@ -28,8 +28,6 @@
 	Public WithEvents mnuSalir As System.Windows.Forms.ToolStripMenuItem
 	Public WithEvents mnuFile As System.Windows.Forms.ToolStripMenuItem
 	Public WithEvents MainMenu1 As System.Windows.Forms.MenuStrip
-    Public WithEvents List1 As System.Windows.Forms.ListBox
-    Public WithEvents List2 As System.Windows.Forms.ListBox
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
@@ -50,8 +48,6 @@
         Me.mnuSalir = New System.Windows.Forms.ToolStripMenuItem()
         Me.txtSalida = New System.Windows.Forms.TextBox()
         Me.txtEntrada = New System.Windows.Forms.TextBox()
-        Me.List1 = New System.Windows.Forms.ListBox()
-        Me.List2 = New System.Windows.Forms.ListBox()
         Me.cmdNuevo = New System.Windows.Forms.Button()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.LabelInfo = New System.Windows.Forms.Label()
@@ -167,32 +163,6 @@
         Me.txtEntrada.TabIndex = 3
         Me.txtEntrada.Text = "txtEntrada" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "línea 2"
         '
-        'List1
-        '
-        Me.List1.BackColor = System.Drawing.SystemColors.Window
-        Me.List1.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.List1.ItemHeight = 25
-        Me.List1.Items.AddRange(New Object() {"List1-No visible"})
-        Me.List1.Location = New System.Drawing.Point(539, 26)
-        Me.List1.Name = "List1"
-        Me.List1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.List1.Size = New System.Drawing.Size(113, 29)
-        Me.List1.TabIndex = 2
-        Me.List1.Visible = False
-        '
-        'List2
-        '
-        Me.List2.BackColor = System.Drawing.SystemColors.Window
-        Me.List2.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.List2.ItemHeight = 25
-        Me.List2.Items.AddRange(New Object() {"List2-No visible"})
-        Me.List2.Location = New System.Drawing.Point(396, 26)
-        Me.List2.Name = "List2"
-        Me.List2.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.List2.Size = New System.Drawing.Size(103, 29)
-        Me.List2.TabIndex = 1
-        Me.List2.Visible = False
-        '
         'cmdNuevo
         '
         Me.cmdNuevo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -226,8 +196,6 @@
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(1002, 632)
         Me.Controls.Add(Me.LabelInfo)
-        Me.Controls.Add(Me.List1)
-        Me.Controls.Add(Me.List2)
         Me.Controls.Add(Me.txtSalida)
         Me.Controls.Add(Me.txtEntrada)
         Me.Controls.Add(Me.cmdNuevo)
