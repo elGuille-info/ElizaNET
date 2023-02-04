@@ -89,10 +89,27 @@ Public Class cEliza
         Iniciado = False
         m_Releer = False
         m_ElizaLocalPath = appPath
+        CopiarPalabras()
     End Sub
 
-    ' ¿Esto se debe usar con signos de admiración, etc.?
-    'Public SiNo As String() = {"si", "sí", "ok", "vale", "yep", "yes", "no", "non", "nope", "nop", "nil", "nain"}
+    ''' <summary>
+    ''' Copiar las palabras del path de la DLL al path de Eliza en LocalData.
+    ''' </summary>
+    ''' <remarks>Se copian los ficheros que cumplen este pattern: Eliza*.txt</remarks>
+    Private Sub CopiarPalabras()
+        Dim dirElizaDLL = System.IO.Path.Combine(DLLPath(), "palabras")
+        Dim dirElizaLocal = System.IO.Path.Combine(ElizaLocalPath(), "palabras")
+        If System.IO.Directory.Exists(dirElizaLocal) = False Then
+            System.IO.Directory.CreateDirectory(dirElizaLocal)
+        End If
+        Dim dirInfo = New System.IO.DirectoryInfo(dirElizaDLL)
+        Dim reglasEliza = dirInfo.GetFiles("Eliza*.txt")
+        For Each fic In reglasEliza
+            Dim ficDest = System.IO.Path.Combine(dirElizaLocal, fic.Name)
+            System.IO.File.Copy(fic.FullName, ficDest, overwrite:=True)
+        Next
+    End Sub
+
     Private ReadOnly m_rnd As New Random()
 
     Public Enum eTiposDeClaves
@@ -461,14 +478,10 @@ Public Class cEliza
 
         If m_Releer Then
             m_Releer = False
-            'm_Iniciado = False
             Iniciado = False
         End If
 
-        'DoEvents
-        'If Not m_Iniciado Then
         If Not Iniciado Then
-            'm_Iniciado = True
             Iniciado = True
             ' Leer el fichero de palabras y respuestas
             LeerReglasEliza()
@@ -478,7 +491,7 @@ Public Class cEliza
                 ' poner a cero las respuestas normales
                 tRegla.Respuestas.UltimoItem = 0
                 ' poner a cero las respuestas de la sección Extras
-                For Each tRespuestas In tRegla.Extras.Valores '.Values
+                For Each tRespuestas In tRegla.Extras.Valores
                     tRespuestas.UltimoItem = 0
                 Next
             Next
@@ -914,6 +927,7 @@ Public Class cEliza
     End Function
 
     ' Habría que copiar las palabras en el directorio de ElizaLocalPath
+    ' Ahora se leen las palabras del directori ode Eliza en LocalPath (04/feb/23 13.54)
 
     ''' <summary>
     ''' Lee las reglas de los ficheros del directorio "palabras" donde está la DLL.
@@ -923,36 +937,43 @@ Public Class cEliza
         ' Leer el/los ficheros de palabras clave y respuestas,
         ' así como las reglas de simplificación
 
-        Dim sFic As String
-        Dim sDir As String
-        Dim otrosEliza As String()
+        'Dim sFic As String
+        'Dim sDir As String
+        'Dim otrosEliza As String()
 
-        ' El directorio de datos
-        ' Ahora está en el directorio de esta DLL.              (26/ene/23 22.20)
-        '
-        ' El problema es que el path indicado será el de la carpeta del ejecutable,
-        ' y ahí no estarán los ficheros.
-        ' Por tanto, las palabras deben estar en el proyecto del ejecutable.
-        '
-        'sDir = System.IO.Path.Combine(ElizaLocalPath(), "palabras")
-        sDir = System.IO.Path.Combine(DLLPath(), "palabras")
+        '' El directorio de datos
+        '' Ahora está en el directorio de esta DLL.              (26/ene/23 22.20)
+        ''
+        '' El path indicado será el de la carpeta del ejecutable.
+        '' Si se borran las palabras de esa carpeta, hay que hacer Build o Rebuild no solo pulsar F5.
+        ''
+        ''sDir = System.IO.Path.Combine(ElizaLocalPath(), "palabras")
+        'sDir = System.IO.Path.Combine(DLLPath(), "palabras")
 
-        ' El primer fichero en leer será Eliza_SPA.txt
-        ' El resto se leerán a continuación, permitiendo de esta forma
-        ' sustituir algunas reglas y palabras existentes
-        sFic = System.IO.Path.Combine(sDir, "Eliza_SPA.txt")
-        If System.IO.File.Exists(sFic) Then
-            LeerReglas(sFic)
-        End If
-        ' Buscar los ficheros llamados ElizaSP_*.txt            (23/ene/23 09.39)
-        otrosEliza = System.IO.Directory.GetFiles(sDir, "ElizaSP_*.txt")
-        For Each sFic In otrosEliza
-            LeerReglas(sFic)
-        Next
-        ' Buscar los ficheros llamados ElizaVB_*.txt, y leerlos
-        otrosEliza = System.IO.Directory.GetFiles(sDir, "ElizaVB_*.txt")
-        For Each sFic In otrosEliza
-            LeerReglas(sFic)
+        '' El primer fichero en leer será Eliza_SPA.txt
+        '' El resto se leerán a continuación, permitiendo de esta forma
+        '' sustituir algunas reglas y palabras existentes
+        'sFic = System.IO.Path.Combine(sDir, "Eliza_SPA.txt")
+        'If System.IO.File.Exists(sFic) Then
+        '    LeerReglas(sFic)
+        'End If
+        '' Buscar los ficheros llamados ElizaSP_*.txt            (23/ene/23 09.39)
+        'otrosEliza = System.IO.Directory.GetFiles(sDir, "ElizaSP_*.txt")
+        'For Each sFic In otrosEliza
+        '    LeerReglas(sFic)
+        'Next
+        '' Buscar los ficheros llamados ElizaVB_*.txt, y leerlos
+        'otrosEliza = System.IO.Directory.GetFiles(sDir, "ElizaVB_*.txt")
+        'For Each sFic In otrosEliza
+        '    LeerReglas(sFic)
+        'Next
+
+        Dim dirElizaLocal = System.IO.Path.Combine(ElizaLocalPath(), "palabras")
+        Dim dirInfo = New System.IO.DirectoryInfo(dirElizaLocal)
+        ' Leer todas los ficheros que tengan este pattern: Eliza*.txt
+        Dim reglasEliza = dirInfo.GetFiles("Eliza*.txt")
+        For Each fic In reglasEliza
+            LeerReglas(fic.FullName)
         Next
 
         ' Convertir las claves que tienen el formato:
