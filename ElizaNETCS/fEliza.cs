@@ -196,6 +196,7 @@ namespace ElizaNETCS
                 if (unNombre.Key == sNombre)
                 {
                     tmpSexo = true;
+                    //tSexo = unNombre.Value;
                     break;
                 }
             }
@@ -205,6 +206,19 @@ namespace ElizaNETCS
                 ColList2.Add(sNombre, tSexo);
                 // guardar los nombres
                 //GuardarNombres();
+            }
+            // actualizarlo por si no se había definido el sexo previamente
+            else
+            {
+                if (ColList2.ContainsKey(sNombre))
+                {
+                    ColList2[sNombre] = tSexo;
+                }
+                // Este caso no debería darse, pero ya que he puesto la comprobación...
+                else
+                {
+                    ColList2.Add(sNombre, tSexo);
+                }
             }
             // guardar siempre los nombres
             GuardarNombres();
@@ -608,7 +622,7 @@ namespace ElizaNETCS
                     }
                     if (sr.EndOfStream == false)
                     {
-                        string tmpSexo = sr.ReadLine().Trim();
+                        string tmpSexo = sr.ReadLine().Trim().ToLower();
                         if (tmpSexo == "masculino") elSexo = cEliza.eSexo.Masculino;
                         else if (tmpSexo == "femenino") elSexo = cEliza.eSexo.Femenino;
                     }
@@ -633,7 +647,7 @@ namespace ElizaNETCS
             foreach (var unNombre in ColList2)
             {
                 sw.WriteLine(unNombre.Key);
-                sw.WriteLine((int)unNombre.Value);
+                sw.WriteLine(unNombre.Value.ToString());
             }
         }
 
