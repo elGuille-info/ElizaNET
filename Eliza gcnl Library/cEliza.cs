@@ -366,6 +366,9 @@ public class cEliza
 
     private static string QuitarSeparadores(string sEntrada, bool delPrincipio)
     {
+        // Si es una cadena vacía, nada que hacer           (06/feb/23 16.02)
+        if (string.IsNullOrEmpty(sEntrada)) return "";
+
         if (delPrincipio)
         {
             // Do While sEntrada.Substring(0, 1).IndexOfAny(sSeparadores.ToCharArray()) > -1
