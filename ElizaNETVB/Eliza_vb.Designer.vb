@@ -17,8 +17,10 @@
 	'Required by the Windows Form Designer
 	Private components As System.ComponentModel.IContainer
 	Public ToolTip1 As System.Windows.Forms.ToolTip
-	Public WithEvents mnuFileReleer As System.Windows.Forms.ToolStripMenuItem
-	Public WithEvents mnuFileSep1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents mnuTextoAnalizado As System.Windows.Forms.ToolStripMenuItem
+    Private toolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Public WithEvents mnuFileReleer As System.Windows.Forms.ToolStripMenuItem
+    Public WithEvents mnuFileSep1 As System.Windows.Forms.ToolStripSeparator
 	Public WithEvents mnuEstadísticas As System.Windows.Forms.ToolStripMenuItem
 	Public WithEvents mnuFileSep2 As System.Windows.Forms.ToolStripSeparator
 	Public WithEvents mnuEliza_claves As System.Windows.Forms.ToolStripMenuItem
@@ -37,6 +39,8 @@
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.MainMenu1 = New System.Windows.Forms.MenuStrip()
         Me.mnuFile = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuTextoAnalizado = New System.Windows.Forms.ToolStripMenuItem()
+        Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuFileReleer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileSep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuEstadísticas = New System.Windows.Forms.ToolStripMenuItem()
@@ -65,7 +69,7 @@
         '
         'mnuFile
         '
-        Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFileReleer, Me.mnuFileSep1, Me.mnuEstadísticas, Me.mnuFileSep2, Me.mnuEliza_claves, Me.mnuFileSep3, Me.mnuAcercaDe, Me.mnuFileSep5, Me.mnuSalir})
+        Me.mnuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFileReleer, Me.mnuFileSep1, Me.mnuEstadísticas, Me.mnuFileSep2, Me.mnuEliza_claves, Me.mnuFileSep3, Me.mnuTextoAnalizado, Me.toolStripSeparator1, Me.mnuAcercaDe, Me.mnuFileSep5, Me.mnuSalir})
         Me.mnuFile.Name = "mnuFile"
         Me.mnuFile.Size = New System.Drawing.Size(139, 29)
         Me.mnuFile.Text = "&Configuración"
@@ -105,6 +109,17 @@
         '
         Me.mnuFileSep3.Name = "mnuFileSep3"
         Me.mnuFileSep3.Size = New System.Drawing.Size(365, 6)
+        '
+        'mnuTextoAnalizado
+        '
+        Me.mnuTextoAnalizado.Name = "mnuTextoAnalizado"
+        Me.mnuTextoAnalizado.Size = New System.Drawing.Size(368, 34)
+        Me.mnuTextoAnalizado.Text = "Mostrar texto analizado..."
+        '
+        'toolStripSeparator1
+        '
+        Me.toolStripSeparator1.Name = "toolStripSeparator1"
+        Me.toolStripSeparator1.Size = New System.Drawing.Size(365, 6)
         '
         'mnuAcercaDe
         '

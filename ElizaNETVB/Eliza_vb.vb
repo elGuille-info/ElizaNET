@@ -657,4 +657,9 @@ Friend Class fEliza
             End Sub)
     End Sub
 
+    Private Sub mnuTextoAnalizado_Click(sender As Object, e As EventArgs) Handles mnuTextoAnalizado.Click
+        Dim fTextoAnalizado As New TextoAnalizado(frase)
+        fTextoAnalizado.ShowDialog()
+    End Sub
+
 End Class

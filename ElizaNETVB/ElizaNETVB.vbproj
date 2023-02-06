@@ -49,11 +49,10 @@ Actual en .NET: revisión del 06/feb/2023
   </ItemGroup>
 
  <ItemGroup>
-   <PackageReference Include="Eliza_gcnl_Library" Version="1.0.1" />
+   <PackageReference Include="Eliza_gcnl_Library" Version="1.0.2" />
  </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eliza gcnl Library\Eliza gcnl Library.csproj" />
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 
