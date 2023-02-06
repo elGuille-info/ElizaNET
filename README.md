@@ -19,5 +19,6 @@ Agradecimiento especial a Svetlana por toda la información aportada, además de
 <br>
 
 > **Nota del 6-feb-2023:**<br>
-> En este repositorio incluyo el código para crear la DLL con las clases de Eliza y la clase _Frases_ para analizar textos usando Google Cloud Natural Language.<br>
+> En este repositorio incluyo el proyecto [**Eliza gcnl Library**](https://github.com/elGuille-info/ElizaNET/tree/master/Eliza%20gcnl%20Library) con el código para crear la DLL con las clases de Eliza y la clase _Frases_ para analizar textos usando Google Cloud Natural Language.<br>
+> Este proyecto (creado en C# a partir de ElizaVB) sustituye, o eso pretendo, al proyecto ElizaVB.<br>
 > Esa DLL se puede usar incluyendo una referencia a este paquete de NuGet: [Eliza gcnl Library](https://www.nuget.org/packages/Eliza_gcnl_Library/).
