@@ -15,3 +15,9 @@ Agradecimiento especial a Svetlana por toda la información aportada, además de
 > **Nota:** <br>
 > Incluyo el código original para Visual Basic 6.0. <br>
 > Incluyo proyectos para usar la versión de .NET tanto con Visual Basic como con C# usando .NET 7.0.
+
+<br>
+
+> **Nota del 6-feb-2023:**<br>
+> En este repositorio incluyo el código para crear la DLL con las clases de Eliza y la clase _Frases_ para analizar textos usando Google Cloud Natural Language.<br>
+> Esa DLL se puede usar incluyendo una referencia a este paquete de NuGet: [Eliza gcnl Library](https://www.nuget.org/packages/Eliza_gcnl_Library/).
