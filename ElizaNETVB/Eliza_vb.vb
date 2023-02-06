@@ -635,23 +635,26 @@ Friend Class fEliza
 
     Private Async Sub AnalizarTexo(tmp As String)
         If String.IsNullOrEmpty(tmp) Then Return
-        Await Task.Run(Sub()
-                           MostrarAviso("Analizando el texto...", esError:=False)
-                           frase = Frases.Add(tmp)
-                           QuitarAviso()
-                       End Sub)
+        Await Task.Run(
+            Sub()
+                MostrarAviso("Analizando el texto...", esError:=False)
+                frase = Frases.Add(tmp)
+                QuitarAviso()
+            End Sub)
     End Sub
 
     Private Sub QuitarAviso()
-        LabelInfo.Invoke(Sub()
-                             LabelInfo.Text = LabelInfo.Tag.ToString()
-                         End Sub)
+        LabelInfo.Invoke(
+            Sub()
+                LabelInfo.Text = LabelInfo.Tag.ToString()
+            End Sub)
     End Sub
 
     Private Sub MostrarAviso(aviso As String, esError As Boolean)
-        LabelInfo.Invoke(Sub()
-                             LabelInfo.Text = aviso
-                         End Sub)
+        LabelInfo.Invoke(
+            Sub()
+                LabelInfo.Text = aviso
+            End Sub)
     End Sub
 
 End Class

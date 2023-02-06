@@ -729,6 +729,5 @@ namespace ElizaNETCS
                 //LabelAviso.IsVisible = true;
             });
         }
-
     }
 }
