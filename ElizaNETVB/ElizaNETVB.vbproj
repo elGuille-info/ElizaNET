@@ -48,8 +48,11 @@ Actual en .NET: revisión del 04/feb/2023
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
 
+ <ItemGroup>
+   <PackageReference Include="Eliza_gcnl_Library" Version="1.0.1" />
+ </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\ElizaVB\ElizaVB.vbproj" />
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 

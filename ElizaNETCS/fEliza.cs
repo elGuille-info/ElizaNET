@@ -17,7 +17,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using ElizaVB;
+//using ElizaVB;
+// Usando el paquete de NuGet Eliza gcnl Library (06/feb/23 15.09)
+using Eliza_gcnl;
 
 using UtilidadesDialog;
 

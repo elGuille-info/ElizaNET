@@ -49,7 +49,10 @@ Option Infer On
 Option Explicit On
 Option Compare Text
 
-Imports ElizaVB
+'Imports ElizaVB
+' Usando el paquete de NuGet Eliza gcnl Library (06/feb/23 15.12)
+Imports Eliza_gcnl
+
 
 Imports UtilidadesDialog
 

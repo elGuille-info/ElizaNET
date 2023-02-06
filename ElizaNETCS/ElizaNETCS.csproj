@@ -27,13 +27,16 @@ Actual en .NET: revisión del 04/feb/2023
     <None Remove="palabras\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Eliza_gcnl_Library" Version="1.0.1" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Compile Remove="Form1.cs" />
     <Compile Remove="Form1.Designer.cs" />
   </ItemGroup>-->
 
   <ItemGroup>
-    <ProjectReference Include="..\ElizaVB\ElizaVB.vbproj" />
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 

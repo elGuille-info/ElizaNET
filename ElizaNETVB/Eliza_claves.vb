@@ -15,7 +15,10 @@ Option Strict On
 Option Infer On
 Option Explicit On
 
-Imports ElizaVB
+'Imports ElizaVB
+' Usando el paquete de NuGet Eliza gcnl Library (06/feb/23 15.12)
+Imports Eliza_gcnl
+
 
 Friend Class Eliza_claves
 	Inherits System.Windows.Forms.Form
