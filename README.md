@@ -26,7 +26,7 @@ Agradecimiento especial a Svetlana por toda la información aportada, además de
 <br>
 
 > **Nota sobre el análisis de textos:** <br>
-> Los proyectos **ElizaNETVB** y **ElizaNETCS** (y **AnalizarTextos**) analizan el texto que se indica, aunque aún no se haga nada con ese análisis.<br>
+> Los proyectos **ElizaNETVB** y **ElizaNETCS** (y **AnalizarTextos**) analizan el texto que se indica.<br>
 > Pero como se llama a la API de Google Cloud Natural Language, se necesita el fichero _key.json_ con las claves pertinentes.<br>
 > **El fichero key.json no se incluye (o no está disponible) en estos proyectos** (ni en el de aplicación de consola).<br>
 > Debes usar el tuyo propio, tal como indico en este post de mi blog: [Google Cloud Natural Language, ejemplo en Visual Basic .NET](https://www.elguillemola.com/google-cloud-natural-language-ejemplo-en-visual-basic-net/)<br>
