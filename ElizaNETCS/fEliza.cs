@@ -729,5 +729,11 @@ namespace ElizaNETCS
                 //LabelAviso.IsVisible = true;
             });
         }
+
+        private void mnuTextoAnalizado_Click(object sender, EventArgs e)
+        {
+            TextoAnalizado fTextoAnalizado = new(frase);
+            fTextoAnalizado.ShowDialog();
+        }
     }
 }
