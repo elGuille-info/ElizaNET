@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaNETCS", "ElizaNETCS\El
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "ElizaVB", "ElizaVB\ElizaVB.vbproj", "{57B4D41A-93AB-4A15-8D86-B303E103903E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilidadesDialog", "UtilidadesDialog\UtilidadesDialog.csproj", "{6E002C5E-E300-4748-A94A-77DD9CA796FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilidadesDialog", "UtilidadesDialog\UtilidadesDialog.csproj", "{6E002C5E-E300-4748-A94A-77DD9CA796FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eliza gcnl Library", "Eliza gcnl Library\Eliza gcnl Library.csproj", "{6DCDBFAE-119B-4D91-A40A-CE9445C1A2F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6E002C5E-E300-4748-A94A-77DD9CA796FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E002C5E-E300-4748-A94A-77DD9CA796FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E002C5E-E300-4748-A94A-77DD9CA796FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCDBFAE-119B-4D91-A40A-CE9445C1A2F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCDBFAE-119B-4D91-A40A-CE9445C1A2F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCDBFAE-119B-4D91-A40A-CE9445C1A2F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCDBFAE-119B-4D91-A40A-CE9445C1A2F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
