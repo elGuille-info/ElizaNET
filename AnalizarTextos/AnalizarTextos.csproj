@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+      <Title>Analizar Textos</Title>
+      <Description>Aplicación de consola para analizar frases usando Google Cloud Natural Language API
+Revisión actual del 06/feb/2023
+      </Description>
+      <Authors>Guillermo Som</Authors>
+      <Company>Guille</Company>
+      <Version>1.0</Version>
+      <Copyright>Guillermo Som (Guille), 2023</Copyright>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Eliza gcnl Library\Eliza gcnl Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
