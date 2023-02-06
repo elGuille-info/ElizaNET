@@ -4,6 +4,13 @@ Biblioteca de clases escrito en Visual Basic .NET (usando .NET 7.0) para el prog
 
 <br>
 
+> **Nota del 06-feb-23 21.28:**<br>
+> Esta DLL ya no se utiliza en los proyectos (aplicaciones de Windows Forms), ahora se utiliza el proyecto **Eliza gcnl Library**.<br>
+> Por ahora la dejo por si quieres comparar el código con la DLL compilada para .NET 7.0 y creada como paquetre de NuGet.<br>
+
+
+<br>
+
 Donde se hace todo el análisis de lo que Eliza entiende y busca las respuestas, en la carpeta 'palabras' se incluye la base de conocimiento de Eliza.
 
 <br>
