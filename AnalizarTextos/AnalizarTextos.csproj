@@ -17,7 +17,7 @@ Revisión actual del 06/feb/2023
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eliza gcnl Library\Eliza gcnl Library.csproj" />
+    <PackageReference Include="Eliza_gcnl_Library" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
