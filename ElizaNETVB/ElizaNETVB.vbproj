@@ -53,6 +53,7 @@ Actual en .NET: revisión del 04/feb/2023
  </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Eliza gcnl Library\Eliza gcnl Library.csproj" />
     <ProjectReference Include="..\UtilidadesDialog\UtilidadesDialog.csproj" />
   </ItemGroup>
 
