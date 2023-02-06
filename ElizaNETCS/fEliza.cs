@@ -321,13 +321,15 @@ namespace ElizaNETCS
 
             SesionGuardada = true;
 
-            //List2.Items.Clear();
             ColList2.Clear();
 
             if (DateTime.Now.Year > 2023)
                 LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023-" + DateTime.Now.Year.ToString();
             else
                 LabelInfo.Text = "Eliza para C# ©Guillermo Som (Guille), 1998-2002, 2023";
+
+            // Guardar copia del texto
+            LabelInfo.Tag = LabelInfo.Text;
 
             Show();
 
@@ -472,7 +474,10 @@ namespace ElizaNETCS
                     // se escriba se buscará en las claves y sub-claves,
                     // para salir del modo consulta, hay que escribir de
                     // nuevo *consulta*
-                    // 
+
+                    // Analizar el texto (por ahora no se utiliza)
+                    AnalizarTexo(sTmp);
+
                     // Procesar la entrada del usuario y
                     // mostrar la respuesta de Eliza
                     sTmp = Eliza.ProcesarEntrada(sTmp);
@@ -589,28 +594,6 @@ namespace ElizaNETCS
 
         private void LeerNombres()
         {
-            //string sFic;
-            //string tmpNombre;
-            //sFic = ElizaLocalPath() + "ListaDeNombres.txt";
-            //if (System.IO.File.Exists(sFic))
-            //{
-            //    List2.Items.Clear();
-            //    using System.IO.StreamReader sr = new(sFic, System.Text.Encoding.UTF8, true);
-            //    while (!sr.EndOfStream)
-            //    {
-            //        tmpNombre = sr.ReadLine();
-            //        if (string.IsNullOrEmpty(sNombre))
-            //        {
-            //            sNombre = tmpNombre;
-            //        }
-            //        List2.Items.Add(tmpNombre);
-            //        // Era para el sexo, pero no se usa
-            //        if (sr.EndOfStream == false)
-            //        {
-            //            tmpNombre = sr.ReadLine();
-            //        }
-            //    }
-            //}
             string sFic = System.IO.Path.Combine(ElizaLocalPath(), "ListaDeNombres.txt");
             if (System.IO.File.Exists(sFic))
             {
@@ -637,15 +620,6 @@ namespace ElizaNETCS
 
         private void GuardarNombres()
         {
-            //string sFic;
-            //sFic = ElizaLocalPath() + "ListaDeNombres.txt";
-            ////using (System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8))
-            //using System.IO.StreamWriter sw = new(sFic, false, System.Text.Encoding.UTF8);
-            //for (var i = 0; i <= List2.Items.Count - 1; i++)
-            //{
-            //    sw.WriteLine(List2.Items[i].ToString());
-            //    //sw.WriteLine("0"); // el sexo
-            //}
             string sFic = System.IO.Path.Combine(ElizaLocalPath(),"ListaDeNombres.txt");
             using System.IO.StreamWriter sw = new(sFic, false, Encoding.UTF8);
             foreach (var unNombre in ColList2)
@@ -716,5 +690,45 @@ namespace ElizaNETCS
             //_elizaDatos = localEliza;
             return localEliza;
         }
+
+        private Frases frase = null;
+        private async void AnalizarTexo(string tmp)
+        {
+            if (string.IsNullOrEmpty(tmp)) return;
+
+            //text = tmp;
+
+            //HabilitarBotones(false);
+            await Task.Run(() =>
+            {
+                MostrarAviso("Analizando el texto...", esError: false);
+                frase = Frases.Add(tmp);
+                QuitarAviso();
+            });
+            //HabilitarBotones(true);
+            //CopiaSalida = txtSalida.Text;
+            //BtnMostrar0.IsEnabled = false;
+        }
+
+        private void QuitarAviso()
+        {
+            LabelInfo.Invoke(() => { LabelInfo.Text = LabelInfo.Tag.ToString(); });
+            //GrbAviso.Dispatcher.Dispatch(() => { GrbAviso.BackgroundColor = Colors.Transparent; });
+        }
+
+        private void MostrarAviso(string aviso, bool esError)
+        {
+            //GrbAviso.Dispatcher.Dispatch(() =>
+            //{
+            //    GrbAviso.BackgroundColor = esError ? Colors.Firebrick : Colors.SteelBlue;
+            //});
+
+            LabelInfo.Invoke(() =>
+            {
+                LabelInfo.Text = aviso;
+                //LabelAviso.IsVisible = true;
+            });
+        }
+
     }
 }

@@ -301,6 +301,8 @@ Friend Class fEliza
         Else
             LabelInfo.Text = "Eliza para Visual Basic ©Guillermo Som (Guille), 1998-2002, 2023"
         End If
+        ' Hacer copia del texto asignado
+        LabelInfo.Tag = LabelInfo.Text
 
         Show()
 
@@ -437,7 +439,10 @@ Friend Class fEliza
                 ' se escriba se buscará en las claves y sub-claves,
                 ' para salir del modo consulta, hay que escribir de
                 ' nuevo *consulta*
-                '
+
+                ' Analizar el texto (por ahora no se utiliza)
+                AnalizarTexo(sTmp)
+
                 ' Procesar la entrada del usuario y
                 ' mostrar la respuesta de Eliza
                 sTmp = Eliza.ProcesarEntrada(sTmp)
@@ -625,4 +630,28 @@ Friend Class fEliza
         Dim localEliza = System.IO.Path.Combine(localAppData, "Eliza")
         Return localEliza
     End Function
+
+    Private frase As Frases = Nothing
+
+    Private Async Sub AnalizarTexo(tmp As String)
+        If String.IsNullOrEmpty(tmp) Then Return
+        Await Task.Run(Sub()
+                           MostrarAviso("Analizando el texto...", esError:=False)
+                           frase = Frases.Add(tmp)
+                           QuitarAviso()
+                       End Sub)
+    End Sub
+
+    Private Sub QuitarAviso()
+        LabelInfo.Invoke(Sub()
+                             LabelInfo.Text = LabelInfo.Tag.ToString()
+                         End Sub)
+    End Sub
+
+    Private Sub MostrarAviso(aviso As String, esError As Boolean)
+        LabelInfo.Invoke(Sub()
+                             LabelInfo.Text = aviso
+                         End Sub)
+    End Sub
+
 End Class
