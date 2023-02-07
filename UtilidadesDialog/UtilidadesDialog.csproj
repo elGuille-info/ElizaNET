@@ -17,7 +17,7 @@ Revisión actual del 07/feb/2023
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eliza_gcnl_Library" Version="1.0.2" />
+    <PackageReference Include="Eliza_gcnl_Library" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
