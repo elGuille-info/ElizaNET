@@ -409,6 +409,45 @@ el 8 de febrero voy en bici al camino de santiago desde sarria ¿crees que aguan
     // Utilizo los métodos actuales de MainPage que asigna la salida a un StringBuilder.
     //
 
+    // Mostrar el resumen del índice indicado                   (07/feb/23 11.54)
+    
+    /// <summary>
+    /// Mostrar el resumen del texto con el índice indicado.
+    /// </summary>
+    /// <remarks>Si el índice está fuera de rango, se muestra el último.</remarks>
+    /// <param name="index">El índice en base cero del texto a mostrar el resumen.</param>
+    public static string MostrarResumen(int index)
+    {
+        // Si el índice no está en rango mostrar la última
+        if (index < 0 || index >= Frases.LasFrases.Count)
+        {
+            index = LasFrases.Count - 1;
+        }
+        // si no hay textos analizados, devolver una cadena vacía
+        if (index < 0) return "";
+
+        StringBuilder sbConsole = new();
+        sbConsole.AppendLine($"Análisis del texto con índice '{index}':");
+        //var i = LasFrases.Count - 1;
+        var frase = LasFrases[index];
+        sbConsole.AppendLine($"Texto: '{frase.Texto}'");
+        sbConsole.AppendLine($"Root: '{frase.Root?.Text.Content}', Lemma: '{frase.Root?.Lemma}'");
+        sbConsole.Append("  ");
+        sbConsole.Append(MostrarTokenPartOfSpeech(frase.Root));
+        sbConsole.AppendLine($"Sentimiento: {frase.Sentimiento} ({frase.SentimientoScore}), absoluto: {frase.SentimientoAbsoluto}");
+        sbConsole.AppendLine($"Entidades:");
+        foreach (var entidad in frase.Entidades)
+        {
+            sbConsole.AppendLine($"  {entidad}");
+        }
+        sbConsole.AppendLine($"Relaciones:");
+        foreach (var relacion in frase.Relaciones)
+        {
+            sbConsole.AppendLine($"  {relacion}");
+        }
+        return sbConsole.ToString();
+    }
+
     /// <summary>
     /// Mostrar un resumen de los textos analizados.
     /// </summary>

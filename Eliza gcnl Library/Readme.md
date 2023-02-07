@@ -2,6 +2,8 @@
 
 Librería de clases para .NET 7.0 para usar Google Cloud Natural Language API.
 
+Revisión 1.0.3 del 7 de febrero de 2023 12:05
+
 
 Esta DLL incluye las clases del proyecto [ElizaNET](https://github.com/elGuille-info/ElizaNET), convertidas a C#, 
 además de la clase _Frases_ para analizar textos usando Google Cloud Natural Language.
