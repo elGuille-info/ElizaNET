@@ -14,10 +14,12 @@
     <Copyright>Guillermo Som (Guille), 2023</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/elGuille-info/Eliza_MAUI/tree/master/Eliza%20gcnl%20Library</RepositoryUrl>
+    <RepositoryUrl>https://github.com/elGuille-info/ElizaNET/tree/master/Eliza%20gcnl%20Library</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cloud Natural Language</PackageTags>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>v1.0.4 Actualizado los enlaces de los proyectos
+v1.0.3 En MostrarResumen se puede indicar el índice a mostrar</PackageReleaseNotes>
   </PropertyGroup>
 
     <ItemGroup>
