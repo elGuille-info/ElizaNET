@@ -7,7 +7,7 @@
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
       <Title>Utilidades para los cuadros de diálogo</Title>
       <Description>Biblioteca de clases para usar los cuadros de diálogo usando TaskDialog y mostrar el resumen del texto analizado.
-Revisión actual del 06/feb/2023
+Revisión actual del 07/feb/2023
       </Description>
       <Authors>Guillermo Som</Authors>
       <Company>Guille</Company>

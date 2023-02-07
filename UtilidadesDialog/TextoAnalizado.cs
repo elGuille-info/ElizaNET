@@ -20,7 +20,7 @@ namespace UtilidadesDialog
 {
     public partial class TextoAnalizado : Form
     {
-        private readonly Frases frase = null;
+        private Frases frase = null;
         //private string text, ultimaOriginal;
 
         public TextoAnalizado(Frases laFrase)
@@ -28,6 +28,17 @@ namespace UtilidadesDialog
             InitializeComponent();
 
             frase = laFrase;
+
+            // Asignar las frases y seleccionar la indicada
+            int index = -1;
+            ComboTextos.Items.Clear();
+            for (int i = 0; i < Frases.LasFrases.Count; i++)
+            {
+                var f = Frases.LasFrases[i];
+                ComboTextos.Items.Add(f);
+                if (f.Texto == frase.Texto) { index = i; }
+            }
+            if (index > -1) { ComboTextos.SelectedIndex = index; }
         }
 
         private void TextoAnalizado_Load(object sender, EventArgs e)
@@ -70,6 +81,15 @@ namespace UtilidadesDialog
         {
             TxtResultado.Text = Frases.MostrarResumen(false);
             TxtResultado.SelectionStart = 0;
+        }
+
+        private void ComboTextos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboTextos.SelectedIndex != -1)
+            {
+                frase = ComboTextos.SelectedItem as Frases;
+                button2_Click(null, null);
+            }
         }
     }
 }

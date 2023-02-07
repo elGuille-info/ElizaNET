@@ -36,6 +36,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.ComboTextos = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,29 +50,31 @@
             this.TxtResultado.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TxtResultado.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TxtResultado.ForeColor = System.Drawing.Color.Lime;
-            this.TxtResultado.Location = new System.Drawing.Point(12, 12);
+            this.TxtResultado.Location = new System.Drawing.Point(12, 51);
             this.TxtResultado.MaxLength = 0;
             this.TxtResultado.Multiline = true;
             this.TxtResultado.Name = "TxtResultado";
             this.TxtResultado.ReadOnly = true;
             this.TxtResultado.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TxtResultado.Size = new System.Drawing.Size(998, 649);
+            this.TxtResultado.Size = new System.Drawing.Size(998, 593);
             this.TxtResultado.TabIndex = 0;
             this.TxtResultado.Text = "Resultado del análisis (solo lectura)";
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.Controls.Add(this.button5);
             this.flowLayoutPanel1.Controls.Add(this.button1);
             this.flowLayoutPanel1.Controls.Add(this.button2);
             this.flowLayoutPanel1.Controls.Add(this.button3);
             this.flowLayoutPanel1.Controls.Add(this.button4);
             this.flowLayoutPanel1.Controls.Add(this.button6);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 667);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(15, 653);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(4);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1022, 48);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(992, 47);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // button5
@@ -140,11 +143,25 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // ComboTextos
+            // 
+            this.ComboTextos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboTextos.DisplayMember = "Texto";
+            this.ComboTextos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboTextos.FormattingEnabled = true;
+            this.ComboTextos.Location = new System.Drawing.Point(12, 12);
+            this.ComboTextos.Name = "ComboTextos";
+            this.ComboTextos.Size = new System.Drawing.Size(998, 33);
+            this.ComboTextos.TabIndex = 2;
+            this.ComboTextos.SelectedIndexChanged += new System.EventHandler(this.ComboTextos_SelectedIndexChanged);
+            // 
             // TextoAnalizado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1022, 715);
+            this.Controls.Add(this.ComboTextos);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.TxtResultado);
             this.MaximizeBox = false;
@@ -171,5 +188,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.ComboBox ComboTextos;
     }
 }
