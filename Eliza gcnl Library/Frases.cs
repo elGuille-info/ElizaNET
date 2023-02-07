@@ -409,8 +409,35 @@ el 8 de febrero voy en bici al camino de santiago desde sarria ¿crees que aguan
     // Utilizo los métodos actuales de MainPage que asigna la salida a un StringBuilder.
     //
 
-    // Mostrar el resumen del índice indicado                   (07/feb/23 11.54)
+    // Mostrar el resumen de la frase actual                    (07/feb/23 12.30)
     
+    /// <summary>
+    /// Mostrar el resumen de la frase o texto actual.
+    /// </summary>
+    public string MostrarResumen()
+    {
+        StringBuilder sbConsole = new();
+        sbConsole.AppendLine($"Análisis del texto '{Texto}':");
+        sbConsole.AppendLine($"Texto: '{Texto}'");
+        sbConsole.AppendLine($"Root: '{Root?.Text.Content}', Lemma: '{Root?.Lemma}'");
+        sbConsole.Append("  ");
+        sbConsole.Append(MostrarTokenPartOfSpeech(Root));
+        sbConsole.AppendLine($"Sentimiento: {Sentimiento} ({SentimientoScore}), absoluto: {SentimientoAbsoluto}");
+        sbConsole.AppendLine($"Entidades:");
+        foreach (var entidad in Entidades)
+        {
+            sbConsole.AppendLine($"  {entidad}");
+        }
+        sbConsole.AppendLine($"Relaciones:");
+        foreach (var relacion in Relaciones)
+        {
+            sbConsole.AppendLine($"  {relacion}");
+        }
+        return sbConsole.ToString();
+    }
+
+    // Mostrar el resumen del índice indicado                   (07/feb/23 11.54)
+
     /// <summary>
     /// Mostrar el resumen del texto con el índice indicado.
     /// </summary>

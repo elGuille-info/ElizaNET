@@ -17,8 +17,9 @@
     <RepositoryUrl>https://github.com/elGuille-info/ElizaNET/tree/master/Eliza%20gcnl%20Library</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cloud Natural Language</PackageTags>
-    <Version>1.0.4</Version>
-    <PackageReleaseNotes>v1.0.4 Actualizado los enlaces de los proyectos
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>v1.0.5 Mostrar resumen de la frase o texto actual
+v1.0.4 Actualizado los enlaces de los proyectos
 v1.0.3 En MostrarResumen se puede indicar el índice a mostrar</PackageReleaseNotes>
   </PropertyGroup>
 
