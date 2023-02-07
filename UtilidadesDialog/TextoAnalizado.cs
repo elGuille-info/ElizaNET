@@ -46,12 +46,6 @@ namespace UtilidadesDialog
             button5_Click(null, null);
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            TxtResultado.Text = Frases.MostrarResumen(true);
-            TxtResultado.SelectionStart = 0;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             TxtResultado.Text = frase.Analizar(conTokens: true, soloEntities: false);
@@ -77,6 +71,12 @@ namespace UtilidadesDialog
             TxtResultado.SelectionStart = 0;
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            TxtResultado.Text = Frases.MostrarResumen(true);
+            TxtResultado.SelectionStart = 0;
+        }
+
         private void button6_Click(object sender, EventArgs e)
         {
             TxtResultado.Text = Frases.MostrarResumen(false);
@@ -88,8 +88,15 @@ namespace UtilidadesDialog
             if (ComboTextos.SelectedIndex != -1)
             {
                 frase = ComboTextos.SelectedItem as Frases;
-                button2_Click(null, null);
+                button0_Click(null, null);
             }
+        }
+
+        private void button0_Click(object sender, EventArgs e)
+        {
+            // El texto actualmente seleccionado
+            TxtResultado.Text = frase.MostrarResumen();
+            TxtResultado.SelectionStart = 0;
         }
     }
 }
